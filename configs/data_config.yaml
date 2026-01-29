@@ -1,0 +1,66 @@
+# Data Configuration
+
+# Region of Interest
+region:
+  name: "Indo-Gangetic Plain"
+  states: ["Punjab", "Haryana", "Uttar Pradesh"]
+  bounds:
+    north: 32.0
+    south: 24.0
+    west: 73.0
+    east: 85.0
+
+# Data Sources
+s2s:
+  dataset: "s2s"
+  origin: "ecmf"
+  resolution: 0.4  # degrees (~36 km)
+  lead_time_days: 46
+  variables:
+    - name: "mx2t6"
+      code: 121
+      description: "Maximum temperature at 2m (6h)"
+    - name: "mn2t6"
+      code: 122
+      description: "Minimum temperature at 2m (6h)"
+    - name: "tp"
+      code: 228228
+      description: "Total precipitation"
+    - name: "ssrd"
+      code: 169
+      description: "Surface solar radiation downwards"
+    - name: "10u"
+      code: 165
+      description: "10m U wind component"
+    - name: "10v"
+      code: 166
+      description: "10m V wind component"
+
+sentinel2:
+  resolution: 10  # meters
+  bands:
+    - "B04"  # Red
+    - "B08"  # NIR
+  indices:
+    - "NDVI"
+    - "LAI"
+  cloud_cover_max: 20  # percent
+
+# Temporal Configuration
+temporal:
+  train_years: [2017, 2018, 2019, 2020, 2021]
+  val_years: [2022]
+  test_years: [2023]
+  wheat_season:
+    sowing: [10, 11, 12]  # Oct-Dec
+    growth: [1, 2, 3]      # Jan-Mar
+    harvest: [4]           # April
+
+# Paths
+paths:
+  raw:
+    s2s: "data/s2s"
+    sentinel2: "data/sentinel2"
+    yields: "data/yields"
+    boundaries: "data/boundaries"
+  processed: "data/processed"

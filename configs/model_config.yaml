@@ -1,0 +1,45 @@
+# Model Configuration
+
+# Dual-Channel Informer
+informer:
+  # Weather channel (S2S)
+  weather:
+    input_dim: 6           # Number of weather variables
+    d_model: 128           # Model dimension
+    n_heads: 8             # Attention heads
+    e_layers: 2            # Encoder layers
+    d_ff: 256              # Feed-forward dimension
+    dropout: 0.1
+    activation: "gelu"
+    distil: true           # Distilling in encoder
+  
+  # Satellite channel (Sentinel-2)
+  satellite:
+    input_dim: 2           # NDVI, LAI
+    d_model: 64
+    n_heads: 4
+    e_layers: 2
+    d_ff: 128
+    dropout: 0.1
+    activation: "gelu"
+    distil: true
+
+# Feature Fusion
+fusion:
+  method: "concat"         # concat, attention, or gated
+  output_dim: 192          # Combined feature dimension
+
+# Graph Attention Network
+gat:
+  hidden_dim: 128
+  output_dim: 64
+  n_heads: 4
+  n_layers: 2
+  dropout: 0.1
+  residual: true
+  
+# Prediction Head
+head:
+  hidden_dims: [64, 32]
+  dropout: 0.1
+  output_dim: 1            # Yield (kg/ha)

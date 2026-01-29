@@ -1,0 +1,91 @@
+# Data directories
+data/
+!data/.gitkeep
+
+# Model checkpoints
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# Experiment outputs
+experiments/logs/
+experiments/plots/
+!experiments/.gitkeep
+
+# GRIB and NetCDF files
+*.grib
+*.grib2
+*.nc
+*.zarr/
+
+# Geospatial files (large)
+*.tif
+*.tiff
+*.shp
+*.shx
+*.dbf
+*.prj
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Credentials (never commit!)
+.ecmwfapirc
+.cdsapirc
+*.key
+*.secret
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Large files
+*.zip
+*.tar.gz
+*.7z

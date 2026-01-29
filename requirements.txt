@@ -1,0 +1,47 @@
+# Dependencies
+torch>=2.0.0
+torchvision>=0.15.0
+torch-geometric>=2.3.0
+
+# Data Processing
+xarray>=2024.1.0
+cfgrib>=0.9.15
+netCDF4>=1.6.0
+geopandas>=0.14.0
+rasterio>=1.3.0
+shapely>=2.0.0
+
+# ECMWF & Copernicus APIs
+ecmwf-api-client>=1.6.0
+cdsapi>=0.6.0
+
+# Sentinel-2
+sentinelhub>=3.9.0
+eolearn>=1.5.0
+
+# ML & Transformers
+einops>=0.7.0
+timm>=0.9.0
+
+# Visualization
+matplotlib>=3.8.0
+seaborn>=0.13.0
+plotly>=5.18.0
+
+# Utilities
+numpy>=1.26.0
+pandas>=2.1.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+pyyaml>=6.0.0
+tqdm>=4.66.0
+wandb>=0.16.0
+
+# Jupyter
+jupyter>=1.0.0
+ipykernel>=6.27.0
+
+# Development
+pytest>=7.4.0
+black>=23.11.0
+isort>=5.12.0

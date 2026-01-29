@@ -1,0 +1,2590 @@
+remote sensing
+Article
+
+A Deep–Learning Network for Wheat Yield Prediction
+Combining Weather Forecasts and Remote Sensing Data
+Dailiang Peng 1,2 , Enhui Cheng 1,2,3 , Xuxiang Feng 4, * , Jinkang Hu 1,2,3 , Zihang Lou 5 , Hongchi Zhang 1,2,3 ,
+Bin Zhao 6 , Yulong Lv 1,3 , Hao Peng 3,7 and Bing Zhang 1,3
+1
+
+2
+3
+
+4
+5
+
+6
+
+7
+
+*
+
+Citation: Peng, D.; Cheng, E.; Feng, X.;
+Hu, J.; Lou, Z.; Zhang, H.; Zhao, B.; Lv,
+Y.; Peng, H.; Zhang, B. A Deep–
+Learning Network for Wheat Yield
+Prediction Combining Weather
+Forecasts and Remote Sensing Data.
+Remote Sens. 2024, 16, 3613. https://
+doi.org/10.3390/rs16193613
+Academic Editor: Annamaria
+
+Key Laboratory of Digital Earth Science, Aerospace Information Research Institute, Chinese Academy
+of Sciences, Beijing 100094, China; pengdl@aircas.ac.cn (D.P.); chengenhui22@mails.ucas.ac.cn (E.C.);
+hujinkang21@mails.ucas.ac.cn (J.H.); zhanghongchi23@mails.ucas.ac.cn (H.Z.);
+lvyulong24@mails.ucas.ac.cn (Y.L.); zhangbing@aircas.ac.cn (B.Z.)
+International Research Center of Big Data for Sustainable Development Goals, Beijing 100094, China
+College of Resource and Environment, University of Chinese Academy of Sciences, Beijing 100049, China;
+penghao24@mails.ucas.ac.cn
+Aerospace Information Research Institute, Chinese Academy of Sciences, Beijing 100094, China
+Zhejiang Key Laboratory of Agricultural Remote Sensing and Information Technology,
+College of Environmental and Resource Sciences, Zhejiang University, Hangzhou 310058, China;
+lou.zihang@zju.edu.cn
+School of Information Science and Engineering, Shandong Agricultural University, Tai’an 271002, China;
+binzhao@sdau.edu.cn
+Xinjiang Institute of Ecology and Geography, Chinese Academy of Sciences, Xinjiang 830011, China
+Correspondence: fengxx@aircas.ac.cn
+
+Abstract: Accurately predicting winter wheat yield before harvest could greatly benefit decisionmakers when making management decisions. In this study, we utilized weather forecast (WF) data
+combined with Sentinel-2 data to establish the deep-learning network and achieved an in-season
+county-scale wheat yield prediction in China’s main wheat-producing areas. We tested a combination
+of short-term WF data from the China Meteorological Administration to predict in-season yield at
+different forecast lengths. The results showed that explicitly incorporating WF data can improve the
+accuracy in crop yield predictions [Root Mean Square Error (RMSE) = 0.517 t/ha] compared to using
+only remote sensing data (RMSE = 0.624 t/ha). After comparing a series of WF data with different
+time series lengths, we found that adding 25 days of WF data can achieve the highest yield prediction
+accuracy. Specifically, the highest accuracy (RMSE = 0.496 t/ha) is achieved when predictions are
+made on Day of The Year (DOY) 215 (40 days before harvest). Our study established a deep-learning
+model which can be used for early yield prediction at the county level, and we have proved that
+weather forecast data can also be applied in data-driven deep-learning yield prediction tasks.
+Keywords: weather forecast data; wheat yield prediction; deep-learning; time series
+
+Castrignanò
+Received: 29 August 2024
+Revised: 23 September 2024
+Accepted: 25 September 2024
+
+1. Introduction
+
+Published: 27 September 2024
+
+Wheat is one of the major staple crops in China, and early yield prediction before
+harvest is of great significance [1]. At governmental and inter-governmental levels, these
+forecasts inform decisions related to food security [2,3]. For agricultural industries and processors, accurate yield forecasts enable effective planning for grain storage, transportation,
+and marketing [4]. Thus, it is imperative to improve the precision and reliability of winter
+wheat yield prediction at the county scale [5,6].
+With the advent of the big data era, remote sensing technology is increasingly being
+used in the agricultural field, especially showing great potential in crop yield estimation [4,7–9]. Traditional remote sensing yield estimation methods primarily include crop
+models and statistical models. Although crop models based on crop growth processes
+play a crucial role in simulating crop growth and development, they have limitations due
+
+Copyright: © 2024 by the authors.
+Licensee MDPI, Basel, Switzerland.
+This article is an open access article
+distributed under the terms and
+conditions of the Creative Commons
+Attribution (CC BY) license (https://
+creativecommons.org/licenses/by/
+4.0/).
+
+Remote Sens. 2024, 16, 3613. https://doi.org/10.3390/rs16193613
+
+https://www.mdpi.com/journal/remotesensing
+
+Remote Sens. 2024, 16, 3613
+
+2 of 16
+
+to reliance on various assumptions and uncertain model parameters [10]. Additionally,
+these models often depend on data that may contain errors or be difficult to obtain [11].
+These factors may affect the prediction accuracy and practical application of the model [12],
+making yield predictions from these models unreliable [13]. Statistical methods primarily
+establish regression relationships between weather or remote sensing vegetation indices
+(such as Normalized Difference Vegetation Index (NDVI)/Enhanced Vegetation Index
+(EVI)) and crop yields [14,15]. However, although statistical methods are computationally
+simple and easy to apply [16–18], the relationship between the index and yield is not simply
+linear, and traditional statistical methods cannot adequately capture changes in yield [4,19].
+In recent years, with the development of machine learning and deep-learning technologies, more and more scholars have begun to try to apply these advanced data analysis
+methods to yield prediction tasks, such as RF (random forest) [20], SVR (Support Vector
+Regression) [4], RNN (Recurrent Neural Network) [21], LSTM (Long Short-Term Memory) [9,19,22], CNN (Convolutional Neural Network) [5,23,24], GNN (Graph Neural Network) [21,25–27], Transformer [28], and so on. These methods can effectively utilize spatial
+information from remote sensing images and improve the accuracy and reliability of yield
+prediction by uncovering underlying patterns in time series data. Furthermore, some studies have explored integrating more information to enhance prediction accuracy through the
+combination of the above models. For example, some research has employed a combination
+of RNN/LSTM/GRU and GNN to learn spatiotemporal information simultaneously for
+yield prediction [25,29]. Fan et al. proposed a novel graph-based framework, GNN-RNN,
+which integrates geographic space and temporal knowledge into inference to predict yields
+of major crops in the United States [21]. Qiao et al. introduced a location-aware spatial attention temporal network model, KSTAGE, which aggregates spatial neighborhood features
+for yield prediction of major crops in Chinese and American counties [27].
+The prediction methods based on machine-learning models can be divided into two
+categories: those based on remote sensing data and those based on meteorological data. The
+former utilizes hyperspectral, multispectral, or radar imagery [19,30], as well as Sun/Solarinduced Chlorophyll Fluorescence (SIF) [31] and Vegetation Optical Depth (VOD) [32] to
+estimate crop yields, while the latter uses meteorological parameters, such as temperature,
+precipitation, vapor pressure, and wind speed, to predict crop yields [33–38]. However, the
+former often overlooks the meteorological factors that directly reflect the crop growth environment, and the latter lacks high-resolution remote sensing data for precise agricultural
+tracking [24]. Using both remote sensing and meteorological data can complement the
+strengths of remote sensing technology and crop mechanisms, enabling their application in
+large-scale crop yield prediction. Previous research has also shown that yield prediction
+models based on both meteorological data and satellite data outperform models relying on
+a single data source [15,39].
+Weather forecast data have always been an important support for agricultural management [40–42]. Combining crop management with weather forecasts allows for real-time
+and accurate understanding of the interactions between soil, water, and crops [43], thus
+enabling effective management of water and fertilizer usage, providing the potential to
+increase yield. With the development of weather prediction models, more and more yield
+prediction studies have used weather forecast data [34,44–46]. For instance, Boa et al. used
+the latest European Centre for Medium-Range Weather Forecasts (ECMWF) to assess the
+potential for regional-scale agricultural yield prediction in two different climatic zones,
+finding that weather forecasts could capture interannual yield differences [45]. However,
+weather forecast data are more commonly used in yield prediction tasks based on crop
+models [36,47]. Mostly, wheat yield is typically predicted using only historical remote
+sensing data or meteorological data up to the prediction date, without incorporating any
+information related to yield after that date [1,6,19]. The prediction date refers to the earliest date within the winter wheat growing season when yield prediction can be made.
+For example, Cheng et al. constructed a spatiotemporal deep-learning yield model using
+historical remote sensing data and historical meteorological data up to the prediction
+
+Remote Sens. 2024, 16, 3613
+
+without incorporating any information related to yield after that date [1,6,19]. The
+prediction date refers to the earliest date within the winter wheat growing season when
+yield prediction can be made. For example, Cheng et al. constructed a spatiotemporal
+3 of 16
+deep-learning yield model using historical remote sensing data and historical
+meteorological data up to the prediction date [6]. Meteorological websites that perform
+weather prediction release real-time future weather forecast data, which can supplement
+date
+[6]. Meteorological
+websites
+that wheat
+perform
+weather
+prediction
+release
+future
+meteorological
+information
+reflecting
+yield
+after the
+prediction
+datereal-time
+[48]. Therefore,
+weather
+forecast
+which
+can supplement
+information
+in this study,
+we data,
+combine
+remote
+sensing datameteorological
+with weather forecast
+datareflecting
+for wheatwheat
+yield
+yield
+after
+the
+prediction
+date
+[48].
+Therefore,
+in
+this
+study,
+we
+combine
+remote
+sensing
+prediction.
+data In
+with
+weather
+dataon
+for the
+wheat
+yield
+prediction.
+this
+study,forecast
+we focus
+main
+winter
+wheat-producing regions in eight
+In
+this
+study,
+we
+focus
+on
+the
+main
+winter
+wheat-producing
+regionsdata
+in eight
+provinces of China to explore how to incorporate weather forecast
+intoprovinces
+a deepof
+China
+to
+explore
+how
+to
+incorporate
+weather
+forecast
+data
+into
+a
+deep-learning
+yield
+learning yield prediction model based on remote sensing data. We utilize Sentinel-2
+prediction
+modeldata
+based
+sensing data.
+We utilize
+Sentinel-2
+sensing
+data
+remote sensing
+alongremote
+with collected
+weather
+forecast
+data toremote
+construct
+a deepalong
+with
+collected
+weather
+forecast
+data
+to
+construct
+a
+deep-learning
+spatiotemporal
+learning spatiotemporal yield prediction model called long-short-term memory (LSTM)–
+yield
+model(GNN)–Yield
+called long-short-term
+neural multiple
+network
+graphprediction
+neural network
+Prediction memory
+(LGYP). (LSTM)—graph
+This method integrates
+(GNN)—Yield
+Prediction
+(LGYP).
+This
+method
+integrates
+multiple
+data
+sources
+for
+yield
+data sources for yield prediction and, for the first time, incorporates future weather
+prediction
+and,
+for
+the
+first
+time,
+incorporates
+future
+weather
+forecast
+information
+into
+a
+forecast information into a deep-learning yield prediction network. This innovative
+deep-learning
+yield
+prediction
+network.
+This
+innovative
+framework
+provides
+a
+real-time
+framework provides a real-time monitoring olution for winter wheat yield.
+monitoring solution for winter wheat yield.
+2. Materials and Methods
+2. Materials and Methods
+2.1. Study
+2.1.
+Study Area
+Area
+Henan, Hebei,
+Hebei, Shandong,
+Shandong, Jiangsu,
+the main
+main
+Henan,
+Jiangsu, Anhui,
+Anhui, Shanxi,
+Shanxi, Shaanxi,
+Shaanxi, and
+and Hubei
+Hubei are
+are the
+winter wheat-producing
+wheat-producing
+provinces,
+accounting
+forof90%
+of the
+total
+winter
+wheat
+winter
+provinces,
+accounting
+for 90%
+the total
+winter
+wheat
+production
+production
+in
+China
+(Figure
+1b).
+The
+study
+areas
+are
+geographically
+divided
+into
+northern
+in China (Figure 1b). The study areas are geographically divided into northern and southern
+and southern
+regions. The
+northern areas
+production
+areas located
+are mainly
+located
+south
+of the
+regions.
+The northern
+production
+are mainly
+south
+of the
+Great
+WallGreat
+and
+Wall
+and
+north
+of
+the
+Qinling-Huai
+River,
+characterized
+by
+a
+temperate
+continental
+north of the Qinling-Huai River, characterized by temperate continental monsoon climate.
+monsoon
+climate.
+southernareas
+mainare
+production
+areasofare
+southcharacterized
+of the Huai
+The
+southern
+mainThe
+production
+located south
+thelocated
+Huai River,
+River,
+characterized
+by a climate.
+subtropical
+climate.
+The study
+areas
+encompass
+by
+a subtropical
+monsoon
+Themonsoon
+study areas
+encompass
+different
+crop
+planting
+different crop
+planting
+structures,
+climate types,
+and management
+practices
+[6].
+In 2020,
+structures,
+climate
+types,
+and management
+practices
+[6]. In 2020, these
+eight
+provinces
+these eightaprovinces
+produced
+a total
+million
+of winter
+wheat (Figure
+1b),
+produced
+total of 118.17
+million
+tonsofof118.17
+winter
+wheattons
+(Figure
+1b), covering
+a planted
+covering
+a planted
+area
+of 19.52
+million hectares (https://www.stats.gov.cn/
+(accessed
+on
+area
+of 19.52
+million
+hectares
+(https://www.stats.gov.cn/
+(accessed on 24 March
+2024))
+24
+March
+2024))
+(Figure
+1a).
+(Figure 1a).
+
+Figure
+1. (a)
+(a)Map
+Mapshowing
+showingthe
+thedistribution
+distribution
+main
+winter
+wheat
+production
+areas
+in China;
+Figure 1.
+ofof
+thethe
+main
+winter
+wheat
+production
+areas
+in China;
+(b)
+(b)
+map
+showing
+distribution
+of the
+winter
+wheat
+county-level
+yields
+2020.
+map
+showing
+the the
+distribution
+of the
+winter
+wheat
+county-level
+yields
+for for
+2020.
+
+2.2. Data
+2.2.1. Remote Sensing Data
+In this study, the remote sensing data were primarily derived from Sentinel-2A/B (S2)
+Multi-Spectral Instrument (MSI) top-of-atmosphere (TOA) reflectance images (Level-1C)
+through Google Earth Engine (GEE). The Sentinel-2 satellite is equipped with a MultiSpectral Instrument (MSI) with a swath width of up to 290 km and an altitude of 786 km. It
+
+Remote Sens. 2024, 16, 3613
+
+4 of 16
+
+can cover 13 spectral bands, with ground resolutions of 10 m, 20 m, and 60 m, respectively.
+Referring to previous studies [6], four spectral bands were used in this study: the visible
+green band (Band 7, 773–793 nm), near-infrared band (Band 8, 785–900 nm), red edge band
+(Band 8A, 855–875 nm), and shortwave infrared band (Band 12, 2100–2280 nm), with spatial
+resolutions of 10 m, 10 m, 20 m, and 20 m, respectively.
+Further, TOA data have been found in other work to provide models with similar
+accuracy to those based on SR data [49–51]. Thus, all accessible Sentinel-2 TOA images
+from October to June for 2017–2020 were obtained. Another reason for using TOA data
+in this article is to try to reduce intermediate processing steps and achieve the inversion
+process from TOA data directly to the inversion target. Winter wheat is typically sown in
+early October and harvested in mid-June the following year. There are a total of 255 days in
+the growing season. We use the mean composite method to generate a stable 5-day interval
+time series, and cropland masking is applied synchronously. The length of the time series
+for each year is 50, covering the entire growing season of winter wheat (from October to
+mid-June of the following year).
+2.2.2. Weather Forecast Data
+To construct the weather forecast database for 2017–2020, we developed a Pythonbased web crawler program to automatically crawl weather data from the website Weather
+After Report (http://www.tianqihoubao.com/lishi (accessed on 10 March 2024)). We collected weather conditions, daily minimum and maximum temperatures, and wind directions and forces (for day and night) from 6 October to 16 July during the wheat growing
+seasons. There are studies indicating that the weather forecast data are reliable. Song et al.
+analyzed 24-h city-level weather forecasts from the China Meteorological Administration
+(2000–2015) and compared them with ERA-Interim reanalysis data finding that, in the main
+winter wheat growing areas of the Huang-Huai-Hai Plain in China, the temperature root
+mean square error (RMSE) was less than 2◦ [52]. For ease of analysis, referring to the classification standard for rainfall levels on the China Weather website (https://www.cma.gov.cn/
+(accessed on 12 March 2024)), we converted the text descriptions of weather conditions into
+a set of numerical levels corresponding to precipitation amounts. For example, “cloudy” is
+calibrated as 0, “light rain” as 10, “moderate rain” as 17, “heavy rain” as 37, and “heavy
+snow” as 10, etc. (unit: mm). We organized the annually downloaded data into time-series
+data that aligns with the winter wheat growing season, which means that the data for each
+year was structured from October of one year to June of the following year. Subsequently,
+we handled anomalies within the sequences, including null values and extreme outliers,
+by replacing them with the average of the meteorological data from the preceding and
+following days. Finally, we matched the collected yield statistical values one-to-one based
+on the administrative codes of the counties, forming feature-label pairs for model training.
+We also conducted checks on the processed data.
+From 2017 to 2020, we used historical records from weather forecasts to train our yield
+prediction model from the website Weather After Report. Daily updated weather forecast
+data for the next 40 days can be obtained from the China Meteorological Administration’s
+website (http://www.weather.com.cn/ (accessed on 22 March 2024)). When our model
+is deployed for real-time yield prediction in the future, the weather forecast data can be
+obtained in real-time from the China Meteorological Administration’s website.
+2.2.3. Winter Wheat Yield
+The county-level yield data in 2017–2020 were collected manually from local statistical
+yearbooks (https://www.stats.gov.cn/sj/zxfb/ (accessed on 24 March 2024)), which were
+not published online. We collected a total of 2107 unit-area yield data points, with the
+values ranging from 1.303 to 8.576 t/ha (Figure 1a). There are yield data for four years.
+In Section 3, we consistently used the data from 2017 to 2019 as the training set and the
+data from 2020 as the validation set. As shown in the figure below (Figure 2), we plotted
+
+2.2.3. Winter Wheat Yield
+
+Remote Sens. 2024, 16, 3613
+
+The county-level yield data in 2017–2020 were collected manually from local
+statistical yearbooks (https://www.stats.gov.cn/sj/zxfb/ (accessed on 24 March 2024)),
+which were not published online. We collected a total of 2107 unit-area yield data points,
+5 of 16
+with the values ranging from 1.303 to 8.576 t/ha (Figure 1a). There are yield data for four
+years. In Section 3, we consistently used the data from 2017 to 2019 as the training set and
+the data from 2020 as the validation set. As shown in the figure below (Figure 2), we
+the lollipop
+chart forchart
+the yields
+over
+fourover
+consecutive
+years and years
+found and
+that found
+the inter-annual
+plotted
+the lollipop
+for the
+yields
+four consecutive
+that the
+changes
+in
+yield
+were
+minimal.
+inter-annual changes in yield were minimal.
+
+Figure2.2.Lollipop
+Lollipopchart
+chartofofthe
+theyield
+yieldlevels
+levelsover
+overthe
+thefour
+fouryears
+yearsfrom
+from2017
+2017toto2020.
+2020.
+Figure
+
+2.2.4. Wheat Area Data
+2.2.4. Wheat Area Data
+In many studies, generalized arable land masks have been used as winter wheat
+In many studies, generalized arable land masks have been used as winter wheat
+masks [53,54], which can lead to reduced accuracy. Here, we used the winter wheat area
+masks [53,54], which can lead to reduced accuracy. Here, we used the winter wheat area
+product data from Hu et al. (Figure 1b), which covers the four years from 2017 to 2020 and
+product
+data from
+Hu et al.
+(Figure
+1b), which covers the four years from 2017 to 2020 and
+has a spatial
+resolution
+of 10
+m (https://figshare.com/articles/dataset/_b_10m_winter_
+has
+a
+spatial
+resolution
+of
+10
+m
+wheat_harvested_area_and_planted_area_distribution_map_of_China_for_fivr_years_2018
+(https://figshare.com/articles/dataset/_b_10m_winter_wheat_harvested_area_and_plante
+-2022_b_/25097684 (accessed on 20 March 2024)). We took the intersection of the winter
+d_area_distribution_map_of_China_for_fivr_years_2018-2022_b_/25097684
+(accessed
+on
+wheat grid regions extracted for these four years, selecting only the pixels that
+remained
+20unchanged
+March 2024)).
+the intersection
+of the
+winter
+wheatWe
+grid
+regions
+extracted
+for
+overWe
+all took
+four years
+as true winter
+wheat
+pixels.
+then
+masked
+the remote
+these
+four
+years,
+selecting
+only
+the
+pixels
+that
+remained
+unchanged
+over
+all
+four
+years
+as
+sensing data based on these results, thus ensuring that our subsequent results were based
+true
+winter
+wheat
+pixels.
+We
+then
+masked
+the
+remote
+sensing
+data
+based
+on
+these
+results,
+on pure winter wheat pixels only.
+thus ensuring that our subsequent results were based on pure winter wheat pixels only.
+2.3. Method
+2.3.
+Method
+2.3.1.
+Yield Prediction Model
+2.3.1. Yield
+Prediction
+Model(LSTM-GNN-Yield Prediction) network architecture that can siWe esigned
+an LGYP
+multaneously
+learn
+temporal
+and spatial information
+related
+to yield.
+This network
+can
+We designed
+anthe
+LGYP
+(LSTM–GNN-Yield
+Prediction)
+network
+architecture
+that can
+learn
+sequential
+information
+from
+both
+remote
+sensing
+data
+and
+daily
+weather
+forecast
+data.
+simultaneously earn the temporal and spatial information related to yield. This network
+Temporally,
+a Recurrent
+Neural
+Network
+is adopted
+to learn
+timecan learn
+sequential
+information
+from
+both (RNN)
+remotearchitecture
+sensing data
+and daily
+weather
+dependent
+information
+to
+incorporate
+the
+crop
+growth
+process
+[55].
+As
+shown
+in
+the
+left
+forecast data.
+diagram
+of
+Figure
+3,
+here
+we
+input
+five-day
+mean-composite
+remote
+sensing
+data
+and
+Temporally, a Recurrent Neural Network (RNN) architecture is adopted to learn
+daily weather forecasts.
+Both
+types of data
+through
+identical
+structures
+time-dependent
+information
+to incorporate
+thepassed
+crop growth
+process
+[55]. model
+As shown
+in the
+consisting of two layers of LSTM networks, one with 128 neurons followed by another with
+256 neurons, subsequently passing through a linear layer, ReLu activation function and
+finally passing another linear layer. There are two channels in the LSTM model, hence it is
+called T-LSTM. One reason for this is that remote sensing data and weather record data
+represent two distinct types of features, and another reason is the asynchronous processing
+of the two data types in terms of time. We averaged the 255 days of remote sensing data
+into five-day intervals, reducing the time steps to 50. This step was taken because LSTMs
+
+Remote Sens. 2024, 16, 3613
+
+consisting of two layers of LSTM networks, one with 128 neurons followed by another
+with 256 neurons, subsequently passing through a linear layer, ReLu activation function
+and finally passing another linear layer. There are two channels in the LSTM model, hence
+it is called T-LSTM. One reason for this is that remote sensing data and weather record
+data represent two distinct types of features, and another reason is the asynchronous
+6 of 16
+processing of the two data types in terms of time. We averaged the 255 days of remote
+sensing data into five-day intervals, reducing the time steps to 50. This step was taken
+because
+areatless
+effective
+learning
+very long
+sequences.
+Learnable
+aggregation
+are lessLSTMs
+effective
+learning
+veryatlong
+sequences.
+Learnable
+aggregation
+of the
+long series
+ofinto
+the shorter
+long series
+into
+shorter
+sequences
+facilitated
+feature
+learning
+over
+long
+temporal
+sequences facilitated feature learning over long temporal ranges in
+sequence
+ranges
+in sequence
+processing
+Similar
+to Lina et
+al., who used
+a Transformer
+to
+processing
+tasks [56].
+Similartasks
+to Lin[56].
+et al.,
+who used
+Transformer
+to aggregate
+a week’s
+aggregate
+a
+week’s
+worth
+of
+remote
+sensing
+sequences
+before
+inputting
+them
+into
+an
+worth of remote sensing sequences before inputting them into an LSTM, we aimed to avoid
+LSTM,
+weprecision
+aimed to issues
+avoid associated
+the low precision
+issues
+associated
+with
+using
+LSTMs
+to learn
+the low
+with using
+LSTMs
+to learn
+daily
+long
+sequences
+[28].
+daily
+long sequences
+In contrast,
+forecast
+data have
+a maximum
+In contrast,
+weather [28].
+forecast
+data haveweather
+a maximum
+prediction
+record
+of 40 days,prediction
+so we used
+record
+40 days,
+so werecords.
+used daily
+weather
+forecastime
+records.
+Given
+the differing
+daily of
+weather
+forecast
+Given
+the differing
+intervals
+between
+the twotime
+types
+intervals
+between
+the
+two
+types
+of
+data,
+we
+input
+each
+type
+separately
+into
+of data, we input each type separately into the LSTM model and concatenatedthe
+theLSTM
+results
+model
+concatenated
+the results
+from
+thethrough
+last time
+step before
+passing
+through
+from and
+the last
+time step before
+passing
+them
+a fully
+connected
+layerthem
+to connect
+with
+a fully
+connected
+layer to connect with the GNN module.
+the GNN
+module.
+Bands value
+LSTM_B
+
+B7
+B8
+B8A
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+GraphSAGE
+
+50 time steps
+
+5 days
+
+Nx 40
+…
+
+B12
+
+LSTM
+
+DENSE
+
+Weather Forecast Data
+Min T(night)
+
+Yield
+
+Max T(day)
+LSTM_M
+
+Wind Speed(day)
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+LSTM
+
+Wind Speed(night)
+Precipitation(day)
+
+…
+
+Nx 40
+
+Precipitation(night)
+
+DENSE
+1 day
+
+40 time steps
+
+Figure
+3. 3.
+The
+framework
+of of
+LGYP
+(LSTM
+–GNN-Yield Prediction).
+Figure
+The
+framework
+LGYP
+(LSTM-GNN-Yield
+Prediction).
+
+Spatially,
+the
+relationshipsare
+arethen
+then
+learned
+through
+the
+GraphSAGE
+module.
+Graph
+Spatially,
+the
+relationships
+learned
+through
+the
+GraphSAGE
+module.
+Graph
+NeuralNetworks
+Networks (GNNs)
+(GNNs) are
+type
+of neural
+network
+designed
+to uncover
+complex
+Neural
+areaanovel
+novel
+type
+of neural
+network
+designed
+to uncover
+dependencies
+inherentinherent
+in graph-structured
+data sources
+[57]. They
+allow
+greater
+complex
+dependencies
+in graph-structured
+data sources
+[57].
+They
+allow flexibility
+greater
+and
+a
+wider
+representation
+space
+for
+embedding
+node
+and
+edge
+information
+in the graph
+flexibility and a wider representation space for embedding node and edge information
+in
+forgraph
+reasoning.
+GraphSAGE
+is an important
+frameworkframework
+in graph neural
+networks.
+the
+for reasoning.
+GraphSAGE
+is
+important
+in graph
+neural It
+utilizes node
+feature information
+andinformation
+learns node and
+embeddings
+by aggregating
+fromby
+the
+networks.
+It utilizes
+node feature
+learns node
+embeddings
+neighborhoods
+[58]. GraphSAGE
+suitable
+for cropisyield
+prediction
+aggregating
+from of
+thenodes
+neighborhoods
+of nodes is[58].
+GraphSAGE
+suitable
+for cropbecause
+yield
+most counties
+onlymost
+border
+a few others,
+making
+the adjacency
+matrixthe
+sparse
+[21]. Therefore,
+prediction
+because
+counties
+only border
+a few
+others, making
+adjacency
+matrix
+after
+extracting
+the
+temporal
+information
+with
+LSTM,
+we
+added
+two
+layers
+of
+sparse [21]. Therefore, after extracting the temporal information with LSTM, GraphSAGE
+we added
+to layers
+furtherofextract
+neighborhood
+spatial
+information,
+achieving
+aggregation
+of information
+two
+GraphSAGE
+to further
+extract
+neighborhood
+spatial
+information,
+achieving
+across
+both
+the
+temporal
+and
+spatial
+dimensions.
+Both
+layers
+use
+the
+“mean”
+aggregation
+aggregation of information across both the temporal and spatial dimensions. Both
+layers
+method,
+and the
+dropout value
+is setand
+to 0.1.
+ensure value
+that the
+for ensure
+each year
+use
+the “mean”
+aggregation
+method,
+theTo
+dropout
+is yield
+set todata
+0.1. To
+thatare
+trained
+on
+the
+same
+graph,
+we
+need
+to
+fix
+the
+number
+of
+county
+yield
+nodes.
+However,
+the yield data for each year are trained on the same graph, we need to fix the number of
+the missing
+yield data
+in the statistical
+yearbooks
+are random
+each year.yearbooks
+Thus, we are
+used
+county
+yield nodes.
+However,
+the missing
+yield data
+in the statistical
+the
+union
+of
+county
+yields
+across
+the
+four
+years
+to
+construct
+the
+graph
+and
+fill
+in
+missing
+random each year. Thus, we used the union of county yields across the four years to
+data with the average yield of surrounding counties, ensuring alignment of the yield data
+construct the graph and fill in missing data with the average yield of surrounding
+for each year. During the computation of the loss, we only used the data with real yield
+counties, ensuring alignment of the yield data for each year. During the computation of
+labels. The models were trained on PyTorch version 3.8, and GraphSAGE was implemented
+the loss, we only used the data with real yield labels. The models were trained on PyTorch
+using the DGL library. All deep-learning models were trained using the Adam optimizer.
+version 3.8, and GraphSAGE was implemented using the DGL library. All deep-learning
+Models were trained for 200 to 300 epochs until the validation loss stopped decreasing
+within several epochs. We chose the epoch and hyperparameter settings that produced the
+lowest Root Mean Squared Error (RMSE) on the validation set.
+Compared to GNN-RNN [21], we used LSTM instead of CNN for feature embedding
+and incorporated remote sensing time series data. Unlike KSTAGE [27], which uses a
+temporal attention mechanism, we employed dual-channel LSTMs to learn time series data
+because, in addition to remote sensing data, our paper also includes weather forecast data.
+The use of a dual-channel recurrent neural network allows for the learning of two different
+types of features.
+
+Remote Sens. 2024, 16, 3613
+
+7 of 16
+
+2.3.2. Experiment Design
+To explore the impact of incorporating weather forecast data on yield prediction, we
+conducted three sets of experiments to evaluate the impact of different data sources on
+the accuracy of crop yield prediction. In the first set of experiments, only remote sensing
+data were used. In the second set of experiments, only weather forecast data were used.
+The third set of experiments combined remote sensing data and weather forecast data.
+The weather forecast data included daily information for 40 days following the prediction
+date. In all experiments, we maintained the same model parameter settings to ensure the
+comparability of the results.
+The second group of experiments was designed to answer the question as to how
+the length of weather forecasts affects the accuracy of yield predictions. We fixed the
+use of historical remote sensing data up to DOY215 (with the first day of wheat sowing
+considered as the start of the growing season on October 6) and explored how the inclusion
+of weather forecast data of varying lengths (40, 35, 30, 25, 20, 15, 10, 5 days) affects the
+model’s prediction accuracy.
+The last group of experiments was designed to answer the question as to how the
+variation pattern of yield prediction accuracy changes with the progression of the time
+series. In this experiment, we aimed to determine the earliest time at which yield prediction
+can be achieved using the LGYP yield prediction model. The winter wheat growing
+season spans 255 days, from sowing to harvest. We conducted seven sets of experiments,
+using remote sensing data for up to seven different prediction dates (DOY185, DOY195,
+DOY205, DOY215, DOY225, DOY235, DOY245), with 25 days of daily weather forecast
+data following each prediction date. DOY235 and DOY245 used 20 and 10 days of weather
+forecast data, respectively.
+Finally, to more clearly express the overestimation and underestimation of yield in
+spatial terms, we plot the spatial prediction results from 2016 to 2020. Counties, where the
+difference between the predicted result and the statistical value is within 1 ton/hectare are
+set as close estimate, where the predicted yield values that are more than 1 t/ha higher
+than the true values are considered overestimations, and where the predicted yield values
+that are more than 1 t/ha lower than the true values are considered underestimations.
+2.3.3. Model Evaluation Metrics
+To provide a comprehensive evaluation of the experimental results, we used two
+metrics: the Root Mean Square Error (RMSE) and the Coefficient of Determination (R2 ).
+The optimal model has the highest R2 and the lowest RMSE.
+r
+RMSE( X, h) =
+
+1 m
+( h ( x i ) − y i )2
+m ∑ i =1
+
+R2 ( X, h) = 1 −
+
+∑i ( h ( xi ) − yi )
+2
+∑i ( yi − yi )
+
+(1)
+
+2
+
+(2)
+
+where yi represents the true value of the yield; h(xi ) represents the predicted value of the
+yield estimated by the model; m is the number of samples; and yi represents the mean of
+the observed yields.
+3. Results
+3.1. The Impact of Incorporating Weather Forecast Data on Yield Prediction
+The experimental results showed that, when combining remote sensing data with
+weather forecast data, the prediction accuracy improved by 16% compared to using only
+remote sensing data, and by 10% compared to using only weather forecast data (Figure 4).
+Furthermore, as shown in Figure 5, the prediction results using only weather forecast data
+outperformed those using only remote sensing data. In conclusion, in addition to the
+conventionally used satellite historical data, the weather forecast data after the forecast
+date can also provide forward-looking information for crop yield prediction and help
+
+Remote Sens. 2024, 16, 3613
+
+Remote Sens. 2024, 16, 3613
+
+The experimental results showed that, when combining remote sensing data with
+weather forecast data, the prediction accuracy improved by 16% compared to using only
+remote sensing data, and by 10% compared to using only weather forecast data (Figure
+4). Furthermore, as shown in Figure 5, the prediction results using only weather forecast
+data outperformed those using only remote sensing data. In conclusion, in addition 8toofthe
+16
+conventionally used satellite historical data, the weather forecast data after the forecast
+date can also provide forward-looking information for crop yield prediction and help
+improvethe
+themodel’s
+model’sprediction
+predictionaccuracy.
+accuracy.This
+Thisindicates
+indicatesthat
+thatintegrating
+integratingweather
+weatherforecast
+forecast
+improve
+data
+into
+the
+crop
+yield
+prediction
+model
+can
+compensate
+for
+the
+limitations
+of
+historical
+data into the crop yield prediction model can compensate for the limitations of historical
+dataand
+andenhance
+enhance
+model’s
+adaptability
+to changes
+in weather
+future weather
+conditions,
+data
+thethe
+model’s
+adaptability
+to changes
+in future
+conditions,
+thereby
+thereby improving
+the
+overall prediction
+effect. Therefore,
+weather
+forecast
+improving
+the overall
+prediction
+effect. Therefore,
+combiningcombining
+weather forecast
+data
+with
+data with
+remote
+sensing
+data is an
+effective
+that can significantly
+remote
+sensing
+data
+is an effective
+method
+thatmethod
+can significantly
+improve the improve
+accuracythe
+of
+accuracy
+crop yield prediction.
+crop
+yieldof
+prediction.
+
+Figure4.4.(a)
+(a)Scatter
+Scatterplot
+plotshowing
+showingpredicted
+predictedyields
+yieldsand
+andstatistical
+statisticalyield
+yielddata
+datafor
+fordifferent
+differentdata
+datasources
+sources
+Figure
+using Remote sensing (RS) data; (b) scatter plot showing predicted yields and statistical yield data
+using Remote sensing (RS) data; (b) scatter plot showing predicted yields and statistical yield data for
+for different data sources using Weather forecast (WF) data; (c) scatter plot showing predicted yields
+different data sources using Weather forecast (WF) data; (c) scatter plot showing predicted yields
+9 of and
+17
+and statistical yield data for different data sources using Remote sensing and Weather forecast
+(RSstatistical
+yield
+data
+for
+different
+data
+sources
+using
+Remote
+sensing
+and
+Weather
+forecast
+(RS-WF)
+WF) data. Note: *** means the value is significant at the 0.001 level.
+data. Note: *** means the value is significant at the 0.001 level.
+
+Figure 5. The coefficient of determination and root mean square error between the predicted yield
+Figure
+5. The coefficient
+of obtained
+determination
+rootprediction
+mean square
+errorfor
+between
+thedata
+predicted
+yield
+and statistical
+yield data
+usingand
+a yield
+model
+different
+sources
+(RS:
+and statistical yield data obtained using a yield prediction model for different data sources (RS:
+Remote sensing data; WF: Weather forecast data; RS-WF: Remote sensing and Weather forecast data).
+Remote sensing data; WF: Weather forecast data; RS-WF: Remote sensing and Weather forecast
+data).
+3.2. Determining the Impact of Weather Forecast Length on LGYP Yield Prediction Accuracy
+
+Figure 6 shows a series of scatter plots comparing the differences in prediction accuracy
+3.2. Determining the Impact of Weather Forecast Length on LGYP Yield Prediction Accuracy
+under different lengths of weather forecast data. Each subplot corresponds to a different
+Figure
+6 shows
+scatter plotsthe
+comparing
+the
+in prediction
+forecast
+length,
+witha(a)series
+to (h)ofrepresenting
+addition of
+40,differences
+35, 30, 25, 20,
+15, 10, and
+accuracy
+under
+different
+lengths
+of
+weather
+forecast
+data.
+Each
+subplot
+corresponds
+to a
+5 days of weather forecast data, respectively. When adding different lengths’ weather
+different
+forecast
+length,
+with
+(a)
+to
+(h)
+representing
+the
+addition
+of
+40,
+35,
+30,
+25,
+20,
+15,
+forecast data, the scatter-fitting results are also different. As shown in Figure 7, it is clear
+10,
+and
+days
+of weather isforecast
+data,
+respectively.
+adding
+different
+lengths’
+that
+the5best
+performance
+achieved
+when
+25 days ofWhen
+weather
+forecast
+data are
+added,
+weather
+forecast
+data,
+the scatter-fitting
+results plus
+are also
+different.
+As weather
+shown inforecast
+Figure 7,
+it
+i.e., using
+remote
+sensing
+data up to DOY215
+25 days
+of daily
+data
+is clear that the best performance is achieved when 25 days of weather forecast data are
+added, i.e., using remote sensing data up to DOY215 plus 25 days of daily weather forecast
+data after the prediction date. This leads to the highest R2 and the lowest RMSE, indicating
+that the accuracy improves with the addition of more data, confirming that yield-related
+features are distributed throughout the wheat growing season up to DOY215. Kaitlin et
+
+Remote Sens. 2024, 16, 3613
+
+Remote Sens. 2024, 16, 3613
+Remote Sens. 2024, 16, 3613
+
+9 of 16
+
+after the prediction date. This leads to the highest R2 and the lowest RMSE, indicating
+that the accuracy improves with the addition of more data, confirming that yield-related
+features are distributed throughout the wheat growing season up to DOY215. Kaitlin
+et al. [47] found that the accuracy of in-season crop yield forecasts is inversely proportional
+to the forecast length (p = 0.026) at four different forecast lengths (14 days, 7 days, 3 days,
+0 days). This finding is not consistent with our results, possibly because Kaitlin et al. [47]
+used a crop model with limited ability to learn useful information from future forecast data.
+In contrast, our LGYP model includes an LSTM module, which is capable of retaining useful
+information and filtering out noise. As the length of the weather forecast sequence increases,
+10 of 17
+10 of 17
+the range of accuracy decreases, likely due to the unreliability of the weather forecast data.
+Adding 25 days of weather forecast data leads to the highest yield prediction accuracy.
+
+Figure 6. Scatter plot showing predicted yields and statistical yield data for different weather
+Figure 6. Scatter plot showing predicted yields and statistical yield data for different weather
+Figure 6.
+Scatter
+plot
+showing
+yields
+andtop-right
+statisticalcorner
+yield data
+for different
+weather
+forecast
+forecast
+data
+series
+lengths.
+Thepredicted
+labels (a–h)
+in the
+represent
+the number
+of days
+of
+forecast data series lengths. The labels (a–h) in the top-right corner represent the number of days of
+weather
+forecasts
+added,
+with the
+unit
+being
+days. Note:
+means the number
+value is of
+significant
+at the
+data series
+lengths.
+The labels
+(a–h)
+in the
+top-right
+corner***
+represent
+days of weather
+weather forecasts added, with the unit being days. Note: *** means the value is significant at the
+0.001
+level.added, with the unit being days. Note: *** means the value is significant at the 0.001 level.
+forecasts
+0.001 level.
+
+Figure7.7.The
+Thecoefficient
+coefficientofofdetermination
+determinationand
+androot
+rootmean
+meansquare
+squareerror
+errorbetween
+betweenthe
+thepredicted
+predictedyield
+yield
+Figure
+Figure
+7. The yield
+coefficient
+of determination
+and root
+mean model
+square for
+error
+between
+the predicted
+yield
+and
+statistical
+data
+obtained
+using
+a
+yield
+prediction
+different
+weather
+forecast
+data
+and statistical yield data obtained using a yield prediction model for different weather forecast data
+and statistical yield data obtained using a yield prediction model for different weather forecast data
+serieslengths.
+lengths.
+series
+series lengths.
+
+3.3. The Variation Pattern of Yield Prediction Accuracy with the Progression of the Time Series
+3.3. The Variation Pattern of Yield Prediction Accuracy with the Progression of the Time Series
+3.3. The
+of Yield
+Predictiondiffered
+Accuracyatwith
+the Progression
+the Time
+Series
+TheVariation
+model’s Pattern
+prediction
+performance
+different
+predictionofdates,
+achieving
+The model’s
+prediction performance differed at different prediction dates, achieving
+2
+The model’s
+differed
+at different
+prediction
+dates, 9,
+achieving
+the highest
+R andprediction
+the lowestperformance
+RMSE at DOY215
+(Figure
+8). As shown
+in Figure
+the prethe highest R2 2and the lowest RMSE at DOY215 (Figure 8). As shown in Figure 9, the
+the highest R and the lowest RMSE at DOY215 (Figure 8). As shown in Figure 9, the
+prediction accuracy changed over time. Before DOY215, as the prediction date
+prediction accuracy changed over time. Before DOY215, as the prediction date
+approached the harvest date, the yield prediction accuracy increased. This is likely due to
+approached the harvest date, the yield prediction accuracy increased. This is likely due to
+the incorporation of more information, forming a more complete time series, allowing the
+the incorporation of more information, forming a more complete time series, allowing the
+model to learn more about the yield from the data sequence. However, after DOY215, the
+model to learn more about the yield from the data sequence. However, after DOY215, the
+inclusion of more sequence information led to a decrease in accuracy. Our experimental
+
+Remote Sens. 2024, 16, 3613
+
+Remote
+Sens.
+2024,
+3613
+Remote
+Sens.
+2024,
+16,16,
+3613
+
+10 of 16
+
+diction accuracy changed over time. Before DOY215, as the prediction date approached the
+harvest date, the yield prediction accuracy increased. This is likely due to the incorporation
+of more information, forming a more complete time series, allowing the model to learn
+more about the yield from the data sequence. However, after DOY215, the inclusion of
+more sequence information led to a decrease in accuracy. Our experimental results indicate
+11
+of of
+1717
+that using remote sensing data up to 40 days before harvest and 25 days of future 11
+weather
+forecast data to establish a yield prediction model is optimal.
+
+Figure
+8.
+Scatter
+plot
+showing
+predicted
+yields
+and
+statistical
+yieldata
+data
+from
+different
+dates.
+Note:
+Figure
+8.8.
+Scatter
+plot
+showing
+predicted
+yields
+and
+statistical
+yield
+from
+different
+dates.
+Note:
+Figure
+Scatter
+plot
+showing
+predicted
+yields
+and
+statistical
+yield
+data
+from
+different
+dates.
+Note:
+***
+means
+the
+value
+is
+significant
+at
+the
+0.001
+level.
+***
+means
+the
+value
+is
+significant
+at
+the
+0.001
+level.
+*** means the value is significant at the 0.001 level.
+
+Figure 9. Changes in the coefficient of determination and root mean square error between statistical
+Figure
+Changes
+coefficient
+determination
+and
+root
+mean
+square
+error
+between
+statistical
+Figure
+9. 9.
+Changes
+inin
+thethe
+coefficient
+ofof
+determination
+and
+root
+mean
+square
+error
+between
+statistical
+data
+and
+predictions
+made
+using
+data
+from
+different
+dates.
+data
+and
+predictions
+made
+using
+data
+from
+different
+dates.
+data
+and
+predictions
+made
+using
+data
+from
+different
+dates.
+
+4. Discussion
+4.
+Discussion
+4.4.1.
+Discussion
+The Reason for the Impact on the Results When Incorporating Weather Forecast Data
+4.1.
+The
+Reason
+Impact
+Results
+When
+Incorporating
+Weather
+Forecast
+Data
+4.1. The
+forfor
+thethe
+Impact
+onon
+thethe
+Results
+When
+Incorporating
+Forecast
+Data
+InReason
+this
+section,
+we
+primarily
+address
+the
+question:
+whyWeather
+does
+incorporating
+weather
+
+this
+section,
+we
+primarily
+address
+the
+question:
+why
+does
+incorporating
+weather
+forecast
+dataection,
+into the
+model
+affectaddress
+the
+results,
+and
+even perform
+better
+than remote
+sensing
+InIn
+this
+we
+primarily
+the
+question:
+why
+does
+incorporating
+weather
+forecast
+data
+into
+the
+model
+affect
+the
+results,
+and
+even
+perform
+better
+than
+remote
+data? Our
+show
+that remote
+sensing
+datand
+do even
+not perform
+well
+in the
+forecast
+dataresults
+into the
+model
+affect he
+results,
+performsufficiently
+better than
+remote
+sensing
+data?
+Our
+results
+show
+that
+remote
+sensing
+data
+not
+perform
+sufficiently
+well
+yield
+prediction
+task.
+The
+possible
+reason
+could
+be
+that
+wheat
+grain formation
+occurs
+sensing
+data?
+Our
+results
+show
+that
+remote
+sensing
+data
+dodo
+not
+perform
+sufficiently
+well
+theyield
+yieldprediction
+predictiontask.
+task.The
+Thepossible
+possiblereason
+reasoncould
+couldbebethat
+thatwheat
+wheatgrain
+grainformation
+formation
+ininthe
+occurswithin
+withina ahusk,
+husk,which
+whichis isnot
+notvisible
+visibletotooptical
+opticalsatellites
+satellites[22].
+[22].The
+Thecontribution
+contributionofof
+occurs
+satellite
+information
+yield
+prediction
+decreases
+the
+late
+growing
+season
+[22].
+the
+satellite
+information
+forfor
+yield
+prediction
+decreases
+inin
+the
+late
+growing
+season
+[22].
+AtAt
+the
+same
+time,
+since
+grain
+formation
+is
+influenced
+by
+climate
+changes,
+particularly
+sensitive
+same time, since grain formation is influenced by climate changes, particularly sensitive
+droughtand
+andhigh
+hightemperatures,
+temperatures,weather
+weatherdata
+dataprovide
+providea amore
+moreaccurate
+accurateindication
+indicationofof
+totodrought
+
+Remote Sens. 2024, 16, 3613
+
+11 of 16
+
+within a husk, which is not visible to optical satellites [22]. The contribution of satellite
+information for yield prediction decreases in the late growing season [22]. At the same
+time, since grain formation is influenced by climate changes, particularly sensitive to
+drought and high temperatures, weather data provide a more accurate indication of wheat
+yield levels [59]. Xiong et al. also demonstrated that daily inputs can provide detailed
+information about environmental factors, including dynamic changes in environmental
+stress and the temporal response of crop yield to these factors [28]. Therefore, climate
+information has a greater predictive impact on yield than satellite information, which is
+consistent with the findings in [22]. Moreover, it is evident that the combination of remote
+sensing and weather forecast data achieves the highest R2 and the lowest RMSE, indicating
+that the complementary information provided by remote sensing data and weather forecast
+data results in the best model predictions. Kaitlin et al. [47] showed that incorporating
+weather forecasts can reduce the uncertainty in crop yield predictions, providing more
+reliable estimates compared to using only historical data, which aligns with our conclusions.
+4.2. The Reason for the Variation in Yield Prediction Accuracy with the Progression of the
+Time Series
+In Figure 9, the model’s prediction performance differed at different prediction dates,
+achieving the highest R2 and the lowest RMSE at DOY215. This is consistent with previous
+research [6,22], indicating that the distribution of yield-related feature information from
+remote sensing data across the entire growing season is not uniform, and there is less
+relevant information in the later stages. Many studies have shown that adding data from
+the later stages of winter wheat growth does not necessarily bring significant improvements
+in accuracy and may even lead to a decrease in accuracy. Therefore, it can be determined
+that it is possible to make yield predictions in advance of harvest [6,19,60,61]. Cai et al.
+used climate and remote sensing data to forecast wheat yield in Australia, and achieved
+the optimal prediction performance (R2 = 0.73) with a two-month lead time before harvest.
+Although the forget and input gate mechanisms in LSTM models can update useful
+information [62], they perform less effectively in capturing long sequences compared to
+Transformers [28]. Qiao et al. [27] demonstrated that replacing LSTM with multi-head
+attention mechanisms has advantages in simulating time-related correlations during the
+crop growth period. Therefore, a potential next step is to replace the dual-channel LSTM
+model with a Transformer [63] or Informer [64], which performs better in learning from
+multimodal data, to see if this further improves the model’s performance.
+4.3. The Spatial Distribution Pattern of Yield Prediction Results
+As shown in Figure 10, we plot the spatial prediction results from 2016 to 2020. As
+can be seen in Figure 10c, in 2019, most counties are marked as close estimate, and the
+model prediction effect is the best. In 2017, there are relatively many counties marked as
+overestimate, meaning that there are more counties where the yield is overestimated; in
+2018 and 2020, there are relatively many counties marked as underestimates, meaning that
+there are more counties where the yield is underestimated (as shown in Figure 10c).
+Overestimation or underestimation of yield may be related to natural disasters that
+occurred in that year. For example, in 2019, Xinji City was hit by dry and hot winds,
+resulting in a predicted yield higher than the actual yield [65]. In the marked place in
+Figure 10c, it can also be seen that the yield of Xinji City was overestimated in 2019.
+Studies have shown that the current open source meteorological data are far from representing natural disasters, which limits the consideration of the impact of disasters by our
+deep–learning model [5]. Our model cannot sensitively predict natural disaster events
+through data indicators in weather forecasts. This may also be caused by improper handling of extreme values in the data processing process. In addition, the underestimation of
+yield by the model is also related to the yield-increasing measures taken by farmers under
+unfavorable weather conditions. These measures are not considered by the model in the
+prediction process [46].
+
+Remote Sens. 2024, 16, 3613
+Remote Sens. 2024, 16, 3613
+
+12 of 16
+
+Figure 10. (a) Predicted
+winter wheat
+provinces
+counties
+of China
+for the years
+Figureyield
+10. (a)ofPredicted
+yieldinofmajor
+winter
+wheat inand
+major
+provinces
+and counties
+of China for th
+2017–2020, (b) statistical
+yield(b)
+values,
+and yield
+(c) difference
+between
+predictedbetween
+and statistical
+data.
+2017–2020,
+statistical
+values, and
+(c) difference
+predicted
+and statistical d
+
+4.4. Limitations of Weather Forecast Data
+4.4. Limitations of Weather Forecast Data
+The longer the weather forecast sequence, the greater the potential unreliability of
+The longer the weather forecast sequence, the greater the potential unreliab
+the prediction data. Therefore, when using longer sequences of data as input to the yield
+the prediction data. Therefore, when using longer sequences of data as input to th
+prediction model, the performance might deteriorate (Figure 7). Our experiments show
+prediction model, the performance might deteriorate (Figure 7). Our experiment
+that adding 25 days of data leads to better results than adding 30, 35, or 40 days. This is
+that adding 25 days of data leads to better results than adding 30, 35, or 40 days.
+consistent with the findings of Chen et al., who used different weather prediction datasets
+consistent with the findings of Chen et al., who used different weather prediction d
+(CMA/ECMWF/UKMO) and found that the accuracy of winter wheat yield prediction
+(CMA/ECMWF/UKMO) and found that the accuracy of winter wheat yield pre
+decreased as the length of the weather forecast data increased in the later stages [36]. We
+decreased as the length of the weather forecast data increased in the later stages [3
+also attempted to include weather forecast data before the prediction date, but using the full
+also attempted to include weather forecast data before the prediction date, but us
+daily meteorological data sequence throughout the growing season worsened the results.
+
+Remote Sens. 2024, 16, 3613
+
+13 of 16
+
+Although the accuracy of weather forecasts has improved with technological advancements, there is still some discrepancy with actual weather conditions [48]. This discrepancy
+may be the primary limitation in providing effective information from weather data in
+our model. The quality of weather forecasts can significantly affect forecasting skills since
+the crop model is driven solely by weather forecasts after the prediction date [36]. The
+improvement in weather forecasts should be expected to improve yield forecasting. Additionally, it is crucial to enhance the ability to predict extreme weather conditions, as this is
+vital for agricultural management and yield forecasting [66].
+5. Conclusions
+Forecasting winter wheat production in season is becoming increasingly important for
+agricultural producers to make informed crop management and financial decisions. This
+study presented a case study for evaluating the potential of daily weather forecasts. Our
+approach has made contributions both methodologically and in terms of results, further
+enhancing the capability to incorporate weather forecast data into deep-learning models
+for in-season crop yield prediction. The most important results are:
+(1)
+(2)
+(3)
+
+The combination of remote sensing and weather forecast data improves prediction
+accuracy by 16% compared to using remote sensing data alone.
+Within a range of 0–40 days, selecting weather forecast data for 25 days leads to
+better performance.
+County-scale wheat yield predictions in China can be made 40 days before wheat
+harvest, achieving the highest level of accuracy (RMSE = 0.496 t/ha).
+
+Author Contributions: Conceptualization, D.P., E.C. and X.F.; methodology, D.P., E.C. and X.F.; software,
+B.Z. (Bing Zhang); validation, J.H., Z.L., H.Z., Y.L. and H.P.; formal analysis, D.P. and E.C.; investigation, D.P.; resources, D.P.; data curation, D.P., E.C. and B.Z. (Bing Zhang); writing—original draft
+preparation, D.P. and E.C.; writing—review and editing, D.P. and X.F.; visualization, D.P. and E.C.;
+supervision, D.P. and E.C; project administration, D.P. and B.Z. (Bin Zhao); funding acquisition, D.P.
+and B.Z. (Bing Zhang); All authors have read and agreed to the published version of the manuscript.
+Funding: This research was funded by the National Natural Science Foundation of China (grant number 42030111, 42471372) and the Science and Disruptive Technology Program, AIRCAS (grant number
+E2Z218020F).
+Data Availability Statement: The data presented in this study are available on request from the
+corresponding author. The data are not publicly available due to privacy.
+Conflicts of Interest: The authors declare no conflicts of interest.
+
+References
+1.
+
+2.
+3.
+4.
+5.
+6.
+
+7.
+
+Tian, H.; Wang, P.; Tansey, K.; Zhang, J.; Zhang, S.; Li, H. An LSTM Neural Network for Improving Wheat Yield Estimates
+by Integrating Remote Sensing Data and Meteorological Data in the Guanzhong Plain, PR China. Agric. For. Meteorol. 2021,
+310, 108629. [CrossRef]
+Meroni, M.; Waldner, F.; Seguini, L.; Kerdiles, H.; Rembold, F. Yield Forecasting with Machine Learning and Small Data: What
+Gains for Grains? Agric. For. Meteorol. 2021, 308–309, 108555. [CrossRef]
+Terliksiz, A.S.; Altilar, D.T. Impact of Large Kernel Size on Yield Prediction: A Case Study of Corn Yield Prediction with SEDLA
+in the U.S. Corn Belt. Environ. Res. Commun. 2024, 6, 025011. [CrossRef]
+Cheng, E.; Zhang, B.; Peng, D.; Zhong, L.; Yu, L.; Liu, Y.; Xiao, C.; Li, C.; Li, X.; Chen, Y.; et al. Wheat Yield Estimation Using
+Remote Sensing Data Based on Machine Learning Approaches. Front. Plant Sci. 2022, 13, 1090970. [CrossRef] [PubMed]
+Li, X.; Geng, H.; Zhang, L.; Peng, S.; Xin, Q.; Huang, J.; Li, X.; Liu, S.; Wang, Y. Improving Maize Yield Prediction at the County
+Level from 2002 to 2015 in China Using a Novel Deep Learning Approach. Comput. Electron. Agric. 2022, 202, 107356. [CrossRef]
+Cheng, E.; Wang, F.; Peng, D.; Zhang, B.; Zhao, B.; Zhang, W.; Hu, J.; Lou, Z.; Yang, S.; Zhang, H.; et al. A GT-LSTM SpatioTemporal Approach for Winter Wheat Yield Prediction: From the Field Scale to County Scale. IEEE Trans. Geosci. Remote Sens.
+2024, 62, 1–18. [CrossRef]
+Tian, H.; Wang, P.; Tansey, K.; Han, D.; Zhang, J.; Zhang, S.; Li, H. A Deep Learning Framework under Attention Mechanism for
+Wheat Yield Estimation Using Remotely Sensed Indices in the Guanzhong Plain, PR China. Int. J. Appl. Earth Obs. Geoinf. 2021,
+102, 102375. [CrossRef]
+
+Remote Sens. 2024, 16, 3613
+
+8.
+9.
+10.
+11.
+
+12.
+13.
+
+14.
+
+15.
+
+16.
+17.
+
+18.
+19.
+20.
+21.
+
+22.
+
+23.
+24.
+
+25.
+26.
+27.
+28.
+
+29.
+
+30.
+31.
+
+14 of 16
+
+Yu, R.; Li, S.; Zhang, B.; Zhang, H. A Deep Transfer Learning Method for Estimating Fractional Vegetation Cover of Sentinel-2
+Multispectral Images. IEEE Geosci. Remote Sens. Lett. 2022, 19, 1–5. [CrossRef]
+Lin, T.; Zhong, R.; Wang, Y.; Xu, J.; Jiang, H.; Xu, J.; Ying, Y.; Rodriguez, L.; Ting, K.C.; Li, H. DeepCropNet: A Deep SpatialTemporal Learning Framework for County-Level Corn Yield Estimation. Environ. Res. Lett. 2020, 15, 034016. [CrossRef]
+Nandram, B.; Berg, E.; Barboza, W. A Hierarchical Bayesian Model for Forecasting State-Level Corn Yield. Env. Ecol. Stat. 2014,
+21, 507–530. [CrossRef]
+Heslot, N.; Akdemir, D.; Sorrells, M.E.; Jannink, J.-L. Integrating Environmental Covariates and Crop Modeling into the Genomic
+Selection Framework to Predict Genotype by Environment Interactions. Theor. Appl. Genet. 2014, 127, 463–480. [CrossRef]
+[PubMed]
+Dokoohaki, H.; Kivi, M.S.; Martinez-Feria, R.; Miguez, F.E.; Hoogenboom, G. A Comprehensive Uncertainty Quantification of
+Large-Scale Process-Based Crop Modeling Frameworks. Environ. Res. Lett. 2021, 16, 084010. [CrossRef]
+Chandar, A.G.; Sivasankari, K.; Lakshmi, S.L.; Sugumaran, S.; Kannadhasan, S.; Balakumar, S. An Innovative Smart Agriculture
+System Utilizing a Deep Neural Network and Embedded System to Enhance Crop Yield. Multidiscip. Sci. J. 2023, 6, 2024063.
+[CrossRef]
+Kern, A.; Barcza, Z.; Marjanović, H.; Árendás, T.; Fodor, N.; Bónis, P.; Bognár, P.; Lichtenberger, J. Statistical Modelling of Crop
+Yield in Central Europe Using Climate Data and Remote Sensing Vegetation Indices. Agric. For. Meteorol. 2018, 260–261, 300–320.
+[CrossRef]
+Franch, B.; Vermote, E.F.; Becker-Reshef, I.; Claverie, M.; Huang, J.; Zhang, J.; Justice, C.; Sobrino, J.A. Improving the Timeliness of
+Winter Wheat Production Forecast in the United States of America, Ukraine and China Using MODIS Data and NCAR Growing
+Degree Day Information. Remote Sens. Environ. 2015, 161, 131–148. [CrossRef]
+Mathieu, J.A.; Aires, F. Assessment of the Agro-Climatic Indices to Improve Crop Yield Forecasting. Agric. For. Meteorol. 2018,
+253–254, 15–30. [CrossRef]
+Iizumi, T.; Shiogama, H.; Imada, Y.; Hanasaki, N.; Takikawa, H.; Nishimori, M. Crop Production Losses Associated with
+Anthropogenic Climate Change for 1981–2010 Compared with Preindustrial Levels. Int. J. Climatol. 2018, 38, 5405–5417.
+[CrossRef]
+Fritz, S.; See, L.; Bayas, J.C.L.; Waldner, F.; Jacques, D.; Becker-Reshef, I.; Whitcraft, A.; Baruth, B.; Bonifacio, R.; Crutchfield, J.;
+et al. A Comparison of Global Agricultural Monitoring Systems and Current Gaps. Agric. Syst. 2019, 168, 258–272. [CrossRef]
+Zhang, L.; Zhang, Z.; Luo, Y.; Cao, J.; Xie, R.; Li, S. Integrating Satellite-Derived Climatic and Vegetation Indices to Predict
+Smallholder Maize Yield Using Deep Learning. Agric. For. Meteorol. 2021, 311, 108666. [CrossRef]
+Choudhary, K.; Shi, W.; Dong, Y.; Paringer, R. Random Forest for Rice Yield Mapping and Prediction Using Sentinel-2 Data with
+Google Earth Engine. Adv. Space Res. 2022, 70, 2443–2457. [CrossRef]
+Fan, J.; Bai, J.; Li, Z.; Ortiz-Bobea, A.; Gomes, C.P. A GNN-RNN Approach for Harnessing Geospatial and Temporal Information:
+Application to Crop Yield Prediction 2022. In Proceedings of the Thirty-Sixth AAAI Conference on Artificial Intelligence, Virtually,
+22 February 22–1 March 2022.
+Cai, Y.; Guan, K.; Lobell, D.; Potgieter, A.B.; Wang, S.; Peng, J.; Xu, T.; Asseng, S.; Zhang, Y.; You, L.; et al. Integrating Satellite and
+Climate Data to Predict Wheat Yield in Australia Using Machine Learning Approaches. Agric. For. Meteorol. 2019, 274, 144–159.
+[CrossRef]
+Zhang, C.; Diao, C. A Phenology-Guided Bayesian-CNN (PB-CNN) Framework for Soybean Yield Estimation and Uncertainty
+Analysis. ISPRS J. Photogramm. Remote Sens. 2023, 205, 50–73. [CrossRef]
+Lin, F.; Crawford, S.; Guillot, K.; Zhang, Y.; Chen, Y.; Yuan, X.; Chen, L.; Williams, S.; Minvielle, R.; Xiao, X.; et al. MMST-ViT:
+Climate Change-Aware Crop Yield Prediction via Multi-Modal Spatial-Temporal Vision Transformer. In Proceedings of the 2023
+IEEE/CVF International Conference on Computer Vision (ICCV), Paris, France, 1–6 October 2023.
+Han, D.; Wang, P.; Tansey, K.; Zhang, Y.; Li, H. A Graph-Based Deep Learning Framework for Field Scale Wheat Yield Estimation.
+Int. J. Appl. Earth Obs. Geoinf. 2024, 129, 103834. [CrossRef]
+Yang, F.; Zhang, D.; Zhang, Y.; Zhang, Y.; Han, Y.; Zhang, Q.; Zhang, Q.; Zhang, C.; Liu, Z.; Wang, K. Prediction of Corn Variety
+Yield with Attribute-Missing Data via Graph Neural Network. Comput. Electron. Agric. 2023, 211, 108046. [CrossRef]
+Qiao, M.; He, X.; Cheng, X.; Li, P.; Zhao, Q.; Zhao, C.; Tian, Z. KSTAGE: A Knowledge-Guided Spatial-Temporal Attention Graph
+Learning Network for Crop Yield Prediction. Inf. Sci. 2023, 619, 19–37. [CrossRef]
+Xiong, X.; Zhong, R.; Tian, Q.; Huang, J.; Zhu, L.; Yang, Y.; Lin, T. Daily DeepCropNet: A Hierarchical Deep Learning Approach
+with Daily Time Series of Vegetation Indices and Climatic Variables for Corn Yield Estimation. ISPRS J. Photogramm. Remote Sens.
+2024, 209, 249–264. [CrossRef]
+Xu, S.; Zhou, Y.; Yu, X.; Huang, C.; Wu, C. TFSF: Topological and Feature Space Fusion with Spatio-Temporal Modeling for Crop
+Yield Prediction. In Proceedings of the 2023 26th International Conference on Computer Supported Cooperative Work in Design
+(CSCWD), Rio de Janeiro, Brazil, 24–26 May 2023.
+Marshall, M.; Belgiu, M.; Boschetti, M.; Pepe, M.; Stein, A.; Nelson, A. Field-Level Crop Yield Estimation with PRISMA and
+Sentinel-2. ISPRS J. Photogramm. Remote Sens. 2022, 187, 191–210. [CrossRef]
+Zhu, J. The Relationship between Wheat Yield and Sun-Induced Chlorophyll Fluorescence from Continuous Measurements over
+the Growing Season. Remote Sens. Environ. 2023, 298, 113791. [CrossRef]
+
+Remote Sens. 2024, 16, 3613
+
+32.
+33.
+34.
+35.
+36.
+37.
+38.
+
+39.
+40.
+
+41.
+42.
+43.
+44.
+45.
+
+46.
+
+47.
+48.
+49.
+50.
+51.
+52.
+53.
+
+54.
+55.
+56.
+
+57.
+58.
+
+15 of 16
+
+Mateo-Sanchis, A.; Piles, M.; Muñoz-Marí, J.; Adsuara, J.E.; Pérez-Suay, A.; Camps-Valls, G. Synergistic Integration of Optical and
+Microwave Satellite Data for Crop Yield Estimation. Remote Sens. Environ. 2019, 234, 111460. [CrossRef]
+Quiring, S.M.; Legates, D.R. Application of CERES-Maize for within-Season Prediction of Rainfed Corn Yields in Delaware, USA.
+Agric. For. Meteorol. 2008, 148, 964–975. [CrossRef]
+Wanthanaporn, U.; Supit, I.; Chaowiwat, W.; Hutjes, R.W.A. Skill of Rice Yields Forecasting over Mainland Southeast Asia Using
+the ECMWF SEAS5 Ensemble Prediction System and the WOFOST Crop Model. Agric. For. Meteorol. 2024, 351, 110001. [CrossRef]
+De Wit, A.; Baruth, B.; Boogaard, H.; Van Diepen, K.; Van Kraalingen, D.; Micale, F.; Te Roller, J.; Supit, I.; Van Den Wijngaart, R.
+Using ERA-INTERIM for Regional Crop Yield Forecasting in Europe. Clim. Res. 2010, 44, 41–53. [CrossRef]
+Chen, Y.; Tao, F. Potential of Remote Sensing Data-Crop Model Assimilation and Seasonal Weather Forecasts for Early-Season
+Crop Yield Forecasting over a Large Area. Field Crops Res. 2022, 276, 108398. [CrossRef]
+Kirthiga, S.M.; Patel, N.R. In-Season Wheat Yield Forecasting at High Resolution Using Regional Climate Model and Crop Model.
+AgriEngineering 2022, 4, 1054–1075. [CrossRef]
+Zare, H.; Viswanathan, M.; Weber, T.K.; Ingwersen, J.; Nowak, W.; Gayler, S.; Streck, T. Improving Winter Wheat Yield Prediction
+by Accounting for Weather and Model Parameter Uncertainty While Assimilating LAI and Updating Weather Data within a Crop
+Model. Eur. J. Agron. 2024, 156, 127149. [CrossRef]
+Newlands, N.K. An Integrated, Probabilistic Model for Improved Seasonal Forecasting of Agricultural Crop Yield under
+Environmental Uncertainty. Front. Environ. Sci. 2014, 2, 17. [CrossRef]
+Chakraborty, D.; Saha, S.; Sethy, B.K.; Singh, H.D.; Singh, N.; Sharma, R.; Chanu, A.N.; Walling, I.; Anal, P.R.; Chowdhury, S.; et al.
+Usability of the Weather Forecast for Tackling Climatic Variability and Its Effect on Maize Crop Yield in Northeastern Hill Region
+of India. Agronomy 2022, 12, 2529. [CrossRef]
+Pujahari, R.M.; Yadav, S.P.; Khan, R. Intelligent Farming System through Weather Forecast Support and Crop Production.
+In Application of Machine Learning in Agriculture; Elsevier: Amsterdam, The Netherlands, 2022; pp. 113–130. ISBN 978-0-323-90550-3.
+Raimundo, F.; Glória, A.; Sebastião, P. Prediction of Weather Forecast for Smart Agriculture Supported by Machine Learning.
+In Proceedings of the 2021 IEEE World AI IoT Congress (AIIoT), Seattle, WA, USA, 10–13 May 2021; pp. 0160–0164.
+Anupoju, V.; Kambhammettu, B.P.; Regonda, S.K. Role of Short-Term Weather Forecast Horizon in Irrigation Scheduling and
+Crop Water Productivity of Rice. J. Water Resour. Plan. Manag. 2021, 147, 05021009. [CrossRef]
+Brinkhoff, J.; Clarke, A.; Dunn, B.W.; Groat, M. Analysis and Forecasting of Australian Rice Yield Using Phenology-Based
+Aggregation of Satellite and Weather Data. Agric. For. Meteorol. 2024, 353, 110055. [CrossRef]
+Boas, T.; Bogena, H.R.; Ryu, D.; Vereecken, H.; Western, A.; Hendricks Franssen, H.-J. Seasonal Soil Moisture and Crop Yield
+Prediction with Fifth-Generation Seasonal Forecasting System (SEAS5) Long-Range Meteorological Forecasts in a Land Surface
+Modelling Approach. Hydrol. Earth Syst. Sci. 2023, 27, 3143–3167. [CrossRef]
+Thimmegowda, M.N.; Manjunatha, M.H.; Huggi, L.; Shivaramu, H.S.; Soumya, D.V.; Nagesha, L.; Padmashri, H.S. Weather-Based
+Statistical and Neural Network Tools for Forecasting Rice Yields in Major Growing Districts of Karnataka. Agronomy 2023, 13, 704.
+[CrossRef]
+Togliatti, K.; Archontoulis, S.V.; Dietzel, R.; Puntel, L.; VanLoocke, A. How Does Inclusion of Weather Forecasting Impact
+In-Season Crop Model Predictions? Field Crop. Res. 2017, 214, 261–272. [CrossRef]
+Pan, B.; Anderson, G.J.; Goncalves, A.; Lucas, D.D.; Bonfils, C.J.W.; Lee, J. Improving Seasonal Forecast Using Probabilistic Deep
+Learning. J. Adv. Model Earth Syst. 2022, 14, e2021MS002766. [CrossRef]
+Song, C.; Woodcock, C.E.; Seto, K.C.; Lenney, M.P.; Macomber, S.A. Classification and Change Detection Using Landsat TM Data:
+When and How to Correct Atmospheric Effects? Remote Sens. Environ. 2001, 75, 230–244. [CrossRef]
+You, N.; Dong, J.; Huang, J.; Du, G.; Zhang, G.; He, Y.; Yang, T.; Di, Y.; Xiao, X. The 10-m Crop Type Maps in Northeast China
+during 2017–2019. Sci. Data 2021, 8, 41. [CrossRef]
+Li, X.; Qu, Y.; Xin, Q.; Huang, J.; Peng, S.; Zhang, L. Mapping annual 10-m maize cropland changes in China during 2017–2021.
+Sci. Data 2023, 10, 765. [CrossRef]
+Song, Y. The Value of Weather Forecasts: Evidence from Labor Responses to Accurate versus Inaccurate Temperature Forecasts in
+China. J. Environ. Econ. Manag. 2024, 125, 102970. [CrossRef]
+Qiao, M.; He, X.; Cheng, X.; Li, P.; Luo, H.; Zhang, L.; Tian, Z. Crop Yield Prediction from Multi-Spectral, Multi-Temporal
+Remotely Sensed Imagery Using Recurrent 3D Convolutional Neural Networks. Int. J. Appl. Earth Obs. Geoinf. 2021, 102, 102436.
+[CrossRef]
+Wang, X.; Huang, J.; Feng, Q.; Yin, D. Winter Wheat Yield Prediction at County Level and Uncertainty Analysis in Main
+Wheat-Producing Regions of China with Deep Learning Approaches. Remote Sens. 2020, 12, 1744. [CrossRef]
+Hochreiter, S.; Schmidhuber, J. Long Short-Term Memory. Neural Comput. 1997, 9, 1735–1780. [CrossRef]
+Pan, P.; Xu, Z.; Yang, Y.; Wu, F.; Zhuang, Y. Hierarchical Recurrent Neural Encoder for Video Representation with Application to
+Captioning. In Proceedings of the 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), Las Vegas, NV,
+USA, 27–30 June 2016; pp. 1029–1038.
+Wu, Z.; Pan, S.; Chen, F.; Long, G.; Zhang, C.; Yu, P.S. A Comprehensive Survey on Graph Neural Networks. IEEE Trans. Neural
+Netw. Learn. Syst. 2021, 32, 4–24. [CrossRef] [PubMed]
+Hamilton, W.L.; Ying, R.; Leskovec, J. Inductive Representation Learning on Large Graphs 2018. In Proceedings of the 31st
+Conference on Neural Information Processing Systems (NIPS 2017), Long Beach, CA, USA, 4–9 December 2017.
+
+Remote Sens. 2024, 16, 3613
+
+59.
+60.
+61.
+
+62.
+63.
+
+64.
+
+65.
+66.
+
+16 of 16
+
+Zampieri, M.; Ceglar, A.; Dentener, F.; Toreti, A. Wheat Yield Loss Attributable to Heat Waves, Drought and Water Excess at the
+Global, National and Subnational Scales. Environ. Res. Lett. 2017, 12, 064008. [CrossRef]
+Feng, P. Dynamic Wheat Yield Forecasts Are Improved by a Hybrid Approach Using a Biophysical Model and Machine Learning
+Technique. Agric. For. Meteorol. 2020, 285, 107922. [CrossRef]
+Filippi, P.; Jones, E.J.; Wimalathunge, N.S.; Somarathna, P.D.S.N.; Pozza, L.E.; Ugbaje, S.U.; Jephcott, T.G.; Paterson, S.E.; Whelan,
+B.M.; Bishop, T.F.A. An Approach to Forecast Grain Crop Yield Using Multi-Layered, Multi-Farm Data Sets and Machine Learning.
+Precis. Agric 2019, 20, 1015–1029. [CrossRef]
+Chen, P.; Li, Y.; Liu, X.; Tian, Y.; Zhu, Y.; Cao, W.; Cao, Q. Improving yield prediction based on spatio-temporal deep learning
+approaches for winter wheat: A case study in Jiangsu Province, China. Comput. Electron. Agric. 2023, 213, 108201. [CrossRef]
+Vaswani, A.; Shazeer, N.; Parmar, N.; Uszkoreit, J.; Jones, L.; Gomez, A.N.; Kaiser, L.; Polosukhin, I. Attention Is All You Need
+2023. In Proceedings of the 31st Conference on Neural Information Processing Systems (NIPS 2017), Long Beach, CA, USA,
+4–9 December 2017.
+Zhou, H.; Zhang, S.; Peng, J.; Zhang, S.; Li, J.; Xiong, H.; Zhang, W. Informer: Beyond Efficient Transformer for Long Sequence
+Time-Series Forecasting 2021. In Proceedings of the Thirty-Fifth AAAI Conference on Artificial Intelligence, Virtually, 2–9 February
+2021.
+Kang, X.; Le, Z.; Li, C.; Dai, L.; Quan, C.; Shi, M.; Liao, R. Study on the Different Responses of Different Winter Wheat Cultivars to
+Dry Hot Wind. PLoS ONE 2022, 17, e0274118. [CrossRef]
+Zhang, Y. Skilful Nowcasting of Extreme Precipitation with NowcastNet. Nature 2023, 619, 526–532. [CrossRef]
+
+Disclaimer/Publisher’s Note: The statements, opinions and data contained in all publications are solely those of the individual
+author(s) and contributor(s) and not of MDPI and/or the editor(s). MDPI and/or the editor(s) disclaim responsibility for any injury to
+people or property resulting from any ideas, methods, instructions or products referred to in the content.
+
+
