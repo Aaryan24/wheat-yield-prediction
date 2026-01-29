@@ -203,9 +203,3 @@ Based on similar literature:
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) for details.
-
-## 👤 Author
-
-**[Your Name]**  
-B.Tech/Dual Degree, IIT Kanpur  
-Undergraduate Project (UGP)
