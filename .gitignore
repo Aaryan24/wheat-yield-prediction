@@ -1,5 +1,6 @@
-# Data directories
-data/
+# Data directories (keep .gitkeep files)
+/data/
+!/data/.gitkeep
 !data/.gitkeep
 
 # Model checkpoints
