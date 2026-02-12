@@ -1,12 +1,18 @@
 {
-  "total_districts": 1,
-  "successful": 1,
-  "failed": 0,
+  "total_districts": 119,
+  "successful": 113,
+  "failed": 6,
   "years_processed": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
     2022,
-    2023
+    2023,
+    2024
   ],
-  "total_elapsed_seconds": 0.0,
-  "total_elapsed_hours": 0.0,
-  "timestamp": "2026-02-05T03:54:08.283405"
+  "total_elapsed_seconds": 60364.062009334564,
+  "total_elapsed_hours": 16.767795002592933,
+  "timestamp": "2026-02-12T10:05:07.183344"
 }
