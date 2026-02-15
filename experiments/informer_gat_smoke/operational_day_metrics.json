@@ -1,0 +1,59 @@
+[
+  {
+    "days_before_harvest": 40,
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4208.3779296875,
+    "train_mae": 4149.20654296875,
+    "train_r2": -34.810694753051095,
+    "val_rmse": 3963.306640625,
+    "val_mae": 3936.36962890625,
+    "val_r2": -72.81313489223136,
+    "test_rmse": 4094.232177734375,
+    "test_mae": 4050.89990234375,
+    "test_r2": -46.49085725756962,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_gat_smoke/embeddings/informer_gat_embeddings_dayminus40.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "issue_date": "2018-03-19",
+        "effective_horizon": 25
+      },
+      {
+        "season_year": 2018,
+        "issue_date": "2019-03-19",
+        "effective_horizon": 25
+      },
+      {
+        "season_year": 2019,
+        "issue_date": "2020-03-19",
+        "effective_horizon": 25
+      },
+      {
+        "season_year": 2020,
+        "issue_date": "2021-03-19",
+        "effective_horizon": 25
+      },
+      {
+        "season_year": 2021,
+        "issue_date": "2022-03-19",
+        "effective_horizon": 25
+      },
+      {
+        "season_year": 2022,
+        "issue_date": "2023-03-19",
+        "effective_horizon": 25
+      }
+    ]
+  }
+]

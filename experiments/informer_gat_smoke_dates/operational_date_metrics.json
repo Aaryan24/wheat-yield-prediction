@@ -1,0 +1,485 @@
+[
+  {
+    "operational_date": "12-05",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4209.458984375,
+    "train_mae": 4150.29931640625,
+    "train_r2": -34.8290925274402,
+    "val_rmse": 3964.3837890625,
+    "val_mae": 3937.452880859375,
+    "val_r2": -72.85326791183593,
+    "test_rmse": 4095.30029296875,
+    "test_mae": 4051.977783203125,
+    "test_r2": -46.51564168327177,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_gat_smoke_dates/embeddings/informer_gat_embeddings_opdate_12-05.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2017-12-05",
+        "issue_date": "2017-12-05",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2018-12-05",
+        "issue_date": "2018-12-05",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2019-12-05",
+        "issue_date": "2019-12-05",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2020-12-05",
+        "issue_date": "2020-12-05",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2021-12-05",
+        "issue_date": "2021-12-05",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2022-12-05",
+        "issue_date": "2022-12-05",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 46
+      }
+    ]
+  },
+  {
+    "operational_date": "12-15",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4209.296875,
+    "train_mae": 4150.13720703125,
+    "train_r2": -34.8263325350416,
+    "val_rmse": 3964.222900390625,
+    "val_mae": 3937.292724609375,
+    "val_r2": -72.84727828611409,
+    "test_rmse": 4095.136474609375,
+    "test_mae": 4051.8134765625,
+    "test_r2": -46.51183549272683,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_gat_smoke_dates/embeddings/informer_gat_embeddings_opdate_12-15.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2017-12-15",
+        "issue_date": "2017-12-15",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2018-12-15",
+        "issue_date": "2018-12-15",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2019-12-15",
+        "issue_date": "2019-12-15",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2020-12-15",
+        "issue_date": "2020-12-15",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2021-12-15",
+        "issue_date": "2021-12-15",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2022-12-15",
+        "issue_date": "2022-12-15",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 46
+      }
+    ]
+  },
+  {
+    "operational_date": "12-25",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4209.541015625,
+    "train_mae": 4150.3828125,
+    "train_r2": -34.83049101058622,
+    "val_rmse": 3964.46923828125,
+    "val_mae": 3937.53857421875,
+    "val_r2": -72.85645226981464,
+    "test_rmse": 4095.380126953125,
+    "test_mae": 4052.05712890625,
+    "test_r2": -46.51749449660349,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_gat_smoke_dates/embeddings/informer_gat_embeddings_opdate_12-25.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2017-12-25",
+        "issue_date": "2017-12-25",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2018-12-25",
+        "issue_date": "2018-12-25",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2019-12-25",
+        "issue_date": "2019-12-25",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2020-12-25",
+        "issue_date": "2020-12-25",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2021-12-25",
+        "issue_date": "2021-12-25",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2022-12-25",
+        "issue_date": "2022-12-25",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 46
+      }
+    ]
+  },
+  {
+    "operational_date": "01-04",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4209.48388671875,
+    "train_mae": 4150.32568359375,
+    "train_r2": -34.82951663974732,
+    "val_rmse": 3964.4072265625,
+    "val_mae": 3937.476318359375,
+    "val_r2": -72.85413729210948,
+    "test_rmse": 4095.315185546875,
+    "test_mae": 4051.99267578125,
+    "test_r2": -46.51598603838112,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_gat_smoke_dates/embeddings/informer_gat_embeddings_opdate_01-04.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2018-01-04",
+        "issue_date": "2018-01-03",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2019-01-04",
+        "issue_date": "2019-01-03",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2020-01-04",
+        "issue_date": "2020-01-03",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2021-01-04",
+        "issue_date": "2021-01-03",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2022-01-04",
+        "issue_date": "2022-01-03",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2023-01-04",
+        "issue_date": "2023-01-03",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 46
+      }
+    ]
+  },
+  {
+    "operational_date": "01-14",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4209.33251953125,
+    "train_mae": 4150.171875,
+    "train_r2": -34.82694369175083,
+    "val_rmse": 3964.258056640625,
+    "val_mae": 3937.326904296875,
+    "val_r2": -72.84857730198794,
+    "test_rmse": 4095.173583984375,
+    "test_mae": 4051.84912109375,
+    "test_r2": -46.51269790419538,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_gat_smoke_dates/embeddings/informer_gat_embeddings_opdate_01-14.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2018-01-14",
+        "issue_date": "2018-01-13",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2019-01-14",
+        "issue_date": "2019-01-13",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2020-01-14",
+        "issue_date": "2020-01-13",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2021-01-14",
+        "issue_date": "2021-01-13",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2022-01-14",
+        "issue_date": "2022-01-13",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2023-01-14",
+        "issue_date": "2023-01-13",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 46
+      }
+    ]
+  },
+  {
+    "operational_date": "01-24",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4209.51318359375,
+    "train_mae": 4150.3544921875,
+    "train_r2": -34.8300125249064,
+    "val_rmse": 3964.439697265625,
+    "val_mae": 3937.50830078125,
+    "val_r2": -72.85535038086327,
+    "test_rmse": 4095.353515625,
+    "test_mae": 4052.030517578125,
+    "test_r2": -46.5168758763628,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_gat_smoke_dates/embeddings/informer_gat_embeddings_opdate_01-24.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2018-01-24",
+        "issue_date": "2018-01-23",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2019-01-24",
+        "issue_date": "2019-01-23",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2020-01-24",
+        "issue_date": "2020-01-23",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2021-01-24",
+        "issue_date": "2021-01-23",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2022-01-24",
+        "issue_date": "2022-01-23",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2023-01-24",
+        "issue_date": "2023-01-23",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 46
+      }
+    ]
+  },
+  {
+    "operational_date": "02-03",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4209.46484375,
+    "train_mae": 4150.30615234375,
+    "train_r2": -34.8291969243158,
+    "val_rmse": 3964.387939453125,
+    "val_mae": 3937.45751953125,
+    "val_r2": -72.85342460246663,
+    "test_rmse": 4095.30517578125,
+    "test_mae": 4051.98193359375,
+    "test_r2": -46.51575138932431,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_gat_smoke_dates/embeddings/informer_gat_embeddings_opdate_02-03.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2018-02-03",
+        "issue_date": "2018-02-03",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2019-02-03",
+        "issue_date": "2019-02-03",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2020-02-03",
+        "issue_date": "2020-02-03",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2021-02-03",
+        "issue_date": "2021-02-03",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2022-02-03",
+        "issue_date": "2022-02-03",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2023-02-03",
+        "issue_date": "2023-02-03",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 46
+      }
+    ]
+  }
+]

@@ -64,3 +64,14 @@ paths:
     yields: "data/yields"
     boundaries: "data/boundaries"
   processed: "data/processed"
+
+# Boundary Configuration (World Bank Official Boundaries - Admin 2)
+boundaries:
+  admin2_path: "data/boundaries/World Bank Official Boundaries - Admin 2.gpkg"
+  admin2_layer: "WB_GAD_ADM2"
+  country_iso3: "IND"
+  country_field: "ISO_A3"
+  state_field: "NAM_1"
+  district_field: "NAM_2"
+  district_code_field: "ADM2CD_c"
+  state_names: ["Punjab", "Haryana", "Uttar Pradesh"]
