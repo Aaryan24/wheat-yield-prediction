@@ -120,33 +120,35 @@ Compile reports from finished runs:
 python codex_v2/scripts/export_reports_v2.py --out-root codex_v2/experiments
 ```
 
-## Lightning (4x T4) Launcher
+## Lightning (1x H100) Launcher
 
 For your narrowed run scope (`B3`, `B4`; horizons `25`, `46`; seeds `7,42,99`; op-dates excluding `12-05`), use:
 
 ```bash
-bash codex_v2/scripts/run_lightning_t4_b3b4.sh \
-  --out-root codex_v2/experiments/lightning_t4_b3b4 \
-  --gpus 0 1 2 3 \
-  --refresh-seconds 20
+bash codex_v2/scripts/run_lightning_h100_b3b4.sh \
+  --gpu-id 0 \
+  --out-root codex_v2/experiments/lightning_h100_b3b4
 ```
 
 What it does:
 
-- Runs 3 seed waves (`7`, `42`, `99`).
-- In each wave, launches 4 parallel jobs:
-  - `B3_h25`, `B3_h46`, `B4_h25`, `B4_h46`
-- Assigns one job per GPU via `CUDA_VISIBLE_DEVICES`.
-- Prints live epoch progress snapshots in terminal (every `--refresh-seconds`).
+- Runs all 12 jobs sequentially on one GPU:
+  - ablations: `B3`, `B4`
+  - horizons: `25`, `46`
+  - seeds: `7`, `42`, `99`
+- Binds the process to one GPU using `CUDA_VISIBLE_DEVICES=<gpu-id>`.
+- Shows live epoch progress bars directly in terminal.
 - Prints concise final metrics per run:
   - `val_rmse`, `val_r2`, `test_rmse`, `test_r2`
-- Writes logs to each run folder as `launcher_stdout.log`.
-- Recompiles global reports after each wave.
+- Writes all run outputs to your chosen `--out-root`.
+- Recompiles global reports at end of execution.
 
-Dry-run plan preview:
+Optional custom op-dates (default excludes `12-05`):
 
 ```bash
-python codex_v2/scripts/lightning_t4_b3b4_launcher.py --dry-run
+python codex_v2/scripts/lightning_h100_b3b4_launcher.py \
+  --gpu-id 0 \
+  --opdates 12-15 12-25 01-04 01-14 01-24 02-05 02-15 02-25 03-05
 ```
 
 ## Local Mac M-Series (MPS) Launcher
