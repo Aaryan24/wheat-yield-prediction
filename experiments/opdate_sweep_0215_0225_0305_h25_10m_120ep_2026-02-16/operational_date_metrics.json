@@ -1,0 +1,239 @@
+[
+  {
+    "operational_date": "02-15",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 598.497314453125,
+    "train_mae": 484.5483093261719,
+    "train_mape": 11.848313361406326,
+    "train_r2": 0.2757179935899231,
+    "val_rmse": 372.78582763671875,
+    "val_mae": 296.85150146484375,
+    "val_mape": 7.806534320116043,
+    "val_r2": 0.3469639966156719,
+    "test_rmse": 474.9138488769531,
+    "test_mae": 387.99151611328125,
+    "test_mape": 9.924151748418808,
+    "test_r2": 0.3610090023720125,
+    "epochs_ran": 120,
+    "best_epoch": 79,
+    "train_seconds": 629.8878359160008,
+    "model_total_params": 10100993,
+    "model_trainable_params": 10100993,
+    "embedding_file": "experiments/opdate_sweep_0215_0225_0305_h25_10m_120ep_2026-02-16/embeddings/informer_gat_embeddings_opdate_02-15.npz",
+    "prediction_file": "experiments/opdate_sweep_0215_0225_0305_h25_10m_120ep_2026-02-16/predictions/predictions_opdate_02-15.csv",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2018-02-15",
+        "issue_date": "2018-02-15",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2019-02-15",
+        "issue_date": "2019-02-15",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2020-02-15",
+        "issue_date": "2020-02-15",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2021-02-15",
+        "issue_date": "2021-02-15",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2022-02-15",
+        "issue_date": "2022-02-15",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2023-02-15",
+        "issue_date": "2023-02-15",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 25
+      }
+    ],
+    "seed": 42
+  },
+  {
+    "operational_date": "02-25",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 734.4623413085938,
+    "train_mae": 595.2900390625,
+    "train_mape": 14.533939957618713,
+    "train_r2": -0.09074277017653132,
+    "val_rmse": 461.3039245605469,
+    "val_mae": 379.1916809082031,
+    "val_mape": 9.936979413032532,
+    "val_r2": 1.705906060023299e-05,
+    "test_rmse": 604.8563232421875,
+    "test_mae": 484.3663024902344,
+    "test_mape": 12.376788258552551,
+    "test_r2": -0.036500498819707516,
+    "epochs_ran": 120,
+    "best_epoch": 116,
+    "train_seconds": 376.44057341699954,
+    "model_total_params": 10100993,
+    "model_trainable_params": 10100993,
+    "embedding_file": "experiments/opdate_sweep_0215_0225_0305_h25_10m_120ep_2026-02-16/embeddings/informer_gat_embeddings_opdate_02-25.npz",
+    "prediction_file": "experiments/opdate_sweep_0215_0225_0305_h25_10m_120ep_2026-02-16/predictions/predictions_opdate_02-25.csv",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2018-02-25",
+        "issue_date": "2018-02-25",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2019-02-25",
+        "issue_date": "2019-02-25",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2020-02-25",
+        "issue_date": "2020-02-25",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2021-02-25",
+        "issue_date": "2021-02-25",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2022-02-25",
+        "issue_date": "2022-02-25",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2023-02-25",
+        "issue_date": "2023-02-25",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 25
+      }
+    ],
+    "seed": 42
+  },
+  {
+    "operational_date": "03-05",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 734.6879272460938,
+    "train_mae": 595.4669189453125,
+    "train_mape": 14.535589516162872,
+    "train_r2": -0.09141292199514384,
+    "val_rmse": 461.3037109375,
+    "val_mae": 379.185791015625,
+    "val_mape": 9.934842586517334,
+    "val_r2": 1.7848831924238695e-05,
+    "test_rmse": 605.0046997070312,
+    "test_mae": 484.570068359375,
+    "test_mape": 12.379509955644608,
+    "test_r2": -0.03700903208406836,
+    "epochs_ran": 120,
+    "best_epoch": 87,
+    "train_seconds": 378.20861262500694,
+    "model_total_params": 10100993,
+    "model_trainable_params": 10100993,
+    "embedding_file": "experiments/opdate_sweep_0215_0225_0305_h25_10m_120ep_2026-02-16/embeddings/informer_gat_embeddings_opdate_03-05.npz",
+    "prediction_file": "experiments/opdate_sweep_0215_0225_0305_h25_10m_120ep_2026-02-16/predictions/predictions_opdate_03-05.csv",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2018-03-05",
+        "issue_date": "2018-03-05",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2019-03-05",
+        "issue_date": "2019-03-05",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2020-03-05",
+        "issue_date": "2020-03-05",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2021-03-05",
+        "issue_date": "2021-03-05",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2022-03-05",
+        "issue_date": "2022-03-05",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 25
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2023-03-05",
+        "issue_date": "2023-03-05",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 25
+      }
+    ],
+    "seed": 42
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "input_file": "data/yields/apy_query_report.xls",
+  "raw_rows": 120,
+  "raw_districts_by_state": {
+    "Haryana": 22,
+    "Punjab": 23,
+    "Uttar Pradesh": 75
+  },
+  "seasons": [
+    "2017 - 2018",
+    "2018 - 2019",
+    "2019 - 2020",
+    "2020 - 2021",
+    "2021 - 2022",
+    "2022 - 2023"
+  ],
+  "rows_after_malerkotla_drop": 714,
+  "unique_districts_after_malerkotla_drop": 119,
+  "mapped_rows": 714,
+  "unmatched_rows": 0,
+  "panel_rows": 714,
+  "panel_unique_districts": 119,
+  "panel_missing_cells": 0,
+  "model_ready_file": "data/yields/apy_query_report_model_ready_119.csv"
+}

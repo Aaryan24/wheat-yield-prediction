@@ -1,7 +1,21 @@
-# Data directories (keep .gitkeep files)
-/data/
-!/data/.gitkeep
-!data/.gitkeep
+# Data directories:
+# keep only baseline reproducible inputs in git, ignore the rest.
+/data/*
+!/data/boundaries/
+/data/boundaries/*
+!/data/boundaries/World Bank Official Boundaries - Admin 2.gpkg
+
+!/data/yields/
+!/data/yields/**
+
+!/data/processed/
+/data/processed/*
+!/data/processed/s2s_district/
+/data/processed/s2s_district/*
+!/data/processed/s2s_district/districts.parquet
+!/data/processed/s2s_district/weights.parquet
+!/data/processed/s2s_district/s2s_district_daily_*.parquet
+!/data/processed/s2s_district/s2s_district_temp_6h_*.parquet
 
 # Model checkpoints
 checkpoints/

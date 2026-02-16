@@ -201,6 +201,8 @@ class DualChannelInformerGAT(nn.Module):
         gat_hidden: int = 64,
         gat_heads: int = 4,
         gat_layers: int = 2,
+        weather_distil: bool = True,
+        sat_distil: bool = True,
     ) -> None:
         super().__init__()
         self.weather_encoder = InformerEncoder(
@@ -210,7 +212,7 @@ class DualChannelInformerGAT(nn.Module):
             e_layers=weather_layers,
             d_ff=weather_d_ff,
             dropout=dropout,
-            distil=True,
+            distil=weather_distil,
             max_len=256,
         )
         self.sat_encoder = InformerEncoder(
@@ -220,7 +222,7 @@ class DualChannelInformerGAT(nn.Module):
             e_layers=sat_layers,
             d_ff=sat_d_ff,
             dropout=dropout,
-            distil=True,
+            distil=sat_distil,
             max_len=256,
         )
 

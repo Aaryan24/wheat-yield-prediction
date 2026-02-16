@@ -1,0 +1,71 @@
+[
+  {
+    "operational_date": "12-05",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 4203.185546875,
+    "train_mae": 4143.9521484375,
+    "train_r2": -34.72237934616563,
+    "val_rmse": 3958.067626953125,
+    "val_mae": 3931.10302734375,
+    "val_r2": -72.61812582052305,
+    "test_rmse": 4089.006103515625,
+    "test_mae": 4045.63134765625,
+    "test_r2": -46.36969606471438,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/informer_runtime_probe_cpu/embeddings/informer_gat_embeddings_opdate_12-05.npz",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2017-12-05",
+        "issue_date": "2017-12-05",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2018-12-05",
+        "issue_date": "2018-12-05",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2019-12-05",
+        "issue_date": "2019-12-05",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2020-12-05",
+        "issue_date": "2020-12-05",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2021-12-05",
+        "issue_date": "2021-12-05",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 46
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2022-12-05",
+        "issue_date": "2022-12-05",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 46
+      }
+    ]
+  }
+]

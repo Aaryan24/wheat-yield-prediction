@@ -1,0 +1,81 @@
+[
+  {
+    "operational_date": "01-24",
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 734.9485473632812,
+    "train_mae": 595.669189453125,
+    "train_mape": 14.53728973865509,
+    "train_r2": -0.09218733475592211,
+    "val_rmse": 461.2966613769531,
+    "val_mae": 379.17169189453125,
+    "val_mape": 9.932181984186172,
+    "val_r2": 4.849195929867989e-05,
+    "test_rmse": 605.1658935546875,
+    "test_mae": 484.7999572753906,
+    "test_mape": 12.382383644580841,
+    "test_r2": -0.037561752508478374,
+    "epochs_ran": 120,
+    "best_epoch": 115,
+    "train_seconds": 705.8948525409942,
+    "model_total_params": 10100993,
+    "model_trainable_params": 10100993,
+    "embedding_file": "/Users/aaryan/Downloads/ugp/experiments/horizon_sweep_01-24_seed42_10m_full120_live_2026-02-16/horizon_15d/embeddings/informer_gat_embeddings_opdate_01-24.npz",
+    "prediction_file": "/Users/aaryan/Downloads/ugp/experiments/horizon_sweep_01-24_seed42_10m_full120_live_2026-02-16/horizon_15d/predictions/predictions_opdate_01-24.csv",
+    "season_issue_dates": [
+      {
+        "season_year": 2017,
+        "target_date": "2018-01-24",
+        "issue_date": "2018-01-23",
+        "harvest_date": "2018-04-29",
+        "horizon_days": 15
+      },
+      {
+        "season_year": 2018,
+        "target_date": "2019-01-24",
+        "issue_date": "2019-01-23",
+        "harvest_date": "2019-04-29",
+        "horizon_days": 15
+      },
+      {
+        "season_year": 2019,
+        "target_date": "2020-01-24",
+        "issue_date": "2020-01-23",
+        "harvest_date": "2020-04-29",
+        "horizon_days": 15
+      },
+      {
+        "season_year": 2020,
+        "target_date": "2021-01-24",
+        "issue_date": "2021-01-23",
+        "harvest_date": "2021-04-29",
+        "horizon_days": 15
+      },
+      {
+        "season_year": 2021,
+        "target_date": "2022-01-24",
+        "issue_date": "2022-01-23",
+        "harvest_date": "2022-04-29",
+        "horizon_days": 15
+      },
+      {
+        "season_year": 2022,
+        "target_date": "2023-01-24",
+        "issue_date": "2023-01-23",
+        "harvest_date": "2023-04-29",
+        "horizon_days": 15
+      }
+    ],
+    "seed": 42
+  }
+]

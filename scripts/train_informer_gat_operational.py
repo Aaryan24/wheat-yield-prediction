@@ -8,6 +8,7 @@ import json
 import random
 import re
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
@@ -89,6 +90,55 @@ class SeasonSelection:
 
 def _log(msg: str) -> None:
     print(msg, flush=True)
+
+
+def _set_global_seed(seed: int) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
+
+
+def _fmt_seconds(sec: float) -> str:
+    sec_i = int(max(0, round(sec)))
+    h = sec_i // 3600
+    m = (sec_i % 3600) // 60
+    s = sec_i % 60
+    if h > 0:
+        return f"{h:02d}:{m:02d}:{s:02d}"
+    return f"{m:02d}:{s:02d}"
+
+
+class _EpochProgress:
+    def __init__(self, total: int, prefix: str, width: int = 28) -> None:
+        self.total = max(1, int(total))
+        self.prefix = prefix
+        self.width = max(10, int(width))
+        self.t0 = time.perf_counter()
+        self.last_line_len = 0
+
+    def update(self, epoch: int, train_mse: float, val_mse: float) -> None:
+        ep = max(0, min(int(epoch), self.total))
+        pct = ep / self.total
+        filled = int(round(self.width * pct))
+        bar = "#" * filled + "-" * (self.width - filled)
+        elapsed = time.perf_counter() - self.t0
+        rate = ep / elapsed if elapsed > 0 and ep > 0 else 0.0
+        remain = (self.total - ep) / rate if rate > 0 else 0.0
+        line = (
+            f"\r{self.prefix} [{bar}] {ep:03d}/{self.total:03d} "
+            f"{pct * 100:5.1f}% elapsed={_fmt_seconds(elapsed)} eta={_fmt_seconds(remain)} "
+            f"train_mse={train_mse:.2f} val_mse={val_mse:.2f}"
+        )
+        pad = max(0, self.last_line_len - len(line))
+        print(line + (" " * pad), end="", flush=True)
+        self.last_line_len = len(line)
+
+    def close(self) -> None:
+        print("", flush=True)
 
 
 def _norm(text: str) -> str:
@@ -500,10 +550,48 @@ def _metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict[str, float]:
     e = y_pred - y_true
     rmse = float(np.sqrt(np.mean(e**2)))
     mae = float(np.mean(np.abs(e)))
+    denom = np.abs(y_true)
+    valid = denom > 1e-6
+    if np.any(valid):
+        mape = float(np.mean(np.abs(e[valid]) / denom[valid]) * 100.0)
+    else:
+        mape = float("nan")
     ss_res = float(np.sum((y_true - y_pred) ** 2))
     ss_tot = float(np.sum((y_true - np.mean(y_true)) ** 2))
     r2 = float(1.0 - ss_res / ss_tot) if ss_tot > 0 else 0.0
-    return {"rmse": rmse, "mae": mae, "r2": r2}
+    return {"rmse": rmse, "mae": mae, "mape": mape, "r2": r2}
+
+
+def _prediction_rows(
+    split_name: str,
+    years: Sequence[int],
+    district_df: pd.DataFrame,
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    operational_label: str,
+) -> pd.DataFrame:
+    # y_true/y_pred: [S_split, N]
+    rows: List[dict] = []
+    district_id = district_df["district_id"].to_numpy()
+    state_name = district_df["state_name"].to_numpy()
+    district_name = district_df["district_name"].to_numpy()
+    for yi, year in enumerate(years):
+        for di in range(len(district_df)):
+            rows.append(
+                {
+                    "operational_date": operational_label,
+                    "split": split_name,
+                    "season_year": int(year),
+                    "district_id": str(district_id[di]),
+                    "state_name": str(state_name[di]),
+                    "district_name": str(district_name[di]),
+                    "actual_yield_kg_per_ha": float(y_true[yi, di]),
+                    "predicted_yield_kg_per_ha": float(y_pred[yi, di]),
+                    "error_kg_per_ha": float(y_pred[yi, di] - y_true[yi, di]),
+                    "abs_error_kg_per_ha": float(abs(y_pred[yi, di] - y_true[yi, di])),
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 def _train_one_operational_day(
@@ -525,6 +613,10 @@ def _train_one_operational_day(
     lr: float,
     weight_decay: float,
     embed_out_dir: Path,
+    show_progress: bool,
+    log_every: int,
+    pred_out_dir: Optional[Path] = None,
+    model_kwargs: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
     # Build graph-level tensors (one graph per season year).
     district_ids = district_df["district_id"].tolist()
@@ -632,33 +724,34 @@ def _train_one_operational_day(
     test_sm = _to_tensor(sat_mask_arr[idx_test], device)
     test_y = _to_tensor(y_arr[idx_test], device)
 
+    if model_kwargs is None:
+        model_kwargs = {}
     model = DualChannelInformerGAT(
         weather_input_dim=len(WEATHER_FEATURES),
         sat_input_dim=len(SAT_FEATURES),
-        weather_d_model=64,
-        sat_d_model=64,
-        weather_heads=4,
-        sat_heads=4,
-        weather_layers=2,
-        sat_layers=2,
-        weather_d_ff=128,
-        sat_d_ff=128,
-        dropout=0.1,
-        gat_hidden=64,
-        gat_heads=4,
-        gat_layers=2,
+        **model_kwargs,
     ).to(device)
+    model_total_params = int(sum(p.numel() for p in model.parameters()))
+    model_trainable_params = int(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     criterion = nn.MSELoss()
 
     best_state: Optional[dict] = None
     best_val = float("inf")
+    best_epoch = 0
     wait = 0
+    epochs_ran = 0
 
     adj_device = adj.to(device)
+    run_t0 = time.perf_counter()
+    progress = _EpochProgress(
+        total=epochs,
+        prefix=f"[op={operational_label}]",
+    ) if show_progress else None
 
     for ep in range(1, epochs + 1):
+        epochs_ran = ep
         model.train()
         optimizer.zero_grad()
         pred, _ = model(train_w, train_wm, train_s, train_sm, adj_device)
@@ -679,6 +772,7 @@ def _train_one_operational_day(
 
         if val_loss < best_val - 1e-6:
             best_val = val_loss
+            best_epoch = ep
             best_state = copy.deepcopy(model.state_dict())
             wait = 0
         else:
@@ -686,11 +780,16 @@ def _train_one_operational_day(
             if wait >= patience:
                 break
 
-        if ep == 1 or ep % 20 == 0:
+        if progress is not None and (ep == 1 or ep % max(1, log_every) == 0 or ep == epochs):
+            progress.update(ep, float(loss.item()), float(val_loss))
+        elif ep == 1 or ep % 20 == 0:
             _log(
                 f"[op={operational_label}] epoch={ep:03d} "
                 f"train_mse={loss.item():.4f} val_mse={val_loss:.4f}"
             )
+
+    if progress is not None:
+        progress.close()
 
     if best_state is None:
         best_state = copy.deepcopy(model.state_dict())
@@ -702,9 +801,50 @@ def _train_one_operational_day(
         val_pred, _ = model(val_w, val_wm, val_s, val_sm, adj_device)
         test_pred, _ = model(test_w, test_wm, test_s, test_sm, adj_device)
 
-    train_metrics = _metrics(train_y.detach().cpu().numpy().ravel(), train_pred.detach().cpu().numpy().ravel())
-    val_metrics = _metrics(val_y.detach().cpu().numpy().ravel(), val_pred.detach().cpu().numpy().ravel())
-    test_metrics = _metrics(test_y.detach().cpu().numpy().ravel(), test_pred.detach().cpu().numpy().ravel())
+    train_y_np = train_y.detach().cpu().numpy()
+    val_y_np = val_y.detach().cpu().numpy()
+    test_y_np = test_y.detach().cpu().numpy()
+    train_pred_np = train_pred.detach().cpu().numpy()
+    val_pred_np = val_pred.detach().cpu().numpy()
+    test_pred_np = test_pred.detach().cpu().numpy()
+
+    train_metrics = _metrics(train_y_np.ravel(), train_pred_np.ravel())
+    val_metrics = _metrics(val_y_np.ravel(), val_pred_np.ravel())
+    test_metrics = _metrics(test_y_np.ravel(), test_pred_np.ravel())
+
+    pred_path: Optional[Path] = None
+    if pred_out_dir is not None:
+        pred_out_dir.mkdir(parents=True, exist_ok=True)
+        pred_frames = [
+            _prediction_rows(
+                split_name="train",
+                years=train_years,
+                district_df=district_df,
+                y_true=train_y_np,
+                y_pred=train_pred_np,
+                operational_label=operational_label,
+            ),
+            _prediction_rows(
+                split_name="val",
+                years=val_years,
+                district_df=district_df,
+                y_true=val_y_np,
+                y_pred=val_pred_np,
+                operational_label=operational_label,
+            ),
+            _prediction_rows(
+                split_name="test",
+                years=test_years,
+                district_df=district_df,
+                y_true=test_y_np,
+                y_pred=test_pred_np,
+                operational_label=operational_label,
+            ),
+        ]
+        pred_df = pd.concat(pred_frames, ignore_index=True)
+        pred_key = operational_label.replace("/", "-")
+        pred_path = pred_out_dir / f"predictions_opdate_{pred_key}.csv"
+        pred_df.to_csv(pred_path, index=False)
 
     # Save embeddings for all seasons with best model.
     with torch.no_grad():
@@ -723,6 +863,7 @@ def _train_one_operational_day(
         seasons=np.array(seasons, dtype=np.int32),
         district_ids=np.array(district_ids),
     )
+    run_seconds = time.perf_counter() - run_t0
 
     return {
         "operational_date": operational_label,
@@ -731,14 +872,23 @@ def _train_one_operational_day(
         "test_years": test_years,
         "train_rmse": train_metrics["rmse"],
         "train_mae": train_metrics["mae"],
+        "train_mape": train_metrics["mape"],
         "train_r2": train_metrics["r2"],
         "val_rmse": val_metrics["rmse"],
         "val_mae": val_metrics["mae"],
+        "val_mape": val_metrics["mape"],
         "val_r2": val_metrics["r2"],
         "test_rmse": test_metrics["rmse"],
         "test_mae": test_metrics["mae"],
+        "test_mape": test_metrics["mape"],
         "test_r2": test_metrics["r2"],
+        "epochs_ran": epochs_ran,
+        "best_epoch": best_epoch,
+        "train_seconds": float(run_seconds),
+        "model_total_params": model_total_params,
+        "model_trainable_params": model_trainable_params,
         "embedding_file": str(emb_path),
+        "prediction_file": str(pred_path) if pred_path is not None else "",
         "season_issue_dates": [
             {
                 "season_year": s.season_year,
@@ -761,7 +911,7 @@ def main() -> None:
     )
     parser.add_argument("--districts", type=str, default="data/processed/s2s_district/districts.parquet")
     parser.add_argument("--yield-file", type=str, default="data/yields/apy_query_report_model_ready_119.csv")
-    parser.add_argument("--weather-dir", type=str, default="data/processed/informer_ready/actual/daily")
+    parser.add_argument("--weather-dir", type=str, default="data/processed/s2s_district")
     parser.add_argument(
         "--sat-merged-dir",
         type=str,
@@ -775,6 +925,7 @@ def main() -> None:
     parser.add_argument("--data-config", type=str, default="configs/data_config.yaml")
     parser.add_argument("--split-mode", choices=["fixed", "random"], default="fixed")
     parser.add_argument("--split-seed", type=int, default=42)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--years", type=int, nargs="*", default=[2017, 2018, 2019, 2020, 2021, 2022])
     parser.add_argument(
         "--operational-dates",
@@ -787,15 +938,35 @@ def main() -> None:
     parser.add_argument("--sat-seq-len", type=int, default=43)
     parser.add_argument("--epochs", type=int, default=300)
     parser.add_argument("--patience", type=int, default=50)
+    parser.add_argument("--log-every", type=int, default=1)
+    parser.add_argument("--no-progress", action="store_true")
+    parser.add_argument("--save-predictions", action="store_true")
+    parser.add_argument("--weather-d-model", type=int, default=64)
+    parser.add_argument("--sat-d-model", type=int, default=64)
+    parser.add_argument("--weather-heads", type=int, default=4)
+    parser.add_argument("--sat-heads", type=int, default=4)
+    parser.add_argument("--weather-layers", type=int, default=2)
+    parser.add_argument("--sat-layers", type=int, default=2)
+    parser.add_argument("--weather-d-ff", type=int, default=128)
+    parser.add_argument("--sat-d-ff", type=int, default=128)
+    parser.add_argument("--gat-hidden", type=int, default=64)
+    parser.add_argument("--gat-heads", type=int, default=4)
+    parser.add_argument("--gat-layers", type=int, default=2)
+    parser.add_argument("--dropout", type=float, default=0.1)
+    parser.add_argument("--no-weather-distil", action="store_true")
+    parser.add_argument("--no-sat-distil", action="store_true")
+    parser.add_argument("--no-distil", action="store_true")
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--weight-decay", type=float, default=1e-4)
     parser.add_argument("--device", type=str, default="mps")
     parser.add_argument("--out-dir", type=str, default="experiments/informer_gat")
     args = parser.parse_args()
 
+    _set_global_seed(int(args.seed))
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     embed_dir = out_dir / "embeddings"
+    pred_dir = out_dir / "predictions" if args.save_predictions else None
 
     district_df = _load_district_table(Path(args.districts))
     yield_df = _load_yield_panel(Path(args.yield_file))
@@ -827,9 +998,48 @@ def main() -> None:
             device = torch.device("cpu")
 
     _log(f"Using device: {device}")
+    _log(f"Global seed: {int(args.seed)}")
+    weather_distil = not (args.no_weather_distil or args.no_distil)
+    sat_distil = not (args.no_sat_distil or args.no_distil)
+    model_kwargs: Dict[str, object] = {
+        "weather_d_model": int(args.weather_d_model),
+        "sat_d_model": int(args.sat_d_model),
+        "weather_heads": int(args.weather_heads),
+        "sat_heads": int(args.sat_heads),
+        "weather_layers": int(args.weather_layers),
+        "sat_layers": int(args.sat_layers),
+        "weather_d_ff": int(args.weather_d_ff),
+        "sat_d_ff": int(args.sat_d_ff),
+        "dropout": float(args.dropout),
+        "gat_hidden": int(args.gat_hidden),
+        "gat_heads": int(args.gat_heads),
+        "gat_layers": int(args.gat_layers),
+        "weather_distil": bool(weather_distil),
+        "sat_distil": bool(sat_distil),
+    }
+    model_preview = DualChannelInformerGAT(
+        weather_input_dim=len(WEATHER_FEATURES),
+        sat_input_dim=len(SAT_FEATURES),
+        **model_kwargs,
+    )
+    model_total_params = int(sum(p.numel() for p in model_preview.parameters()))
+    model_trainable_params = int(sum(p.numel() for p in model_preview.parameters() if p.requires_grad))
+    _log(
+        "Model config: "
+        f"w_d_model={args.weather_d_model}, s_d_model={args.sat_d_model}, "
+        f"w_layers={args.weather_layers}, s_layers={args.sat_layers}, "
+        f"w_heads={args.weather_heads}, s_heads={args.sat_heads}, "
+        f"gat_hidden={args.gat_hidden}, gat_heads={args.gat_heads}, gat_layers={args.gat_layers}, "
+        f"weather_distil={weather_distil}, sat_distil={sat_distil}"
+    )
+    _log(
+        f"Model params: total={model_total_params:,}, trainable={model_trainable_params:,}"
+    )
     results: List[dict] = []
+    all_t0 = time.perf_counter()
     for op_label in args.operational_dates:
         _log(f"\n=== Operational date: {op_label} ===")
+        op_t0 = time.perf_counter()
         res = _train_one_operational_day(
             operational_label=op_label,
             district_df=district_df,
@@ -849,11 +1059,19 @@ def main() -> None:
             lr=args.lr,
             weight_decay=args.weight_decay,
             embed_out_dir=embed_dir,
+            show_progress=not args.no_progress,
+            log_every=args.log_every,
+            pred_out_dir=pred_dir,
+            model_kwargs=model_kwargs,
         )
+        res["seed"] = int(args.seed)
         results.append(res)
+        op_dt = time.perf_counter() - op_t0
         _log(
-            f"op-{op_label}: val_rmse={res['val_rmse']:.3f}, val_r2={res['val_r2']:.3f}, "
-            f"test_rmse={res['test_rmse']:.3f}, test_r2={res['test_r2']:.3f}"
+            f"op-{op_label}: val_rmse={res['val_rmse']:.3f}, val_mape={res['val_mape']:.2f}%, val_r2={res['val_r2']:.3f}, "
+            f"test_rmse={res['test_rmse']:.3f}, test_mape={res['test_mape']:.2f}%, test_r2={res['test_r2']:.3f}, "
+            f"epochs={res['epochs_ran']}, best_epoch={res['best_epoch']}, "
+            f"time={_fmt_seconds(op_dt)}"
         )
 
     res_df = pd.DataFrame(results)
@@ -868,6 +1086,7 @@ def main() -> None:
     json_path.write_text(json.dumps(results, indent=2))
     _log(f"\nSaved metrics: {csv_path}")
     _log(f"Saved metrics json: {json_path}")
+    _log(f"Total runtime: {_fmt_seconds(time.perf_counter() - all_t0)}")
 
     if not res_df.empty:
         best = res_df.sort_values("val_rmse").iloc[0]
