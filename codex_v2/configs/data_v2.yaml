@@ -1,0 +1,32 @@
+paths:
+  districts: data/processed/s2s_district/districts.parquet
+  weather_dir: data/processed/s2s_district
+  yield_file: data/yields/apy_query_report_model_ready_119.csv
+  sangrur_audit: data/yields/apy_query_report_sangrur_malerkotla_audit.csv
+  sat_merged_dir: Remote sensing data/sentinel2_wheat_pipeline/output/merged
+  boundary_config: configs/data_config.yaml
+
+splits:
+  mode: fixed
+  train_years: [2017, 2018, 2019, 2020]
+  val_years: [2021]
+  test_years: [2022]
+
+years: [2017, 2018, 2019, 2020, 2021, 2022]
+
+operational_dates:
+  primary: ["12-05", "12-15", "12-25", "01-04", "01-14", "01-24", "02-05"]
+  secondary: ["02-15", "02-25", "03-05"]
+
+satellite:
+  seq_len: 43
+  imputation: state_mean_with_mask
+
+features:
+  use_engineered_weather: true
+  use_engineered_satellite: true
+  use_missingness_indicators: true
+
+train_defaults:
+  horizons: [25, 46]
+  seeds: [7, 42, 99]
