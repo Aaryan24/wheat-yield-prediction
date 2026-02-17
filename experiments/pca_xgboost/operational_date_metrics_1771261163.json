@@ -1,0 +1,38 @@
+[
+  {
+    "operational_date": "02-15",
+    "n_components": 128,
+    "explained_variance": 0.9998403787612915,
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 499.73883056640625,
+    "train_mae": 396.60162353515625,
+    "train_mape": 10.238049507141113,
+    "train_r2": 0.4950254820811191,
+    "val_rmse": 489.57196044921875,
+    "val_mae": 397.13031005859375,
+    "val_mape": 10.91063117980957,
+    "val_r2": -0.12629312220534472,
+    "test_rmse": 512.5318603515625,
+    "test_mae": 401.0277404785156,
+    "test_mape": 10.58752155303955,
+    "test_r2": 0.25577066216363953,
+    "epochs_ran": -1,
+    "best_epoch": -1,
+    "prediction_file": "experiments\\pca_xgboost\\predictions\\predictions_pca_xgb_opdate_02-15.csv",
+    "count_accurate": 17,
+    "count_moderate": 25,
+    "count_serious": 29,
+    "count_extreme": 48
+  }
+]

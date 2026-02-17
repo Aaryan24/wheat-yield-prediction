@@ -1,0 +1,38 @@
+[
+  {
+    "operational_date": "02-15",
+    "n_components": 32,
+    "explained_variance": 0.998145580291748,
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 484.5939025878906,
+    "train_mae": 387.44744873046875,
+    "train_mape": 9.989242553710938,
+    "train_r2": 0.5251689244756572,
+    "val_rmse": 493.0997314453125,
+    "val_mae": 404.59820556640625,
+    "val_mape": 11.121175765991211,
+    "val_r2": -0.14258326144439848,
+    "test_rmse": 506.6601257324219,
+    "test_mae": 414.3297119140625,
+    "test_mape": 10.787303924560547,
+    "test_r2": 0.2727252469052799,
+    "epochs_ran": -1,
+    "best_epoch": -1,
+    "prediction_file": "",
+    "count_accurate": 7,
+    "count_moderate": 23,
+    "count_serious": 42,
+    "count_extreme": 47
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "operational_date": "02-15",
+    "n_components": 5,
+    "explained_variance": 0.9458313584327698,
+    "train_years": [
+      2017,
+      2018,
+      2019,
+      2020
+    ],
+    "val_years": [
+      2021
+    ],
+    "test_years": [
+      2022
+    ],
+    "train_rmse": 510.6160583496094,
+    "train_mae": 397.41162109375,
+    "train_mape": 10.063111305236816,
+    "train_r2": 0.4728039002563976,
+    "val_rmse": 640.6965942382812,
+    "val_mae": 506.3750915527344,
+    "val_mape": 13.619354248046875,
+    "val_r2": -0.9289597534902561,
+    "test_rmse": 597.3187255859375,
+    "test_mae": 500.1339416503906,
+    "test_mape": 12.082128524780273,
+    "test_r2": -0.01082813975484509,
+    "epochs_ran": -1,
+    "best_epoch": -1,
+    "prediction_file": "experiments\\linear_regression\\predictions\\predictions_lr_opdate_02-15.csv",
+    "count_accurate": 8,
+    "count_moderate": 14,
+    "count_serious": 28,
+    "count_extreme": 69
+  }
+]
