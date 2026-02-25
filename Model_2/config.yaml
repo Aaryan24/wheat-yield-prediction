@@ -1,0 +1,91 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Model_2 Configuration — Dual-Channel Informer + GAT Wheat Yield Prediction
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Data Paths (relative to REPO ROOT) ──────────────────────────────────────
+data:
+  districts: "data/processed/s2s_district/districts.parquet"
+  yield_file: "data/yields/apy_query_report_model_ready_119.csv"
+  weather_dir: "data/processed/s2s_district"
+  sat_merged_dir: "Remote sensing data/sentinel2_wheat_pipeline/output/merged"
+  sangrur_audit: "data/yields/apy_query_report_sangrur_malerkotla_audit.csv"
+  data_config: "configs/data_config.yaml"
+  dataset_file: "Model_2/dataset.npz"          # output of prepare_dataset.py
+
+# ── Feature Definitions ─────────────────────────────────────────────────────
+features:
+  weather:
+    - "tmax_mean"
+    - "tmax_std"
+    - "tmin_mean"
+    - "tmin_std"
+    - "tp_mean"
+    - "tp_std"
+    - "ssrd_mean"
+    - "ssrd_std"
+    - "wind_speed_mean"
+    - "wind_speed_std"
+  satellite:
+    - "B7"
+    - "B8"
+    - "B8A"
+    - "B12"
+
+# ── Temporal Settings ────────────────────────────────────────────────────────
+temporal:
+  seasons: [2017, 2018, 2019, 2020, 2021, 2022]
+  operational_date: "02-15"     # MM-DD within winter season
+  forecast_horizon: 46          # lead-time days for weather
+  sat_seq_len: 43               # 5-day composite steps per season
+
+# ── Split ────────────────────────────────────────────────────────────────────
+split:
+  mode: "custom"                # "fixed", "random", or "custom"
+  seed: 42
+  # custom mode: explicitly set year lists
+  train_years: [2017, 2018, 2019, 2020, 2021]
+  val_years: [2022]
+  test_years: [2021]
+  # Completely remove these states from all data (districts, adjacency, etc.)
+  exclude_states: ["Uttar Pradesh"]
+
+# ── Model Architecture ──────────────────────────────────────────────────────
+model:
+  # Weather Informer encoder
+  weather_d_model: 48
+  weather_heads: 4
+  weather_layers: 2
+  weather_d_ff: 96
+  weather_distil: true
+
+  # Satellite Informer encoder
+  sat_d_model: 48
+  sat_heads: 4
+  sat_layers: 2
+  sat_d_ff: 96
+  sat_distil: true
+
+  # GAT
+  gat_hidden: 48
+  gat_heads: 4
+  gat_layers: 2
+
+  # General
+  dropout: 0.2
+
+# ── Training ─────────────────────────────────────────────────────────────────
+training:
+  seed: 42
+  epochs: 300
+  patience: 50
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  gradient_clip: 1.0
+  device: "auto"                # "auto", "cuda", "cpu", "mps"
+  scheduler: "cosine"           # "cosine" or "none"
+  loss: "huber"                 # "mse" or "huber"
+  normalize_yield: true         # z-score normalize yields during training
+
+# ── Output ───────────────────────────────────────────────────────────────────
+output:
+  analysis_dir: "Model_2/analysis"

@@ -1,0 +1,47 @@
+{
+  "per_class": {
+    "increase": {
+      "precision": 0.869,
+      "recall": 0.7604,
+      "f1_score": 0.8111,
+      "support": 96,
+      "true_positives": 73,
+      "false_positives": 11,
+      "false_negatives": 23,
+      "true_negatives": 113
+    },
+    "decrease": {
+      "precision": 0.875,
+      "recall": 0.8898,
+      "f1_score": 0.8824,
+      "support": 118,
+      "true_positives": 105,
+      "false_positives": 15,
+      "false_negatives": 13,
+      "true_negatives": 87
+    },
+    "stable": {
+      "precision": 0.1875,
+      "recall": 0.5,
+      "f1_score": 0.2727,
+      "support": 6,
+      "true_positives": 3,
+      "false_positives": 13,
+      "false_negatives": 3,
+      "true_negatives": 201
+    }
+  },
+  "overall_accuracy": 0.8227,
+  "overall_direction_matches": 181,
+  "overall_total_transitions": 220,
+  "macro_avg": {
+    "precision": 0.6438,
+    "recall": 0.7167,
+    "f1_score": 0.6554
+  },
+  "weighted_avg": {
+    "precision": 0.8536,
+    "recall": 0.8227,
+    "f1_score": 0.8347
+  }
+}

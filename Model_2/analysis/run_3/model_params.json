@@ -1,0 +1,773 @@
+{
+  "architecture": "DualChannelInformerGAT",
+  "total_params": 172033,
+  "trainable_params": 172033,
+  "non_trainable_params": 0,
+  "model_hyperparameters": {
+    "weather_input_dim": 10,
+    "sat_input_dim": 4,
+    "weather_d_model": 48,
+    "sat_d_model": 48,
+    "weather_heads": 4,
+    "sat_heads": 4,
+    "weather_layers": 2,
+    "sat_layers": 2,
+    "weather_d_ff": 96,
+    "sat_d_ff": 96,
+    "dropout": 0.2,
+    "gat_hidden": 48,
+    "gat_heads": 4,
+    "gat_layers": 2,
+    "weather_distil": true,
+    "sat_distil": true
+  },
+  "training_config": {
+    "epochs": 300,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0,
+    "seed": 42
+  },
+  "layer_breakdown": [
+    {
+      "name": "weather_encoder.input_proj.weight",
+      "shape": [
+        48,
+        10
+      ],
+      "params": 480,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.input_proj.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.self_attn.in_proj_weight",
+      "shape": [
+        144,
+        48
+      ],
+      "params": 6912,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.self_attn.in_proj_bias",
+      "shape": [
+        144
+      ],
+      "params": 144,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        48,
+        48
+      ],
+      "params": 2304,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.linear1.weight",
+      "shape": [
+        96,
+        48
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.linear1.bias",
+      "shape": [
+        96
+      ],
+      "params": 96,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.linear2.weight",
+      "shape": [
+        48,
+        96
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.linear2.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.norm1.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.norm1.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.norm2.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.0.norm2.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.self_attn.in_proj_weight",
+      "shape": [
+        144,
+        48
+      ],
+      "params": 6912,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.self_attn.in_proj_bias",
+      "shape": [
+        144
+      ],
+      "params": 144,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        48,
+        48
+      ],
+      "params": 2304,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.linear1.weight",
+      "shape": [
+        96,
+        48
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.linear1.bias",
+      "shape": [
+        96
+      ],
+      "params": 96,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.linear2.weight",
+      "shape": [
+        48,
+        96
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.linear2.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.norm1.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.norm1.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.norm2.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.layers.1.norm2.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.distill_layers.0.0.weight",
+      "shape": [
+        48,
+        48,
+        3
+      ],
+      "params": 6912,
+      "trainable": true
+    },
+    {
+      "name": "weather_encoder.distill_layers.0.0.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.input_proj.weight",
+      "shape": [
+        48,
+        4
+      ],
+      "params": 192,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.input_proj.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.self_attn.in_proj_weight",
+      "shape": [
+        144,
+        48
+      ],
+      "params": 6912,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.self_attn.in_proj_bias",
+      "shape": [
+        144
+      ],
+      "params": 144,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.self_attn.out_proj.weight",
+      "shape": [
+        48,
+        48
+      ],
+      "params": 2304,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.self_attn.out_proj.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.linear1.weight",
+      "shape": [
+        96,
+        48
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.linear1.bias",
+      "shape": [
+        96
+      ],
+      "params": 96,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.linear2.weight",
+      "shape": [
+        48,
+        96
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.linear2.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.norm1.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.norm1.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.norm2.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.0.norm2.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.self_attn.in_proj_weight",
+      "shape": [
+        144,
+        48
+      ],
+      "params": 6912,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.self_attn.in_proj_bias",
+      "shape": [
+        144
+      ],
+      "params": 144,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.self_attn.out_proj.weight",
+      "shape": [
+        48,
+        48
+      ],
+      "params": 2304,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.self_attn.out_proj.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.linear1.weight",
+      "shape": [
+        96,
+        48
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.linear1.bias",
+      "shape": [
+        96
+      ],
+      "params": 96,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.linear2.weight",
+      "shape": [
+        48,
+        96
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.linear2.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.norm1.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.norm1.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.norm2.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.layers.1.norm2.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.distill_layers.0.0.weight",
+      "shape": [
+        48,
+        48,
+        3
+      ],
+      "params": 6912,
+      "trainable": true
+    },
+    {
+      "name": "sat_encoder.distill_layers.0.0.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "fusion.0.weight",
+      "shape": [
+        48,
+        96
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "fusion.0.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "fusion.3.weight",
+      "shape": [
+        48,
+        48
+      ],
+      "params": 2304,
+      "trainable": true
+    },
+    {
+      "name": "fusion.3.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "gate.0.weight",
+      "shape": [
+        48,
+        96
+      ],
+      "params": 4608,
+      "trainable": true
+    },
+    {
+      "name": "gate.0.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "fusion_norm.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "fusion_norm.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.0.norm.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.0.norm.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.0.gat.attn_src",
+      "shape": [
+        4,
+        48
+      ],
+      "params": 192,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.0.gat.attn_dst",
+      "shape": [
+        4,
+        48
+      ],
+      "params": 192,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.0.gat.bias",
+      "shape": [
+        192
+      ],
+      "params": 192,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.0.gat.lin.weight",
+      "shape": [
+        192,
+        48
+      ],
+      "params": 9216,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.0.residual_proj.weight",
+      "shape": [
+        192,
+        48
+      ],
+      "params": 9216,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.1.norm.weight",
+      "shape": [
+        192
+      ],
+      "params": 192,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.1.norm.bias",
+      "shape": [
+        192
+      ],
+      "params": 192,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.1.gat.attn_src",
+      "shape": [
+        4,
+        48
+      ],
+      "params": 192,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.1.gat.attn_dst",
+      "shape": [
+        4,
+        48
+      ],
+      "params": 192,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.1.gat.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.1.gat.lin.weight",
+      "shape": [
+        192,
+        192
+      ],
+      "params": 36864,
+      "trainable": true
+    },
+    {
+      "name": "gat_blocks.1.residual_proj.weight",
+      "shape": [
+        48,
+        192
+      ],
+      "params": 9216,
+      "trainable": true
+    },
+    {
+      "name": "gat_out_norm.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "gat_out_norm.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "head.0.weight",
+      "shape": [
+        48,
+        48
+      ],
+      "params": 2304,
+      "trainable": true
+    },
+    {
+      "name": "head.0.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "head.1.weight",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "head.1.bias",
+      "shape": [
+        48
+      ],
+      "params": 48,
+      "trainable": true
+    },
+    {
+      "name": "head.4.weight",
+      "shape": [
+        24,
+        48
+      ],
+      "params": 1152,
+      "trainable": true
+    },
+    {
+      "name": "head.4.bias",
+      "shape": [
+        24
+      ],
+      "params": 24,
+      "trainable": true
+    },
+    {
+      "name": "head.7.weight",
+      "shape": [
+        1,
+        24
+      ],
+      "params": 24,
+      "trainable": true
+    },
+    {
+      "name": "head.7.bias",
+      "shape": [
+        1
+      ],
+      "params": 1,
+      "trainable": true
+    }
+  ]
+}
