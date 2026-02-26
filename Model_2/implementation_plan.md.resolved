@@ -1,0 +1,55 @@
+# XGBoost Head Instead of MLP in Model_2
+
+Replace the MLP regression head in the Informer+GAT pipeline with XGBoost. The neural backbone (Informer encoders → Gated Fusion → GAT) is trained end-to-end to learn spatial-temporal embeddings, then XGBoost does the final yield regression on those embeddings.
+
+## Proposed Changes
+
+### Model_2
+
+#### [NEW] [train_xgboost_head.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/train_xgboost_head.py)
+
+A new self-contained training script mirroring [train.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/train.py) but with a **two-stage pipeline**:
+
+**Stage 1 — Backbone Training:**
+- Train the full [DualChannelInformerGAT](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/informer_gat_model.py#284-438) model (with MLP head) using the same training loop as [train.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/train.py) (config, scaling, yield normalization, Huber loss, cosine scheduler)
+- This is needed so the Informer encoders and GAT learn meaningful representations
+- After training completes, restore best model checkpoint
+
+**Stage 2 — XGBoost Head:**
+- Freeze the backbone, run a forward pass on all data to extract post-GAT embeddings (`node_feat` from model output — shape `[S, N, D]` where D = `gat_hidden`)
+- Flatten to `[S*N, D]` feature matrix with corresponding yield targets
+- Split into train/val/test using the same season split as Stage 1
+- Train an `XGBRegressor` on the train embeddings → yield
+- Predict on all splits using XGBoost
+
+**Analysis Outputs (same 7 artifacts as [train.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/train.py)):**
+1. [metrics.json](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/analysis/run_6/metrics.json) — RMSE, MAE, MAPE, R² for all splits
+2. [predictions.csv](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/analysis/run_6/predictions.csv) — Per-district actual vs predicted
+3. [training_curves.png](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/analysis/run_6/training_curves.png) — Backbone train/val loss over epochs
+4. [error_analysis.png](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/analysis/run_6/error_analysis.png) — Scatter + error histogram
+5. [model_params.json](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/analysis/run_6/model_params.json) — Backbone params + XGBoost hyperparameters
+6. `accuracy_classification.csv/png` — MAPE-based accuracy buckets
+7. `trend_analysis.csv/png` — Year-over-year direction matching
+
+**XGBoost Hyperparameters** (tunable via [config.yaml](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Model_2/config.yaml) or defaults):
+- `n_estimators=500`, `max_depth=6`, `learning_rate=0.05`
+- `subsample=0.8`, `colsample_bytree=0.8`
+- Early stopping on validation set (patience=50)
+
+> [!IMPORTANT]
+> This requires `xgboost` to be installed. The existing [requirements.txt](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/requirements.txt) does not list it, but `scikit-learn` is already there. We will add `xgboost` as an import dependency in the script.
+
+## Verification Plan
+
+### Automated Tests
+```bash
+# Verify script compiles without errors
+python -c "import py_compile; py_compile.compile('Model_2/train_xgboost_head.py', doraise=True)"
+
+# Quick smoke test (3 epochs for backbone, then XGBoost)
+python Model_2/train_xgboost_head.py --epochs 3
+```
+
+### Manual Verification
+- Check that `Model_2/analysis/run_X/` is created with all 7 analysis artifact types
+- Compare XGBoost head metrics against the MLP head metrics from previous runs

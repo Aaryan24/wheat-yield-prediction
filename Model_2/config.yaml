@@ -43,9 +43,9 @@ split:
   mode: "custom"                # "fixed", "random", or "custom"
   seed: 42
   # custom mode: explicitly set year lists
-  train_years: [2017, 2018, 2019, 2020, 2021]
+  train_years: [2017, 2018, 2019, 2020,2021]
   val_years: [2022]
-  test_years: [2021]
+  test_years: [2022]
   # Completely remove these states from all data (districts, adjacency, etc.)
   exclude_states: ["Uttar Pradesh"]
 
