@@ -1,0 +1,21 @@
+mode: shared
+target_mode: district_demeaned
+
+optimization:
+  loss: huber
+  lr: 3.0e-4
+  weight_decay: 1.0e-2
+  grad_clip: 1.0
+  scheduler: cosine_warmup
+  warmup_pct: 0.10
+
+training:
+  epochs: 120
+  patience: 30
+  batch_size: 16
+  log_every: 1
+
+runtime:
+  device: cpu
+  deterministic: true
+  save_predictions: true

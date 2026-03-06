@@ -1,0 +1,28 @@
+mode: shared
+target_mode: district_signed_log
+
+optimization:
+  loss: asym_huber
+  lr: 3.0e-4
+  weight_decay: 1.0e-2
+  grad_clip: 1.0
+  scheduler: cosine_warmup
+  warmup_pct: 0.10
+  rise_under_w: 0.8
+  drop_miss_w: 0.2
+  huber_delta: 1.0
+
+training:
+  epochs: 120
+  patience: 120
+  batch_size: 8
+  log_every: 1
+  use_weighted_sampler: false
+  sample_pos_weight: 2.0
+  checkpoint_objective: rmse
+  min_drop_recall: 0.777
+
+runtime:
+  device: mps
+  deterministic: true
+  save_predictions: true

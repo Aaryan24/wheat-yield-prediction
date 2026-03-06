@@ -150,3 +150,74 @@ def add_missingness_indicators(
     weather_extra_names = ["weather_valid_ratio", "weather_mask_density"]
     sat_extra_names = ["sat_valid_ratio", "sat_mask_density"]
     return weather_out, weather_extra_names, sat_out, sat_extra_names
+
+
+def add_climate_dependency_features(
+    weather_x: np.ndarray,
+    weather_mask: np.ndarray,
+    tmax_norm_c: np.ndarray,
+    tmin_norm_c: np.ndarray,
+    tmean_norm_c: np.ndarray,
+    tp_norm_mm: np.ndarray,
+) -> Tuple[np.ndarray, List[str]]:
+    # Arrays are [S, N, T] and aligned to weather_x.
+    mask = weather_mask.astype(np.float32)
+
+    tmax_c = weather_x[..., 0] - 273.15
+    tmin_c = weather_x[..., 2] - 273.15
+    tmean_c = 0.5 * (tmax_c + tmin_c)
+    tp = weather_x[..., 4]
+    wind = weather_x[..., 8]
+
+    tmax_anom_c = (tmax_c - tmax_norm_c).astype(np.float32)
+    tmin_anom_c = (tmin_c - tmin_norm_c).astype(np.float32)
+    tmean_anom_c = (tmean_c - tmean_norm_c).astype(np.float32)
+    tp_anom_mm = (tp - tp_norm_mm).astype(np.float32)
+
+    valid = mask > 0
+    heat32_flag = ((tmax_c > 32.0) & valid).astype(np.float32)
+    heat35_flag = ((tmax_c > 35.0) & valid).astype(np.float32)
+    hot_dry_flag = ((tmax_c > 32.0) & (tp < 0.5) & valid).astype(np.float32)
+    hot_dry_windy_flag = (
+        (hot_dry_flag > 0.0) & (wind > 2.5) & valid
+    ).astype(np.float32)
+
+    heat32_cum = np.cumsum(heat32_flag, axis=2).astype(np.float32)
+    heat35_cum = np.cumsum(heat35_flag, axis=2).astype(np.float32)
+    hot_dry_cum = np.cumsum(hot_dry_flag, axis=2).astype(np.float32)
+    hot_dry_windy_cum = np.cumsum(hot_dry_windy_flag, axis=2).astype(np.float32)
+
+    extra = np.stack(
+        [
+            tmax_anom_c,
+            tmin_anom_c,
+            tmean_anom_c,
+            tp_anom_mm,
+            heat32_flag,
+            heat35_flag,
+            hot_dry_flag,
+            hot_dry_windy_flag,
+            heat32_cum,
+            heat35_cum,
+            hot_dry_cum,
+            hot_dry_windy_cum,
+        ],
+        axis=-1,
+    ).astype(np.float32)
+
+    out = np.concatenate([weather_x, extra], axis=-1)
+    names = [
+        "tmax_anom_c",
+        "tmin_anom_c",
+        "tmean_anom_c",
+        "tp_anom_mm",
+        "heat32_flag",
+        "heat35_flag",
+        "hot_dry_flag",
+        "hot_dry_windy_flag",
+        "heat32_cum",
+        "heat35_cum",
+        "hot_dry_cum",
+        "hot_dry_windy_cum",
+    ]
+    return out, names
