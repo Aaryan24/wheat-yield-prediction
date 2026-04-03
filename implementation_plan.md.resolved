@@ -1,0 +1,126 @@
+# Landsat Remote Sensing Pipeline (2010–2026)
+
+Replace the Sentinel-2 pipeline (data only from ~2015) with a **Landsat-based pipeline** that provides continuous 30m-resolution remote sensing data from **2010 to 2026** for all districts in UP, Haryana, and Punjab.
+
+## Why Landsat?
+
+| Satellite | Availability | Resolution | GEE Collection |
+|-----------|-------------|------------|----------------|
+| Landsat 5 TM | 1984–2013 | 30m | `LANDSAT/LT05/C02/T1_L2` |
+| Landsat 7 ETM+ | 1999–present | 30m | `LANDSAT/LE07/C02/T1_L2` |
+| Landsat 8 OLI | 2013–present | 30m | `LANDSAT/LC08/C02/T1_L2` |
+| Landsat 9 OLI-2 | 2021–present | 30m | `LANDSAT/LC09/C02/T1_L2` |
+
+By combining all 4 sensors, we get **seamless coverage from 2010 to 2026**. All use USGS Collection 2 Level-2 (surface reflectance), already atmospherically corrected.
+
+> [!IMPORTANT]
+> **Band Mapping**: Landsat 5/7 use different band names (e.g., `SR_B4` = NIR) than Landsat 8/9 (e.g., `SR_B5` = NIR). The pipeline will harmonize these automatically.
+
+> [!WARNING]
+> **Landsat 7 SLC-off**: After May 2003, Landsat 7 has striping artifacts. We use it only as a gap-filler when Landsat 5/8 data is unavailable, and the compositing approach minimizes the impact.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Band Selection**: The Sentinel-2 pipeline extracted B7, B8, B8A, B12 (NIR/Red Edge/SWIR). For Landsat, the closest equivalents are:
+> - **NIR** (Landsat B4/B5) ↔ Sentinel-2 B8
+> - **SWIR1** (Landsat B5/B6) ↔ Sentinel-2 B8A (approximate)
+> - **SWIR2** (Landsat B7) ↔ Sentinel-2 B12
+> - **Red** (Landsat B3/B4) — no direct Red Edge equivalent, but useful for NDVI
+>
+> The output CSV will have columns: `NIR`, `SWIR1`, `SWIR2`, `Red` instead of `B7`, `B8`, `B8A`, `B12`. Is this acceptable?
+
+## Proposed Changes
+
+All files will be created in a **new folder**: `Remote sensing data/landsat_wheat_pipeline/`
+
+---
+
+### Pipeline Structure
+
+```
+landsat_wheat_pipeline/
+├── config.py                    # Configuration (bands, districts, years 2010-2025)
+├── gee_extractor.py             # Multi-sensor Landsat extractor via GEE
+├── fill_missing_sma.py          # SMA gap-filling (same logic as Sentinel-2)
+├── process_all_districts.py     # Multi-year orchestrator with resume capability
+├── __init__.py                  # Package init
+├── requirements.txt             # Dependencies
+├── README.md                    # Documentation
+└── output/                      # Created at runtime
+    ├── raw/                     # Per-district per-year raw CSVs
+    ├── filled/                  # SMA-filled CSVs
+    ├── merged/                  # Multi-year merged CSVs per district
+    └── logs/                    # Processing logs
+```
+
+---
+
+### [NEW] [config.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/landsat_wheat_pipeline/config.py)
+
+- Same district lists (22 Haryana + 23 Punjab + 75 UP)
+- `PROCESSING_YEARS = list(range(2010, 2026))` → 16 years
+- Landsat band definitions with cross-sensor mapping table
+- Same wheat season config (Oct–Apr), same 5-day composites (42 time steps)
+- Quality control thresholds adapted for Landsat (cloud cover flags differ)
+
+---
+
+### [NEW] [gee_extractor.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/landsat_wheat_pipeline/gee_extractor.py)
+
+Key differences from Sentinel-2 version:
+- `LandsatExtractor` class instead of [Sentinel2Extractor](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/sentinel2_wheat_pipeline/gee_extractor.py#22-537)
+- **Multi-sensor merging**: Automatically selects the right Landsat sensor(s) per year:
+  - 2010–2012: Landsat 5 + Landsat 7 (fallback)
+  - 2013: Landsat 7 + Landsat 8
+  - 2014–2020: Landsat 8 + Landsat 7 (fallback)
+  - 2021+: Landsat 8 + Landsat 9
+- **Band harmonization**: Renames bands to common names (`NIR`, `SWIR1`, `SWIR2`, `Red`)
+- **Cloud masking**: Uses `QA_PIXEL` bitmask (Landsat C2 L2 standard) instead of Sentinel-2 QA60
+- **Cropland mask**: Same ESA WorldCover 2021 approach
+- Same district geometry resolution (GAUL boundaries + point-buffer fallback)
+- Same CSV output format (state, district, year, time_step, dates, bands, quality)
+
+---
+
+### [NEW] [fill_missing_sma.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/landsat_wheat_pipeline/fill_missing_sma.py)
+
+- Nearly identical to Sentinel-2 version
+- Updated band column names: `['NIR', 'SWIR1', 'SWIR2', 'Red']`
+
+---
+
+### [NEW] [process_all_districts.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/landsat_wheat_pipeline/process_all_districts.py)
+
+- Same [DistrictProcessor](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/sentinel2_wheat_pipeline/process_all_districts.py#15-350) orchestration pattern
+- Same resume capability (skip already-processed files)
+- Same rate limiting, logging, error tracking
+- Default years: 2010–2025
+
+---
+
+### [NEW] [__init__.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/landsat_wheat_pipeline/__init__.py)
+
+Package initialization with exports.
+
+---
+
+### [NEW] [README.md](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/landsat_wheat_pipeline/README.md)
+
+Documentation covering Landsat sensor details, band mapping, usage instructions.
+
+---
+
+### [NEW] [requirements.txt](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/Remote%20sensing%20data/landsat_wheat_pipeline/requirements.txt)
+
+Same dependencies as Sentinel-2 pipeline.
+
+## Verification Plan
+
+### Automated Tests
+1. **Syntax check**: `python -c "import ast; ast.parse(open('config.py').read()); print('OK')"` for each [.py](file:///d:/IIT/Academics/BCS/wheat-yield-prediction/test_s2s_minimal.py) file
+2. **Import check**: `python -c "from config import ALL_DISTRICTS, LANDSAT_BANDS, PROCESSING_YEARS; print(len(ALL_DISTRICTS), len(LANDSAT_BANDS), len(PROCESSING_YEARS))"` to verify config loads
+
+### Manual Verification
+1. **Test extraction** (requires GEE auth): `python process_all_districts.py --test` — extracts 1 district (Karnal) for 2 years to verify GEE connectivity and data extraction works
+2. **Review output CSVs** to confirm correct column names and data ranges
