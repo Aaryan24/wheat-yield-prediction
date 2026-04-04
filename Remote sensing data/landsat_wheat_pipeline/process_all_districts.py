@@ -89,16 +89,18 @@ class DistrictProcessor:
                 print(f"  ↻ Year {year} raw data exists, skipping extraction")
                 df = pd.read_csv(raw_path)
             else:
-                print(f"  → Extracting year {year}...")
+                print(f"  → Extracting year {year} (batch export)...")
 
-                result = self.extractor.extract_district_time_series(
+                exported_path = self.extractor.export_district_time_series_to_csv(
                     state=state,
                     district=district,
                     year=year,
+                    output_dir=self.raw_dir,
+                    filename=raw_filename,
                     scale=30
                 )
 
-                if result is None:
+                if exported_path is None:
                     self.errors.append({
                         'state': state,
                         'district': district,
@@ -107,13 +109,7 @@ class DistrictProcessor:
                     })
                     return None
 
-                # Save raw data
-                self.extractor.save_to_csv(result, output_dir=self.raw_dir, filename=raw_filename)
                 df = pd.read_csv(raw_path)
-
-                # Rate limiting (only after actual GEE extraction)
-                print(f"  ⏸ Waiting {self.rate_limit_delay}s for rate limiting...")
-                time.sleep(self.rate_limit_delay)
 
             # Fill missing values
             df = df  # already loaded above

@@ -7,12 +7,22 @@ Combines Landsat 5/7/8/9 for seamless coverage from 2010 to 2026.
 """
 
 import ee
+import io
 import os
 import json
+import time
+import uuid
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple
+
+try:
+    from googleapiclient.discovery import build
+    from googleapiclient.http import MediaIoBaseDownload
+    _HAS_DRIVE_API = True
+except ImportError:
+    _HAS_DRIVE_API = False
 
 # Import configuration
 try:
@@ -36,6 +46,10 @@ class LandsatExtractor:
 
     # Common output band names (harmonized across all sensors)
     OUTPUT_BANDS = ["Red", "NIR", "SWIR1", "SWIR2"]
+
+    # Batch export settings
+    EXACT_EXPORT_FLOAT_FORMAT = "%.17g"
+    BATCH_EXPORT_DRIVE_FOLDER = "landsat_wheat_pipeline_exports"
 
     # District coordinates (lat, lon) for fallback geometry
     DISTRICT_COORDS = {
@@ -190,6 +204,9 @@ class LandsatExtractor:
         except Exception as e:
             print(f"Warning: Could not load cropland mask: {e}")
             self.cropland_mask = None
+
+        # Cached Drive service for batch exports
+        self._drive_service = None
 
     # ─── Sensor Selection ────────────────────────────────────────────────
 
@@ -513,7 +530,283 @@ class LandsatExtractor:
             }
 
         except Exception as e:
-            print(f"   Error processing {district}: {e}")
+            print(f"   Error processing {district} (interactive): {e}")
+            return None
+
+    # ─── Batch Export Helpers ─────────────────────────────────────────────
+
+    def _get_drive_service(self):
+        """Build and cache a Google Drive v3 API client."""
+        if self._drive_service is not None:
+            return self._drive_service
+        if not _HAS_DRIVE_API:
+            raise ImportError(
+                "google-api-python-client is required for batch export. "
+                "Install with: pip install google-api-python-client"
+            )
+        credentials = ee.data.get_persistent_credentials()
+        self._drive_service = build('drive', 'v3', credentials=credentials)
+        return self._drive_service
+
+    def _build_exact_export_feature(
+        self, comp: Dict, geometry: ee.Geometry, scale: int
+    ) -> ee.Feature:
+        """
+        Build one ee.Feature per composite for batch table export.
+        All numeric values are formatted as strings server-side to preserve
+        exact float representation across the export round-trip.
+        """
+        fmt = self.EXACT_EXPORT_FLOAT_FORMAT
+
+        image_count = comp['image_count']
+        mean_cloud = comp['mean_cloud_cover']
+        composite = comp['composite']
+
+        # Reduce region exactly like the interactive path
+        stats = composite.reduceRegion(
+            reducer=ee.Reducer.mean(),
+            geometry=geometry,
+            scale=scale,
+            maxPixels=1e13,
+            bestEffort=False
+        )
+
+        def maybe_format(value):
+            """Format a value as string, guarding against None."""
+            return ee.Algorithms.If(
+                ee.Algorithms.IsEqual(value, None),
+                None,
+                ee.Number(value).format(fmt)
+            )
+
+        # When image_count == 0, bands and cloud should be None
+        has_images = image_count.gt(0)
+
+        red_val = ee.Algorithms.If(has_images, maybe_format(stats.get('Red')), None)
+        nir_val = ee.Algorithms.If(has_images, maybe_format(stats.get('NIR')), None)
+        swir1_val = ee.Algorithms.If(has_images, maybe_format(stats.get('SWIR1')), None)
+        swir2_val = ee.Algorithms.If(has_images, maybe_format(stats.get('SWIR2')), None)
+        cloud_val = ee.Algorithms.If(has_images, maybe_format(mean_cloud), None)
+
+        props = {
+            'time_step': ee.Number(comp['time_step']).format('%.0f'),
+            'start_date': comp['start_date'],
+            'end_date': comp['end_date'],
+            'Red': red_val,
+            'NIR': nir_val,
+            'SWIR1': swir1_val,
+            'SWIR2': swir2_val,
+            'image_count': image_count.format('%.0f'),
+            'mean_cloud_cover': cloud_val,
+        }
+
+        return ee.Feature(None, props)
+
+    def _wait_for_export_task(self, task, poll_seconds: int = 5) -> Dict:
+        """Poll an EE export task until it completes."""
+        while True:
+            status = task.status()
+            state = status.get('state', '')
+            if state in ('COMPLETED', 'FAILED', 'CANCELLED'):
+                return status
+            time.sleep(poll_seconds)
+
+    def _download_drive_file_bytes(self, filename: str) -> bytes:
+        """Download a file from Drive by exact name, then delete it."""
+        service = self._get_drive_service()
+
+        # Find the file
+        results = service.files().list(
+            q=f"name='{filename}'",
+            spaces='drive',
+            fields='files(id, name)'
+        ).execute()
+        files = results.get('files', [])
+        if not files:
+            raise FileNotFoundError(f"File '{filename}' not found on Drive")
+
+        file_id = files[0]['id']
+
+        # Download
+        request = service.files().get_media(fileId=file_id)
+        buffer = io.BytesIO()
+        downloader = MediaIoBaseDownload(buffer, request)
+        done = False
+        while not done:
+            _, done = downloader.next_chunk()
+
+        # Delete from Drive
+        try:
+            service.files().delete(fileId=file_id).execute()
+        except Exception:
+            pass  # best-effort cleanup
+
+        return buffer.getvalue()
+
+    @staticmethod
+    def _normalize_export_float(text: str) -> str:
+        """Normalize an EE-exported float string to Python's repr."""
+        if not text:
+            return ''
+        return str(float(text))
+
+    @staticmethod
+    def _normalize_export_int(text: str) -> str:
+        """Normalize an EE-exported int string."""
+        if not text:
+            return '0'
+        return str(int(float(text)))
+
+    def _rewrite_exported_csv_exactly(
+        self, export_bytes: bytes, state: str, district: str, year: int
+    ) -> pd.DataFrame:
+        """
+        Rewrite EE-exported CSV bytes into the exact schema and numeric
+        formatting produced by the interactive extraction path.
+        """
+        df = pd.read_csv(io.BytesIO(export_bytes), dtype=str).fillna('')
+
+        # Normalize floats
+        for col in ['Red', 'NIR', 'SWIR1', 'SWIR2', 'mean_cloud_cover']:
+            if col in df.columns:
+                df[col] = df[col].apply(self._normalize_export_float)
+
+        # Normalize integer
+        if 'image_count' in df.columns:
+            df['image_count'] = df['image_count'].apply(self._normalize_export_int)
+
+        # Sort key
+        df['time_step_num'] = df['time_step'].apply(lambda v: int(float(v)))
+        df['time_step'] = df['time_step_num'].astype(str)
+
+        # Add metadata
+        df['state'] = state
+        df['district'] = district
+        df['year'] = str(year)
+
+        # Recompute quality_flag
+        band_cols = ['Red', 'NIR', 'SWIR1', 'SWIR2']
+
+        def compute_flag(row):
+            if row['image_count'] == '0':
+                return 'insufficient_data'
+            elif all(row[b] != '' for b in band_cols):
+                return 'valid'
+            else:
+                return 'missing_bands'
+
+        df['quality_flag'] = df.apply(compute_flag, axis=1)
+
+        # Sort and select columns
+        df = df.sort_values('time_step_num').reset_index(drop=True)
+
+        final_cols = [
+            'state', 'district', 'year', 'time_step',
+            'start_date', 'end_date',
+            'Red', 'NIR', 'SWIR1', 'SWIR2',
+            'image_count', 'mean_cloud_cover', 'quality_flag'
+        ]
+        return df[final_cols]
+
+    # ─── Public Batch Export Method ──────────────────────────────────────
+
+    def export_district_time_series_to_csv(
+        self,
+        state: str,
+        district: str,
+        year: int,
+        output_dir: str,
+        filename: str,
+        scale: int = 30
+    ) -> Optional[str]:
+        """
+        Export a district-year time series via EE batch table export to Drive,
+        then download, normalize, and save locally as a raw CSV.
+
+        Falls back to the interactive extraction path on any failure.
+        """
+        sensors = self.get_sensors_for_year(year)
+        print(f"\nExtracting data for {district}, {state} - Year {year} "
+              f"(sensors: {', '.join(sensors)}) [batch export]...")
+
+        output_path = os.path.join(output_dir, filename)
+        os.makedirs(output_dir, exist_ok=True)
+
+        try:
+            # Build geometry and composites (same as interactive path)
+            geometry = self.get_district_geometry(state, district)
+            composites = self.create_time_series_composites(geometry, year)
+
+            # Build features for batch export
+            features = []
+            for comp in composites:
+                feat = self._build_exact_export_feature(comp, geometry, scale)
+                features.append(feat)
+
+            feature_collection = ee.FeatureCollection(features)
+
+            # Launch export
+            export_id = f"landsat_{state}_{district}_{year}_{uuid.uuid4().hex[:8]}"
+            task = ee.batch.Export.table.toDrive(
+                collection=feature_collection,
+                description=export_id,
+                folder=self.BATCH_EXPORT_DRIVE_FOLDER,
+                fileNamePrefix=export_id,
+                fileFormat='CSV',
+                selectors=[
+                    'time_step', 'start_date', 'end_date',
+                    'Red', 'NIR', 'SWIR1', 'SWIR2',
+                    'image_count', 'mean_cloud_cover'
+                ]
+            )
+            task.start()
+            print(f"  ▶ Export task started: {export_id}")
+
+            # Wait for completion
+            status = self._wait_for_export_task(task)
+            if status.get('state') != 'COMPLETED':
+                raise RuntimeError(
+                    f"Export task {status.get('state')}: "
+                    f"{status.get('error_message', 'unknown error')}"
+                )
+            print(f"  ✓ Export task completed")
+
+            # Download from Drive
+            drive_filename = f"{export_id}.csv"
+            export_bytes = self._download_drive_file_bytes(drive_filename)
+            print(f"  ✓ Downloaded {len(export_bytes)} bytes from Drive")
+
+            # Rewrite to exact schema
+            df = self._rewrite_exported_csv_exactly(export_bytes, state, district, year)
+
+            # Count valid composites
+            valid_count = (df['quality_flag'] == 'valid').sum()
+            total_count = len(df)
+            valid_ratio = valid_count / total_count if total_count > 0 else 0
+            print(f"  Valid composites: {valid_count}/{total_count} "
+                  f"({valid_ratio * 100:.1f}%)")
+
+            # Save
+            df.to_csv(output_path, index=False)
+            print(f"  Data saved to: {output_path}")
+            return output_path
+
+        except Exception as e:
+            print(f"  ⚠ Batch export failed: {e}")
+            print(f"  → Falling back to interactive extraction...")
+
+            # Fallback to interactive path
+            try:
+                result = self.extract_district_time_series(
+                    state=state, district=district, year=year, scale=scale
+                )
+                if result is not None:
+                    return self.save_to_csv(
+                        result, output_dir=output_dir, filename=filename
+                    )
+            except Exception as fallback_err:
+                print(f"  ✗ Fallback also failed: {fallback_err}")
+
             return None
 
     # ─── CSV Export ──────────────────────────────────────────────────────
