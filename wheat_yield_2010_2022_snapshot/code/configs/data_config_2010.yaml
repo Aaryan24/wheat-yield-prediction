@@ -1,0 +1,60 @@
+region:
+  name: "Indo-Gangetic Plain"
+  states: ["Punjab", "Haryana", "Uttar Pradesh"]
+  bounds:
+    north: 32.0
+    south: 24.0
+    west: 73.0
+    east: 85.0
+
+s2s:
+  dataset: "s2s"
+  origin: "ecmf"
+  resolution: 0.4
+  lead_time_days: 46
+  variables:
+    - name: "mx2t6"
+      code: 121
+      description: "Maximum temperature at 2m (6h)"
+    - name: "mn2t6"
+      code: 122
+      description: "Minimum temperature at 2m (6h)"
+    - name: "tp"
+      code: 228228
+      description: "Total precipitation"
+    - name: "ssrd"
+      code: 169
+      description: "Surface solar radiation downwards"
+    - name: "10u"
+      code: 165
+      description: "10m U wind component"
+    - name: "10v"
+      code: 166
+      description: "10m V wind component"
+
+temporal:
+  train_years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]
+  val_years: [2021]
+  test_years: [2022]
+  wheat_season:
+    sowing: [10, 11, 12]
+    growth: [1, 2, 3]
+    harvest: [4]
+
+paths:
+  raw:
+    s2s: "/Users/aaryan/Downloads/ugp/data/s2s"
+    sentinel2: "/Users/aaryan/Downloads/ugp/data/sentinel2"
+    yields: "/Users/aaryan/Downloads/ugp/data/yields"
+    boundaries: "/Users/aaryan/Downloads/ugp/data/boundaries"
+  processed: "/Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/processed"
+
+boundaries:
+  admin2_path: "/Users/aaryan/Downloads/ugp/data/boundaries/World Bank Official Boundaries - Admin 2.gpkg"
+  admin2_layer: "WB_GAD_ADM2"
+  country_iso3: "IND"
+  country_field: "ISO_A3"
+  state_field: "NAM_1"
+  district_field: "NAM_2"
+  district_code_field: "ADM2CD_c"
+  state_names: ["Punjab", "Haryana", "Uttar Pradesh"]

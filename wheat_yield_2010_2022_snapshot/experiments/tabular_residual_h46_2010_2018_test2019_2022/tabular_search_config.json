@@ -1,0 +1,45 @@
+{
+  "config_data": "expansion_2010_workspace/configs/codex_data_v2_2010.yaml",
+  "horizon_days": 46,
+  "opdate_profile": "ten_day_dec1_apr30",
+  "train_years": [
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "test_years": [
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "seed": 42,
+  "n_candidates": 65,
+  "n_rows": 24752,
+  "n_features": 453,
+  "lag1_baseline": {
+    "mode": "lag1_residual_linear",
+    "available": true,
+    "intercept": -6.920353735170927,
+    "coef_lag1_delta": 0.21049731882312256,
+    "ridge_lambda": 0.0,
+    "fit_years_used": [
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "fit_rows": 952,
+    "baseline_available_rate": 0.9230769230769231
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "train_years": [
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "test_years": [
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "feature_sets": [
+    "meta_only",
+    "meta_weather_heat",
+    "meta_weather_sat_agri",
+    "all_no_district"
+  ],
+  "target_specs": [
+    [
+      "direct_actual_sign",
+      "actual_sign",
+      null
+    ],
+    [
+      "lag1_flip_router",
+      "flip_lag1",
+      "lag1_sign"
+    ],
+    [
+      "old_sota_flip_router",
+      "flip_old_sota",
+      "old_sota_sign"
+    ]
+  ],
+  "weight_modes": [
+    "none",
+    "sqrt_margin"
+  ],
+  "train_min_abs_deltas": [
+    0.0,
+    50.0,
+    100.0
+  ],
+  "best_row": {
+    "model": "logreg_c0.01_kall",
+    "variant": "old_sota_flip_router_thr085",
+    "train_accuracy": 0.6965452847805789,
+    "test_accuracy": 0.7352941176470589,
+    "test_balanced_accuracy": 0.7298740803621958,
+    "test_auc": 0.45525608375778154,
+    "drop_recall": 0.6008771929824561,
+    "rise_recall": 0.8588709677419355,
+    "predicted_drop_rate": 0.36134453781512604,
+    "n_test": 476,
+    "rmse_hybridmag": 319.8972939050717,
+    "mae_hybridmag": 234.51174632642164,
+    "r2_hybridmag": 0.7234262491051777,
+    "threshold": 0.85,
+    "feature_set": "meta_only",
+    "target_mode": "old_sota_flip_router",
+    "weight_mode": "sqrt_margin",
+    "train_min_abs_delta": 100.0,
+    "n_fit": 867,
+    "n_features": 38,
+    "flip_rate_test": 0.037815126050420166,
+    "flip_precision_test": 0.7777777777777778,
+    "flip_recall_test": 0.10294117647058823
+  }
+}
