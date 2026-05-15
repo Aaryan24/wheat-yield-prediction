@@ -58,7 +58,7 @@ class TemporalTransformerEncoder(nn.Module):
         denom = valid.sum(dim=1).clamp_min(1.0)
         return (x * valid).sum(dim=1) / denom
 
-    def forward(self, x: torch.Tensor, valid_mask: Optional[torch.Tensor]) -> torch.Tensor:
+    def encode(self, x: torch.Tensor, valid_mask: Optional[torch.Tensor]) -> torch.Tensor:
         h = self.input_proj(x)
         h = self.positional(h)
         h = self.norm(h)
@@ -73,5 +73,35 @@ class TemporalTransformerEncoder(nn.Module):
                 key_padding_mask = key_padding_mask.clone()
                 key_padding_mask[all_pad, 0] = False
 
-        h = self.encoder(h, src_key_padding_mask=key_padding_mask)
+        return self.encoder(h, src_key_padding_mask=key_padding_mask)
+
+    def forward(
+        self,
+        x: torch.Tensor,
+        valid_mask: Optional[torch.Tensor],
+        return_sequence: bool = False,
+    ) -> torch.Tensor:
+        h = self.encode(x=x, valid_mask=valid_mask)
+        if return_sequence:
+            return h
         return self._masked_mean(h, valid_mask)
+
+
+class MaskedAttentionPooling(nn.Module):
+    def __init__(self, d_model: int, dropout: float = 0.0) -> None:
+        super().__init__()
+        self.score = nn.Linear(d_model, 1)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, x: torch.Tensor, mask: Optional[torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor]:
+        logits = self.score(self.dropout(x)).squeeze(-1)
+        if mask is not None:
+            key_padding_mask = mask <= 0
+            all_pad = key_padding_mask.all(dim=1)
+            if all_pad.any():
+                key_padding_mask = key_padding_mask.clone()
+                key_padding_mask[all_pad, 0] = False
+            logits = logits.masked_fill(key_padding_mask, float("-inf"))
+        weights = torch.softmax(logits, dim=1)
+        pooled = torch.sum(x * weights.unsqueeze(-1), dim=1)
+        return pooled, weights

@@ -1,0 +1,31 @@
+name: DualChannelTransformerGATV2
+
+# Architecture-upgrade config for the first sequence-fusion run.
+weather_input_dim: 18
+sat_input_dim: 17
+
+weather_d_model: 160
+sat_d_model: 160
+weather_heads: 8
+sat_heads: 8
+weather_layers: 3
+sat_layers: 3
+weather_d_ff: 640
+sat_d_ff: 640
+
+dropout: 0.2
+max_seq_len_weather: 64
+max_seq_len_sat: 64
+
+fusion_hidden: 256
+gat_hidden: 192
+gat_heads: 4
+gat_layers: 2
+
+opdate_embedding_dim: 16
+fusion_mode: cross_attention
+pooling_mode_weather: attention
+pooling_mode_sat: attention
+cross_attention_level: sequence
+cross_attention_heads: 4
+head_mode: sign_magnitude

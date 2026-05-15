@@ -1,0 +1,23 @@
+{
+  "fit_years": [
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "test_years": [
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "stack_input_path": "codex_v2/experiments/sota_search_2010_2018_test2019_2022/stacked_sota_candidates/stack_input_predictions.csv",
+  "final_predictions_path": "codex_v2/experiments/sota_search_2010_2018_test2019_2022/final_ensemble_candidates/final_ensemble_predictions_with_trainfit_signmag.csv",
+  "n_candidates": 360,
+  "n_rows": 1547
+}

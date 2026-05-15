@@ -1,0 +1,68 @@
+{
+  "raw_html": "/Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/yields/des_apy_wheat_rabi_2010_2022.html",
+  "raw_long_csv": "/Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/yields/des_apy_wheat_rabi_2010_2022_long.csv",
+  "model_ready_csv": "/Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/yields/des_apy_wheat_rabi_2010_2022_model_ready_119.csv",
+  "proxy_choice_csv": "/Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/yields/des_apy_wheat_rabi_2010_2022_proxy_choice.csv",
+  "fill_rows_csv": "/Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/yields/des_apy_wheat_rabi_2010_2022_fill_rows.csv",
+  "years": [
+    2010,
+    2022
+  ],
+  "overlap_validation_against_existing_2017_2022": true,
+  "rows": 1547,
+  "proxy_filled_rows": 17,
+  "coverage_by_year": {
+    "2010": 119,
+    "2011": 119,
+    "2012": 119,
+    "2013": 119,
+    "2014": 119,
+    "2015": 119,
+    "2016": 119,
+    "2017": 119,
+    "2018": 119,
+    "2019": 119,
+    "2020": 119,
+    "2021": 119,
+    "2022": 119
+  },
+  "selected_proxies": {
+    "Charkhi Dadri": {
+      "proxy_district_name": "Rohtak",
+      "overlap_years": 6,
+      "selection_rmse": 380.81053906984596,
+      "selection_mae": 358.3333333333333
+    },
+    "Fazilka": {
+      "proxy_district_name": "Firozpur",
+      "overlap_years": 11,
+      "selection_rmse": 260.0524422636187,
+      "selection_mae": 239.0909090909091
+    },
+    "Hapur": {
+      "proxy_district_name": "Ghaziabad",
+      "overlap_years": 11,
+      "selection_rmse": 279.0894284828952,
+      "selection_mae": 241.81818181818178
+    },
+    "Pathankot": {
+      "proxy_district_name": "Hoshiarpur",
+      "overlap_years": 11,
+      "selection_rmse": 353.79757951790356,
+      "selection_mae": 248.18181818181827
+    },
+    "Sambhal": {
+      "proxy_district_name": "Badaun",
+      "overlap_years": 11,
+      "selection_rmse": 136.3818169698586,
+      "selection_mae": 123.63636363636368
+    },
+    "Shamli": {
+      "proxy_district_name": "Baghpat",
+      "overlap_years": 11,
+      "selection_rmse": 396.77105832869506,
+      "selection_mae": 324.5454545454545
+    }
+  },
+  "sangrur_audit_rows": 13
+}

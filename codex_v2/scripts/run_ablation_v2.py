@@ -127,7 +127,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ablation-set", type=str, required=True, help="full|quick|A0,A1,...")
     parser.add_argument("--seeds", type=int, nargs="+", required=True)
     parser.add_argument("--horizons", type=int, nargs="+", required=True)
-    parser.add_argument("--operational-dates", nargs="+", required=True)
+    parser.add_argument("--operational-dates", nargs="+", default=None)
+    parser.add_argument(
+        "--opdate-profile",
+        type=str,
+        choices=["manual", "five_day_dec1_apr30"],
+        default="manual",
+    )
+    parser.add_argument("--allow-manual-opdates-override", action="store_true")
+    parser.add_argument("--enable-e6", action="store_true")
+    parser.add_argument("--enable-e7", action="store_true")
+    parser.add_argument("--climate-normals-temp-csv", type=str, default=None)
+    parser.add_argument("--climate-normals-rain-csv", type=str, default=None)
     parser.add_argument("--out-root", type=str, required=True)
 
     parser.add_argument("--config-data", type=str, default="codex_v2/configs/data_v2.yaml")
@@ -141,6 +152,12 @@ def main() -> None:
     args = parse_args()
     ablations = _resolve_ablation_set(args.ablation_set)
     op_dates = [str(x) for x in (args.operational_dates or DEFAULT_OP_DATES)]
+    if str(args.opdate_profile).strip().lower() != "manual" and not args.operational_dates:
+        op_dates = []
+    if bool(args.enable_e6) and (not args.climate_normals_temp_csv or not args.climate_normals_rain_csv):
+        raise RuntimeError(
+            "--enable-e6 requires both --climate-normals-temp-csv and --climate-normals-rain-csv"
+        )
 
     out_root = Path(args.out_root)
     out_root.mkdir(parents=True, exist_ok=True)
@@ -167,6 +184,8 @@ def main() -> None:
                     target_mode=str(ab_cfg["target_mode"]),
                     horizon_days=int(horizon),
                     operational_dates=op_dates,
+                    opdate_profile=str(args.opdate_profile),
+                    allow_manual_opdates_override=bool(args.allow_manual_opdates_override),
                     seed=int(seed),
                     config_data=Path(args.config_data),
                     config_model=Path(args.config_model),
@@ -176,6 +195,10 @@ def main() -> None:
                     use_engineered_weather=bool(ab_cfg["use_engineered_weather"]),
                     use_engineered_satellite=bool(ab_cfg["use_engineered_satellite"]),
                     use_missingness_indicators=bool(ab_cfg["use_missingness_indicators"]),
+                    enable_e6=bool(args.enable_e6),
+                    enable_e7=bool(args.enable_e7),
+                    climate_normals_temp_csv=Path(args.climate_normals_temp_csv) if args.climate_normals_temp_csv else None,
+                    climate_normals_rain_csv=Path(args.climate_normals_rain_csv) if args.climate_normals_rain_csv else None,
                     fusion_mode=str(ab_cfg["fusion_mode"]),
                     run_name=run_name,
                 )
@@ -191,6 +214,9 @@ def main() -> None:
                     "use_engineered_weather": bool(ab_cfg["use_engineered_weather"]),
                     "use_engineered_satellite": bool(ab_cfg["use_engineered_satellite"]),
                     "use_missingness_indicators": bool(ab_cfg["use_missingness_indicators"]),
+                    "opdate_profile": str(args.opdate_profile),
+                    "enable_e6": bool(args.enable_e6),
+                    "enable_e7": bool(args.enable_e7),
                     "fusion_mode": str(ab_cfg["fusion_mode"]),
                     "result_out_dir": str(result["out_dir"]),
                 }

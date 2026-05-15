@@ -1,0 +1,33 @@
+paths:
+  districts: /Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/processed/s2s_district/districts.parquet
+  weather_dir: /Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/processed/s2s_district
+  yield_file: /Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/yields/des_apy_wheat_rabi_2010_2022_model_ready_119.csv
+  sangrur_audit: /Users/aaryan/Downloads/ugp/data/yields/apy_query_report_sangrur_malerkotla_audit.csv
+  sat_merged_dir: /Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/landsat_merged_compat
+  agri_economics_dir: /Users/aaryan/Downloads/ugp/expansion_2010_workspace/data/agri_economics
+  boundary_config: /Users/aaryan/Downloads/ugp/configs/data_config.yaml
+
+splits:
+  mode: fixed
+  train_years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020]
+  val_years: [2021]
+  test_years: [2022]
+
+years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
+
+operational_dates:
+  primary: ["12-01", "12-11", "12-21", "12-31", "01-10", "01-20", "01-30", "02-09"]
+  secondary: ["02-19", "03-01", "03-11", "03-21", "03-31", "04-10", "04-20", "04-30"]
+
+satellite:
+  seq_len: 43
+  imputation: state_mean_with_mask
+
+features:
+  use_engineered_weather: true
+  use_engineered_satellite: true
+  use_missingness_indicators: true
+
+train_defaults:
+  horizons: [25]
+  seeds: [42]
