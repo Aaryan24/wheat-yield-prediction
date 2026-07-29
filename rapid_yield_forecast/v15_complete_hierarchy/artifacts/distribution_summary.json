@@ -1,0 +1,93 @@
+{
+  "selected_distribution": {
+    "distribution_candidate": "V15_frontier__scale_0.95",
+    "center": "v15_point_prediction",
+    "center_label": "V15_frontier",
+    "scale": 0.95,
+    "period": "development",
+    "coverage_80": 0.7857142857142857,
+    "coverage_90": 0.9159663865546218,
+    "width_80": 608.8634328049947,
+    "width_90": 870.6762192408112,
+    "interval_score_80": 931.1683969736395,
+    "interval_score_90": 1217.9396979033402,
+    "mean_pinball": 70.89283739031926,
+    "quantile_calibration_mae": 0.03140203449800974,
+    "selection_score": 70.89533739031926
+  },
+  "pinball_optimum_not_released": {
+    "distribution_candidate": "V15_frontier__scale_0.80",
+    "center": "v15_point_prediction",
+    "center_label": "V15_frontier",
+    "scale": 0.8,
+    "period": "development",
+    "coverage_80": 0.726890756302521,
+    "coverage_90": 0.8781512605042017,
+    "width_80": 512.7271013094694,
+    "width_90": 733.2010267291041,
+    "interval_score_80": 934.181582142611,
+    "interval_score_90": 1206.1237915030997,
+    "mean_pinball": 70.59840666560402,
+    "quantile_calibration_mae": 0.03051747014595312,
+    "selection_score": 70.60840666560402
+  },
+  "metrics": [
+    {
+      "period": "development",
+      "distribution_candidate": "V15_frontier__scale_0.95",
+      "coverage_80": 0.7857142857142857,
+      "coverage_90": 0.9159663865546218,
+      "width_80": 608.8634328049947,
+      "width_90": 870.6762192408112,
+      "interval_score_80": 931.1683969736395,
+      "interval_score_90": 1217.9396979033402,
+      "mean_pinball": 70.89283739031926,
+      "quantile_calibration_mae": 0.03140203449800974,
+      "rise_auc": 0.851138985005767,
+      "severe_drop_auc": 0.8244691607684529,
+      "rise_brier": 0.15291692007120844,
+      "severe_drop_brier": 0.07471444738081322
+    },
+    {
+      "period": "late",
+      "distribution_candidate": "V15_frontier__scale_0.95",
+      "coverage_80": 0.7815126050420168,
+      "coverage_90": 0.8697478991596639,
+      "width_80": 627.6605009719782,
+      "width_90": 894.8130897473883,
+      "interval_score_80": 1073.6552505796565,
+      "interval_score_90": 1373.4722402628222,
+      "mean_pinball": 81.02060400946583,
+      "quantile_calibration_mae": 0.05064130915524104,
+      "rise_auc": 0.8372359470103832,
+      "severe_drop_auc": 0.7987130836495627,
+      "rise_brier": 0.16200773503809845,
+      "severe_drop_brier": 0.08528636180737874
+    },
+    {
+      "period": "four_year",
+      "distribution_candidate": "V15_frontier__scale_0.95",
+      "coverage_80": 0.7836134453781513,
+      "coverage_90": 0.8928571428571429,
+      "width_80": 618.2619668884865,
+      "width_90": 882.7446544940997,
+      "interval_score_80": 1002.4118237766479,
+      "interval_score_90": 1295.7059690830808,
+      "mean_pinball": 75.95672069989254,
+      "quantile_calibration_mae": 0.0374170720919947,
+      "rise_auc": 0.8445845231039995,
+      "severe_drop_auc": 0.8091890420899855,
+      "rise_brier": 0.15746232755465345,
+      "severe_drop_brier": 0.08000040459409599
+    }
+  ],
+  "selection_years": [
+    2019,
+    2020
+  ],
+  "confirmation_years": [
+    2021,
+    2022
+  ],
+  "post_2022_yield_labels_read": false
+}

@@ -1,0 +1,75 @@
+{
+  "encoder": [
+    {
+      "train_end": 2022,
+      "variant": "modis_pretrained",
+      "seed": 42,
+      "device": "mps",
+      "resumed_from_completed_encoder_refit": true,
+      "score_claimed_for_refit": false
+    },
+    {
+      "train_end": 2022,
+      "variant": "modis_pretrained",
+      "seed": 73,
+      "device": "mps",
+      "resumed_from_completed_encoder_refit": true,
+      "score_claimed_for_refit": false
+    }
+  ],
+  "xgb": [
+    {
+      "name": "v15_xgb_base_physical_d2_through2022",
+      "depth": 2,
+      "seeds": [
+        42,
+        73
+      ],
+      "train_year_min": 2017,
+      "train_year_max": 2022,
+      "target": "yield_kg_per_ha - baseline_weighted_recent",
+      "score_claimed_for_refit": false,
+      "numeric_feature_count": 78,
+      "design_column_count": 81
+    },
+    {
+      "name": "v15_xgb_current_physical_d2_through2022",
+      "depth": 2,
+      "seeds": [
+        42,
+        73
+      ],
+      "train_year_min": 2017,
+      "train_year_max": 2022,
+      "target": "yield_kg_per_ha - baseline_weighted_recent",
+      "score_claimed_for_refit": false,
+      "numeric_feature_count": 108,
+      "design_column_count": 111
+    }
+  ],
+  "recipe": {
+    "production_anchor": "../v14_anomaly_distribution/models/outlook_shadow_xgb_bundle.joblib",
+    "v15_base_bundle": "v15_xgb_base_physical_d2_through2022.joblib",
+    "v15_current_bundle": "v15_xgb_current_physical_d2_through2022.joblib",
+    "point_formula": "V14_shadow + 1.25 * (V15_current_xgb - V15_base_xgb)",
+    "gamma": 1.25,
+    "distribution_scale": 0.95,
+    "distribution_source": "V14 empirical district residual distribution",
+    "encoder_seeds": [
+      42,
+      73
+    ],
+    "encoder_train_end": 2022,
+    "xgb_train_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022
+    ],
+    "reported_scores_use_deployment_refit": false,
+    "score_claimed_for_refit": false
+  },
+  "post_2022_yield_labels_read": false
+}

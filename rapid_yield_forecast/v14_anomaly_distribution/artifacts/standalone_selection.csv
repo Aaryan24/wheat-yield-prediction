@@ -1,0 +1,3 @@
+candidate,period,normal,feature_set,model,rows,rmse,mae,bias,equal_state_rmse,mean_year_rmse,max_year_rmse,direction_accuracy,selection_score,selection_category
+weighted3__physical__xgb_2p0,development,weighted3,physical,xgb_2p0,238,282.7924919672428,213.68671956720974,11.377206985564793,293.0743018185876,282.0624956166762,302.36870352301906,0.6932773109243697,285.18044534243734,long_history
+weighted3__physical__xgb_2p0,development,weighted3,physical,xgb_2p0,238,282.7924919672428,213.68671956720974,11.377206985564793,293.0743018185876,282.0624956166762,302.36870352301906,0.6932773109243697,285.18044534243734,all_candidates

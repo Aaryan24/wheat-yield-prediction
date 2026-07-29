@@ -1,0 +1,98 @@
+{
+  "release": "V14 anomaly distribution and crop-outlook increment",
+  "created": "2026-07-26",
+  "production_point": {
+    "model": "V5 frozen point",
+    "late_rmse_kg_per_ha": 288.61001033283793,
+    "status": "keep until sealed-year confirmation"
+  },
+  "frontier_shadow_point": {
+    "model": "V14 isolated future-crop correction",
+    "formula": "V5 + 1.75 * (((XGB_full + XGB_effect + XGB_broad) / 3) - XGB_no_future)",
+    "selection_years": [
+      2019,
+      2020
+    ],
+    "confirmation_years": [
+      2021,
+      2022
+    ],
+    "four_year_rmse_kg_per_ha": 271.6517054513261,
+    "late_rmse_kg_per_ha": 288.12939193813776,
+    "status": "frontier shadow; retained, not discarded",
+    "reason_not_fully_promoted": "Improves all four year RMSEs, but the state-year grouped 95% RMSE-gain interval still reaches slightly below zero."
+  },
+  "distribution": {
+    "primary": "history_shape__scaled_state_equal_year__w1.00",
+    "conservative": "history_shape__scaled_state_equal_year__w1.20",
+    "shadow_outlook_center": "outlook_corrected__history_shape__scaled_state_equal_year__w1.00",
+    "available_quantiles": [
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ]
+  },
+  "standalone_anomaly": {
+    "selected_candidate": "weighted3__physical__xgb_2p0",
+    "late_rmse_kg_per_ha": 328.46522119536064,
+    "status": "retained research fallback; not a V5 replacement"
+  },
+  "outlook_deployment_bundle": {
+    "path": "models/outlook_shadow_xgb_bundle.joblib",
+    "sha256": "8aba1ce3a6617ab82a610e6b769627fa1d7ccaa89bdaa20da241c04d25665267",
+    "component_feature_counts": {
+      "no_future": 87,
+      "full": 93,
+      "effect": 86,
+      "broad": 140
+    }
+  },
+  "distribution_calibration_pool": {
+    "path": "models/distribution_calibration_pool.parquet",
+    "sha256": "3958a8c63af0292fcc51cf2bf57fe0d9778189e037da2d45deb38af81bc5e6fd",
+    "rows": 833,
+    "years": [
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022
+    ],
+    "state_shrink_denominator": 50.0,
+    "minimum_target_scale_kg_per_ha": 150.0
+  },
+  "post_2022_yield_labels_read": false,
+  "sealed_next_confirmation": [
+    2023,
+    2024
+  ],
+  "files": {
+    "rapid_yield_forecast/v5/root_cybench_lab/artifacts/v5_integration/predictions.csv": "b38883e714c24de8076f4e419b5b33b308e405683c973d31e16c0b9b1268a6b6",
+    "rapid_yield_forecast/v13_crop_response_final/artifacts/trajectory_predictions.parquet": "cf9e3b77b1312203d8305db59246473614113b4d961501269be612d38c8d57aa",
+    "rapid_yield_forecast/v14_anomaly_distribution/data/strict_outlook_features.parquet": "980d45d0aa9c01311872381b9a752a840c5ada343eac705f1f03100595a56fc9",
+    "rapid_yield_forecast/v14_anomaly_distribution/artifacts/final_predictions.parquet": "814858e110ed86dd0522c0a33ae665b34a35201450927200911a675718b65962",
+    "rapid_yield_forecast/v14_anomaly_distribution/artifacts/final_metrics.csv": "2a0d588284d1f5e6d4e2f9896c75d6960d741617211cc2b12beb4c8790ea70f0"
+  },
+  "summary_figure": {
+    "path": "artifacts/v14_result_summary.png",
+    "sha256": "16a6f45f878b0b98a15def13aadd0b1bc03cd15f3809d4053f28b2c248eacc2a"
+  }
+}

@@ -1,0 +1,19 @@
+{
+ "district_seasons": 2737,
+ "years": [
+  2000,
+  2022
+ ],
+ "districts": 119,
+ "unique_tiles": 7383,
+ "tiles_per_district": {
+  "min": 22,
+  "median": 58,
+  "max": 146
+ },
+ "feature_counts": {
+  "tile_shape": 84,
+  "tile_anomaly": 48,
+  "tile_all": 132
+ }
+}

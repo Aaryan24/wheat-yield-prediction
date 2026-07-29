@@ -1,0 +1,50 @@
+/Users/aaryan/Downloads/ugp/rapid_yield_forecast/v16_long_horizon/scripts/train_v16_unified_encoder.py:343: RuntimeWarning: Mean of empty slice
+  centre = np.nanmean(values[train], axis=axes)
+/Users/aaryan/.pyenv/versions/3.11.5/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+assembled 2737 district-seasons | tiles (2737, 96, 12) | clocks (2737, 3, 35) | weather (2737, 4, 10)
+  fold 2004: 476 rows, masked-tile loss 0.0004, total 0.0413
+/Users/aaryan/Downloads/ugp/rapid_yield_forecast/v16_long_horizon/scripts/train_v16_unified_encoder.py:343: RuntimeWarning: Mean of empty slice
+  centre = np.nanmean(values[train], axis=axes)
+/Users/aaryan/.pyenv/versions/3.11.5/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+  fold 2005: 595 rows, masked-tile loss 0.0603, total 0.1044
+/Users/aaryan/Downloads/ugp/rapid_yield_forecast/v16_long_horizon/scripts/train_v16_unified_encoder.py:343: RuntimeWarning: Mean of empty slice
+  centre = np.nanmean(values[train], axis=axes)
+/Users/aaryan/.pyenv/versions/3.11.5/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+  fold 2006: 714 rows, masked-tile loss 0.1104, total 0.1611
+/Users/aaryan/Downloads/ugp/rapid_yield_forecast/v16_long_horizon/scripts/train_v16_unified_encoder.py:343: RuntimeWarning: Mean of empty slice
+  centre = np.nanmean(values[train], axis=axes)
+/Users/aaryan/.pyenv/versions/3.11.5/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+  fold 2007: 833 rows, masked-tile loss 0.1603, total 0.2265
+/Users/aaryan/Downloads/ugp/rapid_yield_forecast/v16_long_horizon/scripts/train_v16_unified_encoder.py:343: RuntimeWarning: Mean of empty slice
+  centre = np.nanmean(values[train], axis=axes)
+/Users/aaryan/.pyenv/versions/3.11.5/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+  fold 2008: 952 rows, masked-tile loss 0.1080, total 0.1752
+/Users/aaryan/Downloads/ugp/rapid_yield_forecast/v16_long_horizon/scripts/train_v16_unified_encoder.py:343: RuntimeWarning: Mean of empty slice
+  centre = np.nanmean(values[train], axis=axes)
+/Users/aaryan/.pyenv/versions/3.11.5/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+  fold 2009: 1071 rows, masked-tile loss 0.1621, total 0.2503
+/Users/aaryan/Downloads/ugp/rapid_yield_forecast/v16_long_horizon/scripts/train_v16_unified_encoder.py:343: RuntimeWarning: Mean of empty slice
+  centre = np.nanmean(values[train], axis=axes)
+/Users/aaryan/.pyenv/versions/3.11.5/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+  fold 2010: 1190 rows, masked-tile loss 0.1207, total 0.2049
+  fold 2011: 1309 rows, masked-tile loss 0.1378, total 0.2293
+  fold 2012: 1428 rows, masked-tile loss 0.1569, total 0.2465
+  fold 2013: 1547 rows, masked-tile loss 0.1505, total 0.2516
+  fold 2014: 1666 rows, masked-tile loss 0.1509, total 0.2408
+  fold 2015: 1785 rows, masked-tile loss 0.1752, total 0.2743
+  fold 2016: 1904 rows, masked-tile loss 0.1762, total 0.2711
+  fold 2017: 2023 rows, masked-tile loss 0.1858, total 0.2847
+  fold 2018: 2142 rows, masked-tile loss 0.1566, total 0.2628
+  fold 2019: 2261 rows, masked-tile loss 0.1849, total 0.2868
+  fold 2020: 2380 rows, masked-tile loss 0.1673, total 0.2704
+  fold 2021: 2499 rows, masked-tile loss 0.1626, total 0.2797
+  fold 2022: 2618 rows, masked-tile loss 0.1826, total 0.2922
+
+wrote 31654 rows, 70695 parameters, mps

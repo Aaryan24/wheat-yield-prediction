@@ -1,0 +1,24 @@
+{
+  "production_anchor": "../v14_anomaly_distribution/models/outlook_shadow_xgb_bundle.joblib",
+  "v15_base_bundle": "v15_xgb_base_physical_d2_through2022.joblib",
+  "v15_current_bundle": "v15_xgb_current_physical_d2_through2022.joblib",
+  "point_formula": "V14_shadow + 1.25 * (V15_current_xgb - V15_base_xgb)",
+  "gamma": 1.25,
+  "distribution_scale": 0.95,
+  "distribution_source": "V14 empirical district residual distribution",
+  "encoder_seeds": [
+    42,
+    73
+  ],
+  "encoder_train_end": 2022,
+  "xgb_train_years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "reported_scores_use_deployment_refit": false,
+  "score_claimed_for_refit": false
+}

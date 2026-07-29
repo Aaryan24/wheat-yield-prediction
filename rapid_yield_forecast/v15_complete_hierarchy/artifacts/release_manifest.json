@@ -1,0 +1,115 @@
+{
+  "version": "V15",
+  "point_model": "V14 shadow + 1.25 * V15 MODIS-Sentinel crop correction",
+  "evaluated_years": [
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "development_years": [
+    2019,
+    2020
+  ],
+  "confirmation_years": [
+    2021,
+    2022
+  ],
+  "districts": 119,
+  "four_year_rmse": 269.5239106325404,
+  "late_rmse": 287.20036852875205,
+  "score_claimed_for_deployment_refit": false,
+  "post_2022_yield_labels_read": false,
+  "files": [
+    {
+      "path": "data/long_yield_1990_2022.parquet",
+      "bytes": 41460,
+      "sha256": "3e87cff174085d7638b81e77c104c668640d5b3eff9907b4430ee56bd140fcd1"
+    },
+    {
+      "path": "data/strict_transfer_encoder_features.parquet",
+      "bytes": 4718766,
+      "sha256": "8a70c1e9d901711b47cdfc734ca218144b8cde28ba07aa6173c4fefe7f417868"
+    },
+    {
+      "path": "data/encoder_manifest.json",
+      "bytes": 533,
+      "sha256": "4bf112c652849ece49f5738ffc2c2b6fac0c96a7e6bc64a6eb29c6f687a530f6"
+    },
+    {
+      "path": "data/deployment_encoder_features_through2022.parquet",
+      "bytes": 1202673,
+      "sha256": "6c91a932aa79267b9337a25a902698eadea2aa63813caf825769d5d1b22cfedf"
+    },
+    {
+      "path": "artifacts/normal_candidate_predictions.parquet",
+      "bytes": 176408,
+      "sha256": "d5950c8b562dbbbee4cfbe26e20fd6367ec3a707080a69c999ef66b88e9ca62d"
+    },
+    {
+      "path": "artifacts/learned_normal_metrics.csv",
+      "bytes": 2510,
+      "sha256": "1ffb15db1f9d5a3dfcaa28ac479f00a4c9fb46ac8c27aa2b0b2444b2db73cdfb"
+    },
+    {
+      "path": "artifacts/hierarchy_sensitivity_metrics.csv",
+      "bytes": 586933,
+      "sha256": "f903f5ce9f4770db99241656eb77485c1d898a5c15ff6a604a25e04ab80d128f"
+    },
+    {
+      "path": "artifacts/encoder_trajectory_metrics.csv",
+      "bytes": 427,
+      "sha256": "93011eb9580e43c6c31fedd8de5018ee61607fb0faa535f0e51b1a05ae734861"
+    },
+    {
+      "path": "artifacts/encoder_correction_selected_predictions.parquet",
+      "bytes": 40433,
+      "sha256": "a36ee6959b3db257adbfad41aa2f8738522e151e985529c3f0ee44dc2ce4f19e"
+    },
+    {
+      "path": "artifacts/v15_distribution_metrics.csv",
+      "bytes": 983,
+      "sha256": "301733d0c95b1908ad4c6e5b3edf57e672a3f951e70d68bd51494276bbf0066d"
+    },
+    {
+      "path": "artifacts/final_predictions.parquet",
+      "bytes": 135165,
+      "sha256": "72602661429d870a24cebcf3e6795bb9a04006c3459efcb729e639de7ab93c09"
+    },
+    {
+      "path": "artifacts/audit_summary.json",
+      "bytes": 10482,
+      "sha256": "61b78466c17d69e3c409af69ec7f15d0b9f654ff1fc907f16d52854b176abf68"
+    },
+    {
+      "path": "artifacts/point_grouped_bootstrap.csv",
+      "bytes": 1835,
+      "sha256": "b2c3108970debb28c89975296af570f14b145c30d9f61fa1bdc45bf9f0560c88"
+    },
+    {
+      "path": "models/encoder_modis_pretrained_seed42_through2022_deployment.pt",
+      "bytes": 306321,
+      "sha256": "a4dd8072c0d924f01817ffcdd7cd03724fbff38e464b68524e159072ad01f242"
+    },
+    {
+      "path": "models/encoder_modis_pretrained_seed73_through2022_deployment.pt",
+      "bytes": 306321,
+      "sha256": "1b75f77c10ed3beb957531bfdd8d6f95204407e865e651dee28ca85b2e7361f4"
+    },
+    {
+      "path": "models/v15_xgb_base_physical_d2_through2022.joblib",
+      "bytes": 640983,
+      "sha256": "7cc469e6625a53bfe676adadb4f999c6f01d20b95e6051618dbac7c095aff79c"
+    },
+    {
+      "path": "models/v15_xgb_current_physical_d2_through2022.joblib",
+      "bytes": 645522,
+      "sha256": "b2cf4923d21ce5fe4952225b51d1e327f0b1d1a6eb033a9966675c2211ffbf7e"
+    },
+    {
+      "path": "models/v15_deployment_recipe.json",
+      "bytes": 675,
+      "sha256": "c6267cb4d75b0626584c9f2a0ea2d023a16b61478af238c8f4570a0d04a27da3"
+    }
+  ]
+}

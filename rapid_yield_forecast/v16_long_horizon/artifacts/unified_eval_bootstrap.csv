@@ -1,0 +1,9 @@
+candidate,baseline,period,mean_gain,p025,p975,probability_positive,resampling_unit,groups
+history_plus_district_means,history_plus_tiles,all_19_folds,-2.580918133550386,-7.2614071739790385,1.981361419462651,0.1269,season,19
+history_plus_district_means,history_plus_tiles,v15_window_2019_22,1.1009613367414341,-7.820551794134303,12.851223684250044,0.5469,season,4
+history_plus_unified_encoder,history_plus_tiles,all_19_folds,-2.501166708619678,-7.9969664619352825,2.5660437570912853,0.1604,season,19
+history_plus_unified_encoder,history_plus_tiles,v15_window_2019_22,5.064080257254509,-0.5437544203607558,13.357795561459227,0.9671,season,4
+tiles_plus_unified_encoder,history_plus_tiles,all_19_folds,0.5651034872666331,-1.2340521873125951,2.547922222012416,0.7249,season,19
+tiles_plus_unified_encoder,history_plus_tiles,v15_window_2019_22,0.6618315005493659,-1.302411269485674,3.0661982490477726,0.7421,season,4
+unified_encoder_alone,history_plus_tiles,all_19_folds,4.776048368496448,-4.132576846943468,14.894813557012386,0.8363,season,19
+unified_encoder_alone,history_plus_tiles,v15_window_2019_22,6.947467835385257,-13.250116701900538,23.22565162962843,0.7239,season,4

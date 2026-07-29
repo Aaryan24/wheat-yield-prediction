@@ -1,0 +1,8 @@
+stage,requirement,status,evidence,promotion
+1,Learn district normal from 10-20 years,completed_shadow,learned_normal_metrics.csv; 1990-2022 history,not promoted; late instability
+2,Predict yield percentage/log anomaly,completed_shadow,hierarchy_sensitivity_metrics.csv,not promoted; late instability
+3,Extend satellite learning to 2000,completed_promoted,MODIS 2000-2022 encoder pretraining,promoted as V15 crop correction
+4,Predict common state seasonal shock first,completed_shadow,hierarchy candidate and training artifacts,not promoted; unstable late
+5,Predict district exposure to state shock,completed_shadow,shrunk district exposure beta in hierarchy artifacts,not promoted; unstable late
+6,Fine-tune on Sentinel recent years,completed_promoted,trajectory metrics and deployment encoder bundles,promoted
+7,Produce a district probability distribution,completed_promoted,final_predictions.parquet; q05-q95 and probabilities,promoted at calibrated scale 0.95

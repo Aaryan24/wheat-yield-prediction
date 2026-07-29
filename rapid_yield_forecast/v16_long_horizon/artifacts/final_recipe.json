@@ -1,0 +1,15 @@
+{
+ "physical_training_start": 2013,
+ "crop_training_start": 2017,
+ "crop_features": 16,
+ "crop_features_dropped": 14,
+ "unified_encoder_features": 40,
+ "weights_selected_on_2019_2020": {
+  "window": 0.25,
+  "crop16": 2.25,
+  "unified": 0.0
+ },
+ "weight_rule": "V15 near-tie: smallest within max(0.35, 0.0015*best)",
+ "movement_scale": 1.5,
+ "distribution_width_scale": 1.0
+}

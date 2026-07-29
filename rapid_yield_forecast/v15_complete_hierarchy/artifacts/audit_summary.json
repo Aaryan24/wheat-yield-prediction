@@ -1,0 +1,336 @@
+{
+  "promoted_point_metrics": [
+    {
+      "model": "V15_combined_regularized",
+      "period": "development",
+      "rmse": 250.60372128574673,
+      "mae": 182.0016807230066,
+      "bias": 1.3964907874249322,
+      "mean_year_rmse": 249.7086674636988,
+      "max_year_rmse": 270.87010682325393,
+      "equal_state_rmse": 256.08311548816073,
+      "direction_accuracy": 0.7983193277310925
+    },
+    {
+      "model": "V15_combined_regularized",
+      "period": "late",
+      "rmse": 287.20036852875205,
+      "mae": 209.35206546188007,
+      "bias": 41.41102754570901,
+      "mean_year_rmse": 287.1367361565912,
+      "max_year_rmse": 293.1821006940784,
+      "equal_state_rmse": 304.0589625130199,
+      "direction_accuracy": 0.7773109243697479
+    },
+    {
+      "model": "V15_combined_regularized",
+      "period": "four_year",
+      "rmse": 269.5239106325404,
+      "mae": 195.67687309244334,
+      "bias": 21.403759166566978,
+      "mean_year_rmse": 268.422701810145,
+      "max_year_rmse": 293.1821006940784,
+      "equal_state_rmse": 284.5972028263954,
+      "direction_accuracy": 0.7878151260504201
+    }
+  ],
+  "point_gain_vs_v5": [
+    {
+      "period": "development",
+      "rmse_gain": 6.394916749825796,
+      "direction_change": 0.021008403361344574
+    },
+    {
+      "period": "late",
+      "rmse_gain": 1.4096418040858794,
+      "direction_change": -0.004201680672268893
+    },
+    {
+      "period": "four_year",
+      "rmse_gain": 3.7379033997719375,
+      "direction_change": 0.008403361344537785
+    }
+  ],
+  "year_count_improved_vs_v5": 3,
+  "state_year_count_improved_vs_v5": 8,
+  "year_count": 4,
+  "state_year_count": 12,
+  "trajectory": [
+    {
+      "variant": "modis_pretrained",
+      "branch": "full",
+      "rows": 1904,
+      "mean_transition_rmse": 0.0416252102434807,
+      "mean_transition_mae": 0.0280078771622448,
+      "mean_persistence_rmse": 0.0876228740916219
+    },
+    {
+      "variant": "modis_pretrained",
+      "branch": "no_future",
+      "rows": 1904,
+      "mean_transition_rmse": 0.0426790132334048,
+      "mean_transition_mae": 0.0289545620932486,
+      "mean_persistence_rmse": 0.0876228740916219
+    },
+    {
+      "variant": "scratch",
+      "branch": "full",
+      "rows": 1904,
+      "mean_transition_rmse": 0.0417922250652576,
+      "mean_transition_mae": 0.0279083538007092,
+      "mean_persistence_rmse": 0.0876228740916219
+    },
+    {
+      "variant": "scratch",
+      "branch": "no_future",
+      "rows": 1904,
+      "mean_transition_rmse": 0.0429295685368261,
+      "mean_transition_mae": 0.0289242685972536,
+      "mean_persistence_rmse": 0.0876228740916219
+    }
+  ],
+  "best_learned_normal_development": {
+    "period": "development",
+    "candidate": "learned_meta__ridge1000",
+    "rmse": 292.05503647536125,
+    "mae": 220.6064915700416,
+    "bias": 8.197243307559983,
+    "direction_accuracy": 0.7016806722689075
+  },
+  "best_learned_normal_late": {
+    "period": "late",
+    "candidate": "control__xgb1",
+    "rmse": 361.905517888368,
+    "mae": 271.6756096489159,
+    "bias": 148.4437262389849,
+    "direction_accuracy": 0.6260504201680672
+  },
+  "best_hierarchy_development": {
+    "candidate": "xgb1__hier__scratch__history__extra__extra",
+    "architecture": "hierarchy",
+    "encoder_variant": "scratch",
+    "state_feature_set": "history",
+    "state_model": "extra",
+    "residual_model": "extra",
+    "period": "development",
+    "rows": 238,
+    "rmse": 272.98633322305227,
+    "mae": 209.3928666566082,
+    "bias": -10.885284996377909,
+    "equal_state_rmse": 279.4358689403251,
+    "mean_year_rmse": 272.3190866708895,
+    "max_year_rmse": 291.39402209148545,
+    "direction_accuracy": 0.7226890756302521,
+    "selection_score": 274.4319055143298
+  },
+  "distribution": [
+    {
+      "period": "development",
+      "distribution_candidate": "V15_frontier__scale_0.95",
+      "coverage_80": 0.7857142857142857,
+      "coverage_90": 0.9159663865546218,
+      "width_80": 608.8634328049947,
+      "width_90": 870.6762192408112,
+      "interval_score_80": 931.1683969736396,
+      "interval_score_90": 1217.9396979033402,
+      "mean_pinball": 70.89283739031926,
+      "quantile_calibration_mae": 0.0314020344980097,
+      "rise_auc": 0.851138985005767,
+      "severe_drop_auc": 0.8244691607684529,
+      "rise_brier": 0.1529169200712084,
+      "severe_drop_brier": 0.0747144473808132
+    },
+    {
+      "period": "late",
+      "distribution_candidate": "V15_frontier__scale_0.95",
+      "coverage_80": 0.7815126050420168,
+      "coverage_90": 0.8697478991596639,
+      "width_80": 627.6605009719782,
+      "width_90": 894.8130897473883,
+      "interval_score_80": 1073.6552505796565,
+      "interval_score_90": 1373.4722402628222,
+      "mean_pinball": 81.02060400946583,
+      "quantile_calibration_mae": 0.050641309155241,
+      "rise_auc": 0.8372359470103832,
+      "severe_drop_auc": 0.7987130836495627,
+      "rise_brier": 0.1620077350380984,
+      "severe_drop_brier": 0.0852863618073787
+    },
+    {
+      "period": "four_year",
+      "distribution_candidate": "V15_frontier__scale_0.95",
+      "coverage_80": 0.7836134453781513,
+      "coverage_90": 0.8928571428571429,
+      "width_80": 618.2619668884865,
+      "width_90": 882.7446544940997,
+      "interval_score_80": 1002.411823776648,
+      "interval_score_90": 1295.7059690830808,
+      "mean_pinball": 75.95672069989254,
+      "quantile_calibration_mae": 0.0374170720919947,
+      "rise_auc": 0.8445845231039995,
+      "severe_drop_auc": 0.8091890420899855,
+      "rise_brier": 0.1574623275546534,
+      "severe_drop_brier": 0.0800004045940959
+    }
+  ],
+  "bootstrap": [
+    {
+      "candidate": "shadow_point_prediction",
+      "baseline": "v5_prediction",
+      "period": "late",
+      "resampling_unit": "state_year",
+      "draws": 10000,
+      "groups": 6,
+      "mean_gain": 0.3815260170067442,
+      "median_gain": 0.4812888850227637,
+      "p025": -2.0671572080472345,
+      "p975": 2.240591509162414,
+      "probability_positive": 0.6864
+    },
+    {
+      "candidate": "shadow_point_prediction",
+      "baseline": "v5_prediction",
+      "period": "late",
+      "resampling_unit": "year",
+      "draws": 10000,
+      "groups": 2,
+      "mean_gain": 0.479226393806506,
+      "median_gain": 0.48061839470017276,
+      "p025": 0.20489038720671715,
+      "p975": 0.7606049677443139,
+      "probability_positive": 1.0
+    },
+    {
+      "candidate": "shadow_point_prediction",
+      "baseline": "v5_prediction",
+      "period": "four_year",
+      "resampling_unit": "state_year",
+      "draws": 10000,
+      "groups": 12,
+      "mean_gain": 1.6732018973836025,
+      "median_gain": 1.5534642819560815,
+      "p025": -0.1492701236358627,
+      "p975": 4.204129576312587,
+      "probability_positive": 0.9626
+    },
+    {
+      "candidate": "shadow_point_prediction",
+      "baseline": "v5_prediction",
+      "period": "four_year",
+      "resampling_unit": "year",
+      "draws": 10000,
+      "groups": 4,
+      "mean_gain": 1.6330250726340299,
+      "median_gain": 1.610108580986207,
+      "p025": 0.48061839470017276,
+      "p975": 2.8908820528259582,
+      "probability_positive": 1.0
+    },
+    {
+      "candidate": "v15_regularized",
+      "baseline": "v5_prediction",
+      "period": "late",
+      "resampling_unit": "state_year",
+      "draws": 10000,
+      "groups": 6,
+      "mean_gain": 1.4152777376726788,
+      "median_gain": 1.2480813421968264,
+      "p025": -4.168169231810737,
+      "p975": 9.458257120336327,
+      "probability_positive": 0.6447
+    },
+    {
+      "candidate": "v15_regularized",
+      "baseline": "v5_prediction",
+      "period": "late",
+      "resampling_unit": "year",
+      "draws": 10000,
+      "groups": 2,
+      "mean_gain": 1.4023876049762085,
+      "median_gain": 1.4096418040858794,
+      "p025": -2.5230804380271934,
+      "p975": 5.454977288771715,
+      "probability_positive": 0.7483
+    },
+    {
+      "candidate": "v15_regularized",
+      "baseline": "v5_prediction",
+      "period": "four_year",
+      "resampling_unit": "state_year",
+      "draws": 10000,
+      "groups": 12,
+      "mean_gain": 3.7847930574331725,
+      "median_gain": 3.6537948899522803,
+      "p025": 0.1772937461469667,
+      "p975": 8.064564100070356,
+      "probability_positive": 0.9802
+    },
+    {
+      "candidate": "v15_regularized",
+      "baseline": "v5_prediction",
+      "period": "four_year",
+      "resampling_unit": "year",
+      "draws": 10000,
+      "groups": 4,
+      "mean_gain": 3.7719010415269434,
+      "median_gain": 3.7379033997719375,
+      "p025": -0.5703196894384632,
+      "p975": 6.6743871880610754,
+      "probability_positive": 0.9514
+    },
+    {
+      "candidate": "v15_conservative_all_year_shadow",
+      "baseline": "v5_prediction",
+      "period": "late",
+      "resampling_unit": "state_year",
+      "draws": 10000,
+      "groups": 6,
+      "mean_gain": 0.5638632113294979,
+      "median_gain": 0.6540340096457271,
+      "p025": -2.167676349879912,
+      "p975": 2.90338430917285,
+      "probability_positive": 0.7221
+    },
+    {
+      "candidate": "v15_conservative_all_year_shadow",
+      "baseline": "v5_prediction",
+      "period": "late",
+      "resampling_unit": "year",
+      "draws": 10000,
+      "groups": 2,
+      "mean_gain": 0.6509741693371214,
+      "median_gain": 0.6540340096457271,
+      "p025": 0.00779877111051519,
+      "p975": 1.311084521093619,
+      "probability_positive": 1.0
+    },
+    {
+      "candidate": "v15_conservative_all_year_shadow",
+      "baseline": "v5_prediction",
+      "period": "four_year",
+      "resampling_unit": "state_year",
+      "draws": 10000,
+      "groups": 12,
+      "mean_gain": 2.0034077023865104,
+      "median_gain": 1.8888256779529797,
+      "p025": 0.12212619831500082,
+      "p975": 4.609551412911073,
+      "probability_positive": 0.9822
+    },
+    {
+      "candidate": "v15_conservative_all_year_shadow",
+      "baseline": "v5_prediction",
+      "period": "four_year",
+      "resampling_unit": "year",
+      "draws": 10000,
+      "groups": 4,
+      "mean_gain": 1.9657421551484593,
+      "median_gain": 1.9412381587493428,
+      "p025": 0.6540340096457271,
+      "p975": 3.4023733066122475,
+      "probability_positive": 1.0
+    }
+  ],
+  "promotion_decision": "V15 combined is a research frontier challenger. The state-year bootstrap is positive, but V5 remains the conservative production anchor because the bootstrap over only four independent years still crosses zero.",
+  "post_2022_yield_labels_read": false
+}

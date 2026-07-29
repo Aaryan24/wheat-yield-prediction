@@ -1,0 +1,53 @@
+{
+  "point_model": "V5 production forecast",
+  "strict_history_shape_winner": "history_shape__scaled_state_equal_year__w1.00",
+  "calibrated_candidate": "calibrated__history_shape__scaled_state_equal_year__w1.00",
+  "outlook_shadow_candidate": "outlook_corrected__history_shape__scaled_state_equal_year__w1.00",
+  "calibration_years": [
+    2019,
+    2020
+  ],
+  "quantile_shifts_kg_per_ha": {
+    "q05": 11.282170852686233,
+    "q10": -15.074526646293414,
+    "q15": -16.109353674771842,
+    "q20": -6.944172251139885,
+    "q25": -1.1489862524469032,
+    "q30": 11.017509359952056,
+    "q35": 10.577996734113754,
+    "q40": 3.7537667747336396,
+    "q45": 16.584523096462952,
+    "q50": 13.150832984097878,
+    "q55": -3.2931974234283774,
+    "q60": -25.99696677015066,
+    "q65": -46.29723873712797,
+    "q70": -47.05167265495893,
+    "q75": -32.03072805479569,
+    "q80": -25.161279047212346,
+    "q85": -38.43817439382228,
+    "q90": -45.63189062941399,
+    "q95": -69.68826303375087
+  },
+  "quantiles": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95
+  ],
+  "selection_rule": "Choose history-shape width on 2019-2020; retain its calibrated version separately; confirm both on 2021-2022."
+}

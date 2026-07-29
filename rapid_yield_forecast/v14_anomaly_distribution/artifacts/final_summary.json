@@ -1,0 +1,95 @@
+{
+  "standalone": {
+    "candidate": "weighted3__physical__xgb_2p0",
+    "selection_category": "all_candidates",
+    "development_selection_score": 285.18044534243734,
+    "late_metrics": {
+      "rmse": 328.46522119536064,
+      "mae": 248.55825891380505,
+      "bias": -16.852810444522962,
+      "equal_state_rmse": 364.6654643700207,
+      "mean_year_rmse": 328.27655169440254,
+      "max_year_rmse": 339.40791021658737,
+      "direction_accuracy": 0.6848739495798319
+    },
+    "v5_late_metrics": {
+      "rmse": 288.61001033283793,
+      "mae": 208.89521311406367,
+      "bias": 37.87685343612686,
+      "equal_state_rmse": 312.20452345818313,
+      "mean_year_rmse": 288.60268458196344,
+      "max_year_rmse": 290.65902025605124,
+      "direction_accuracy": 0.7815126050420168
+    },
+    "late_years_improved": 0,
+    "late_state_year_cells_improved": 1,
+    "bootstrap": {
+      "bootstrap_mean_gain": -40.71901771988572,
+      "bootstrap_p025": -79.0119867094632,
+      "bootstrap_p975": -10.876542292212662,
+      "bootstrap_probability_positive": 0.0028,
+      "bootstrap_draws": 5000
+    },
+    "status": "reject"
+  },
+  "xgb_outlook_v5": {
+    "candidate": "xgb_d2__base_full",
+    "outlook_weight": 0.05,
+    "late_model_rmse": 289.76590470214273,
+    "late_v5_rmse": 288.61001033283793,
+    "bootstrap_p025": -5.261395025779481,
+    "status": "shadow"
+  },
+  "distribution": {
+    "point_candidate": "weighted3__physical__xgb_2p0",
+    "selected_method": "scaled_state_equal_year",
+    "metrics": [
+      {
+        "method": "scaled_state_equal_year",
+        "period": "development",
+        "rows": 238,
+        "mean_pinball_loss": 85.04951806868219,
+        "coverage_50": 0.4579831932773109,
+        "width_50": 321.90778591524673,
+        "coverage_80": 0.7689075630252101,
+        "width_80": 640.9088766368367,
+        "coverage_90": 0.8781512605042017,
+        "width_90": 916.5012834113802
+      },
+      {
+        "method": "scaled_state_equal_year",
+        "period": "late",
+        "rows": 238,
+        "mean_pinball_loss": 92.98334999547805,
+        "coverage_50": 0.44537815126050423,
+        "width_50": 329.38773398503537,
+        "coverage_80": 0.726890756302521,
+        "width_80": 660.6952641810296,
+        "coverage_90": 0.8613445378151261,
+        "width_90": 941.9085155235666
+      }
+    ]
+  },
+  "deployment": {
+    "candidate": "weighted3__physical__xgb_2p0",
+    "model_path": "models/standalone_anomaly_model.joblib"
+  },
+  "selection_years": [
+    2019,
+    2020
+  ],
+  "late_confirmation_years": [
+    2021,
+    2022
+  ],
+  "rolling_years_reported": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "post_2022_yield_labels_read": false
+}

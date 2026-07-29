@@ -1,0 +1,7 @@
+candidate,baseline,period,mean_gain,p025,p975,probability_positive,resampling_unit,groups
+history_plus_modis_level,history_only,all_19_folds,-1.0840349795766486,-8.907753766296002,6.944504531818323,0.3912,season,19
+history_plus_modis_level,history_only,v15_window_2019_22,0.6934954430071659,-5.556560180814699,7.844164116791035,0.58,season,4
+history_plus_modis_anomaly,history_only,all_19_folds,17.801532161443042,2.020598845851247,35.723183053514354,0.9888,season,19
+history_plus_modis_anomaly,history_only,v15_window_2019_22,5.265420126367138,-8.038783237717269,21.33771429505026,0.7187,season,4
+history_plus_modis_all,history_only,all_19_folds,10.040894795270914,-2.5442745416192425,22.127990399404,0.9427,season,19
+history_plus_modis_all,history_only,v15_window_2019_22,-0.4702338868954441,-18.9035449288952,19.83120489916547,0.429,season,4

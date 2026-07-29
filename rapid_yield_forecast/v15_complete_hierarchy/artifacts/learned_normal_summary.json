@@ -1,0 +1,27 @@
+{
+  "best_development": {
+    "period": "development",
+    "candidate": "learned_meta__ridge1000",
+    "rmse": 292.05503647536125,
+    "mae": 220.60649157004158,
+    "bias": 8.197243307559983,
+    "direction_accuracy": 0.7016806722689075
+  },
+  "best_late": {
+    "period": "late",
+    "candidate": "control__xgb1",
+    "rmse": 361.905517888368,
+    "mae": 271.6756096489159,
+    "bias": 148.4437262389849,
+    "direction_accuracy": 0.6260504201680672
+  },
+  "best_four_year": {
+    "period": "four_year",
+    "candidate": "control__weighted3",
+    "rmse": 333.06608726858906,
+    "mae": 243.631458042957,
+    "bias": 63.06465886534475,
+    "direction_accuracy": 0.6680672268907563
+  },
+  "post_2022_yield_labels_read": false
+}

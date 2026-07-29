@@ -1,0 +1,21 @@
+  fold 2004: 476 train rows, contrastive 1.392, anomaly 0.136
+  fold 2005: 595 train rows, contrastive 1.354, anomaly 0.139
+  fold 2006: 714 train rows, contrastive 1.404, anomaly 0.152
+  fold 2007: 833 train rows, contrastive 1.417, anomaly 0.111
+  fold 2008: 952 train rows, contrastive 1.421, anomaly 0.125
+  fold 2009: 1071 train rows, contrastive 1.389, anomaly 0.126
+  fold 2010: 1190 train rows, contrastive 1.343, anomaly 0.144
+  fold 2011: 1309 train rows, contrastive 1.329, anomaly 0.094
+  fold 2012: 1428 train rows, contrastive 1.361, anomaly 0.107
+  fold 2013: 1547 train rows, contrastive 1.340, anomaly 0.093
+  fold 2014: 1666 train rows, contrastive 1.372, anomaly 0.196
+  fold 2015: 1785 train rows, contrastive 1.357, anomaly 0.101
+  fold 2016: 1904 train rows, contrastive 1.281, anomaly 0.093
+  fold 2017: 2023 train rows, contrastive 1.300, anomaly 0.101
+  fold 2018: 2142 train rows, contrastive 1.324, anomaly 0.079
+  fold 2019: 2261 train rows, contrastive 1.349, anomaly 0.076
+  fold 2020: 2380 train rows, contrastive 1.270, anomaly 0.088
+  fold 2021: 2499 train rows, contrastive 1.335, anomaly 0.087
+  fold 2022: 2618 train rows, contrastive 1.289, anomaly 0.085
+
+wrote 31654 encoder rows, 25139 parameters, device mps

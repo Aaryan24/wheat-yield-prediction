@@ -1,0 +1,156 @@
+{
+  "name": "V13 final clock-specific wheat-yield policy",
+  "point": {
+    "jan15": "V7 locked point forecast",
+    "feb15": "V7 locked point forecast",
+    "mar05": "V5 locked point forecast"
+  },
+  "increase_probability": {
+    "jan15": "V11 global direction model",
+    "feb15": "V12 crop-state blend over V11",
+    "mar05": "V13 crop-response blend"
+  },
+  "severe_decline_probability": "V11 global-required severe-decline sidecar",
+  "future_weather_crop_trajectory_promoted": false,
+  "selection_years": [
+    2019,
+    2020
+  ],
+  "reused_confirmation_years": [
+    2021,
+    2022
+  ],
+  "post_2022_yield_labels_read": false,
+  "deployment": {
+    "weather_pretraining": {
+      "train_end": 2022,
+      "rows": 24871,
+      "epochs": 6,
+      "final_scaled_huber": 0.11411550641059875
+    },
+    "response_models": [
+      "models/crop_response_full_seed42_through2022.pt",
+      "models/crop_response_full_seed73_through2022.pt",
+      "models/crop_response_no_future_seed42_through2022.pt",
+      "models/crop_response_no_future_seed73_through2022.pt"
+    ],
+    "promoted_downstream_heads": [
+      "models/direction_v13_mar05_through2022.joblib"
+    ],
+    "deployment_fit_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022
+    ],
+    "deployment_fit_score_claimed": false
+  },
+  "future_weather_crop_trajectory_point_contract_pass": true,
+  "future_weather_crop_trajectory_status": "promising point estimate; future-weather increment is not uncertainty-stable",
+  "strict_final_metrics": [
+    {
+      "clock": "feb15",
+      "period": "development",
+      "point_rmse": 296.75187765522213,
+      "point_mae": 225.0813213957458,
+      "point_bias": -4.137149586397059,
+      "increase_auc": 0.7407727797001155,
+      "increase_brier": 0.22834259687104505,
+      "increase_accuracy_at_0_5": 0.6512605042016807,
+      "increase_baseline_auc": 0.7407727797001155,
+      "increase_baseline_brier": 0.22834259687104505,
+      "severe_auc": 0.7389282103134479,
+      "severe_brier": 0.0864775676801561,
+      "interval_80_coverage": NaN,
+      "interval_80_mean_width": NaN,
+      "rows": 238
+    },
+    {
+      "clock": "feb15",
+      "period": "late",
+      "point_rmse": 316.8527661215437,
+      "point_mae": 229.03416942949053,
+      "point_bias": 63.81586873030462,
+      "increase_auc": 0.7929108485499463,
+      "increase_brier": 0.22129479949754058,
+      "increase_accuracy_at_0_5": 0.7016806722689075,
+      "increase_baseline_auc": 0.7929108485499463,
+      "increase_baseline_brier": 0.22129479949754058,
+      "severe_auc": 0.6706814057086289,
+      "severe_brier": 0.10734830961414077,
+      "interval_80_coverage": 0.7899159663865546,
+      "interval_80_mean_width": 912.4498796314663,
+      "rows": 238
+    },
+    {
+      "clock": "jan15",
+      "period": "development",
+      "point_rmse": 296.75187765522213,
+      "point_mae": 225.0813213957458,
+      "point_bias": -4.137149586397059,
+      "increase_auc": 0.7660034602076125,
+      "increase_brier": 0.19967272182308055,
+      "increase_accuracy_at_0_5": 0.6638655462184874,
+      "increase_baseline_auc": 0.7660034602076125,
+      "increase_baseline_brier": 0.19967272182308055,
+      "severe_auc": 0.7967644084934276,
+      "severe_brier": 0.07755192514869824,
+      "interval_80_coverage": NaN,
+      "interval_80_mean_width": NaN,
+      "rows": 238
+    },
+    {
+      "clock": "jan15",
+      "period": "late",
+      "point_rmse": 316.8527661215437,
+      "point_mae": 229.03416942949053,
+      "point_bias": 63.81586873030462,
+      "increase_auc": 0.8214106695309702,
+      "increase_brier": 0.20504204660721484,
+      "increase_accuracy_at_0_5": 0.680672268907563,
+      "increase_baseline_auc": 0.8214106695309702,
+      "increase_baseline_brier": 0.20504204660721484,
+      "severe_auc": 0.5467744596601221,
+      "severe_brier": 0.12072304350041249,
+      "interval_80_coverage": 0.7899159663865546,
+      "interval_80_mean_width": 912.4498796314663,
+      "rows": 238
+    },
+    {
+      "clock": "mar05",
+      "period": "development",
+      "point_rmse": 256.9986220174666,
+      "point_mae": 187.52845982142858,
+      "point_bias": -7.784038126969538,
+      "increase_auc": 0.8222318339100346,
+      "increase_brier": 0.19694910360804746,
+      "increase_accuracy_at_0_5": 0.7521008403361344,
+      "increase_baseline_auc": 0.8064446366782005,
+      "increase_baseline_brier": 0.203264331549762,
+      "severe_auc": 0.8179979777553084,
+      "severe_brier": 0.07563773972292422,
+      "interval_80_coverage": NaN,
+      "interval_80_mean_width": NaN,
+      "rows": 238
+    },
+    {
+      "clock": "mar05",
+      "period": "late",
+      "point_rmse": 288.6100054482604,
+      "point_mae": 208.8952093044249,
+      "point_bias": 37.87684541590073,
+      "increase_auc": 0.7956319369853203,
+      "increase_brier": 0.19697025907915694,
+      "increase_accuracy_at_0_5": 0.7352941176470589,
+      "increase_baseline_auc": 0.7682062298603652,
+      "increase_baseline_brier": 0.20572022363375805,
+      "severe_auc": 0.5636033657812243,
+      "severe_brier": 0.11592614650676131,
+      "interval_80_coverage": 0.7815126050420168,
+      "interval_80_mean_width": 650.4727449507502,
+      "rows": 238
+    }
+  ]
+}

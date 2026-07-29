@@ -1,0 +1,4 @@
+clock,variant,view,head,alpha,candidate_weight,development_anchor_rmse,development_model_rmse,development_years_improved,development_cells_improved,eligible,late_anchor_rmse,late_model_rmse,late_years_improved,late_cells_improved,draws,mean_rmse_gain,p025,p975,probability_positive,promotion_pass
+jan15,full,response_tabular,direct,100.0,0.5,296.75187765522213,276.2711296349929,2,5,True,316.8527661215437,321.57920963556114,1,4,5000,-4.278766292372976,-31.227724600740828,21.686183641547927,0.3792,False
+feb15,crop_only,response,change,100.0,0.0,296.75187765522213,296.75187765522213,0,0,False,316.8527661215437,316.8527661215437,0,0,5000,0.0,0.0,0.0,0.0,False
+mar05,full,response_tabular,direct,100.0,0.25,256.9986220174666,252.84781999410706,2,5,True,288.6100054482604,301.55327881613505,0,2,5000,-12.571503802483711,-23.571593545747998,1.2375147345084088,0.0336,False

@@ -1,0 +1,43 @@
+{
+  "status": "pass",
+  "checks": {
+    "final_prediction_rows": 1428,
+    "late_interval_rows": 714,
+    "point_promoted_clocks": [],
+    "direction_promoted_clocks": [
+      "mar05"
+    ],
+    "invalid_psri_cells_removed": 96,
+    "future_weather_strictly_promoted": false,
+    "deployment_model_files": [
+      "crop_response_full_seed42_through2022.pt",
+      "crop_response_full_seed73_through2022.pt",
+      "crop_response_no_future_seed42_through2022.pt",
+      "crop_response_no_future_seed73_through2022.pt",
+      "direction_v13_mar05_through2022.joblib"
+    ],
+    "documentation_files": [
+      "ARCHITECTURE_PLAN.md",
+      "RESULT.md",
+      "METHODOLOGY.md",
+      "AUDIT.md",
+      "README.md",
+      "RUNBOOK.md"
+    ]
+  },
+  "sha256": {
+    "artifacts/final_predictions.parquet": "1940b31e66df0d8b81c357c76ee41c16c0793fb56491da7ae42fcb4f88e5d35d",
+    "artifacts/final_metrics.csv": "27314d02f05af82d16b144037e8bf5b2d28a2b1903b0fef818c278150172df36",
+    "artifacts/final_policy.json": "9720f553682bb10c9abbf00f85882d43a73b510f4451f9624993ac31f83ab6e3",
+    "artifacts/deployment_manifest.json": "262975bd37cdb290360f3822c8d279155d8bffd018b88b4fd532560a6e39e9fb",
+    "artifacts/trajectory_metrics.csv": "86f2428afa2c5233425f128714b1958f44a5db8df8b066c5bd021cd6cfbe9c79",
+    "artifacts/trajectory_uncertainty.csv": "d4a47970a665ea654fddace0bbb46341e0d33fa434e745e953b9421c074bb9b1",
+    "artifacts/direction_selected_metrics.csv": "fff697ce959011b1c3c4ce97a419ddf215fc2567c63319df429251332fb9c72d",
+    "artifacts/point_selected_metrics.csv": "f3acc8a92a4b498430ccf12b81ce4061d6ea596b61cafcd11ae45f21111e2b7b",
+    "models/crop_response_full_seed42_through2022.pt": "49b78ced9c4bfa6ce5dbb8001bae7bcded4efaa3110931038cbb217c4c641e38",
+    "models/crop_response_full_seed73_through2022.pt": "73c06fed26832401c9d0b9c0651b6cad250fe1ee1b2c3c53ead22e0401d8f760",
+    "models/crop_response_no_future_seed42_through2022.pt": "a3ac40609533267fa7484cf185ffd748491b560b51a0c57e2b9d2b5c499510d8",
+    "models/crop_response_no_future_seed73_through2022.pt": "1486ac0509f7658924f6f143644a1da5f604c719ecb4f251249c6112f8c5625d",
+    "models/direction_v13_mar05_through2022.joblib": "13f0f2b176dedb15d113d76d7e09735ec8e54e036f30ce7d0ae4e060eae00da2"
+  }
+}

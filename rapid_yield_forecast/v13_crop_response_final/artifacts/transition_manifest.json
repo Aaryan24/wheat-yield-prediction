@@ -1,0 +1,37 @@
+{
+  "rows": 1428,
+  "districts": 119,
+  "years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "transitions": [
+    "jan15->feb15",
+    "feb15->mar05"
+  ],
+  "dynamic_satellite_columns": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    9,
+    10,
+    11,
+    12,
+    13,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "invalid_psri_cells_removed": 96,
+  "invalid_psri_rule": "abs(PSRI) > 2 is treated as missing",
+  "future_satellite_used_as_input": false,
+  "yield_used_in_response_pretraining": false
+}

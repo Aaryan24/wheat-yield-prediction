@@ -1,0 +1,101 @@
+{
+  "long_yield_rows": 3658,
+  "long_yield_years": [
+    1990,
+    2022
+  ],
+  "districts": 119,
+  "history_years_before_2019": {
+    "minimum": 9,
+    "median": 29.0,
+    "maximum": 29
+  },
+  "icrisat_des_overlap": {
+    "rows": 1177,
+    "correlation": 0.9952060321827197,
+    "mae_kg_per_ha": 16.251546304163128,
+    "bias_icrisat_minus_des": 1.6415208156329626
+  },
+  "modis_rows": 2737,
+  "modis_shape": [
+    2737,
+    3,
+    35
+  ],
+  "modis_features": [
+    "mod09q1_ndvi_last_valid_mean",
+    "mod09q1_ndvi_novdec_mean_mean",
+    "mod09q1_ndvi_recent48_mean_mean",
+    "mod09q1_ndvi_season_max_mean",
+    "mod09q1_ndvi_season_mean_mean",
+    "mod09q1_ndvi_season_temporal_sd_mean",
+    "mod09q1_ndvi_slope_per_day_mean",
+    "mod09q1_nir_last_valid_mean",
+    "mod09q1_nir_novdec_mean_mean",
+    "mod09q1_nir_recent48_mean_mean",
+    "mod09q1_nir_season_max_mean",
+    "mod09q1_nir_season_mean_mean",
+    "mod09q1_nir_season_temporal_sd_mean",
+    "mod09q1_nir_slope_per_day_mean",
+    "mod09q1_red_last_valid_mean",
+    "mod09q1_red_novdec_mean_mean",
+    "mod09q1_red_recent48_mean_mean",
+    "mod09q1_red_season_max_mean",
+    "mod09q1_red_season_mean_mean",
+    "mod09q1_red_season_temporal_sd_mean",
+    "mod09q1_red_slope_per_day_mean",
+    "mod13q1_evi_last_valid_mean",
+    "mod13q1_evi_novdec_mean_mean",
+    "mod13q1_evi_recent48_mean_mean",
+    "mod13q1_evi_season_max_mean",
+    "mod13q1_evi_season_mean_mean",
+    "mod13q1_evi_season_temporal_sd_mean",
+    "mod13q1_evi_slope_per_day_mean",
+    "mod13q1_ndvi_last_valid_mean",
+    "mod13q1_ndvi_novdec_mean_mean",
+    "mod13q1_ndvi_recent48_mean_mean",
+    "mod13q1_ndvi_season_max_mean",
+    "mod13q1_ndvi_season_mean_mean",
+    "mod13q1_ndvi_season_temporal_sd_mean",
+    "mod13q1_ndvi_slope_per_day_mean"
+  ],
+  "modis_feature_count": 35,
+  "modis_years": [
+    2000,
+    2022
+  ],
+  "sentinel": {
+    "rows": 2142,
+    "districts": 119,
+    "years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022
+    ],
+    "clocks": [
+      "feb15",
+      "jan15",
+      "mar05"
+    ],
+    "crop_shape": [
+      2142,
+      6,
+      21
+    ],
+    "experienced_weather_shape": [
+      2142,
+      6,
+      16
+    ],
+    "future_weather_shape": [
+      2142,
+      10,
+      16
+    ],
+    "invalid_psri_cells_to_mask": 96
+  },
+  "post_2022_yield_labels_read": false
+}

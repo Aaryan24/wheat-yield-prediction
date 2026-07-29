@@ -1,0 +1,9 @@
+candidate,baseline,period,mean_gain,p025,p975,probability_positive,resampling_unit,groups
+plus_tile_shape,history_plus_district_anomaly,all_19_folds,3.400538211810633,0.6426861937126802,5.86552714878312,0.9896,season,19
+plus_tile_shape,history_plus_district_anomaly,v15_window_2019_22,2.4810431859480064,-0.8490317589642018,6.502341788429874,0.893,season,4
+plus_tile_anomaly,history_plus_district_anomaly,all_19_folds,2.976377293725647,-2.5948134602945174,8.9793898682624,0.8484,season,19
+plus_tile_anomaly,history_plus_district_anomaly,v15_window_2019_22,-0.31495154639196343,-12.262597147958616,5.6015742991428965,0.4281,season,4
+plus_tile_all,history_plus_district_anomaly,all_19_folds,2.580918133550386,-1.9813614194626523,7.261407173979037,0.8731,season,19
+plus_tile_all,history_plus_district_anomaly,v15_window_2019_22,-1.1009613367414341,-12.851223684250044,7.820551794134303,0.4531,season,4
+tiles_instead_of_district_means,history_plus_district_anomaly,all_19_folds,7.38158213184576,-2.5876153242043953,19.818039600978114,0.9122,season,19
+tiles_instead_of_district_means,history_plus_district_anomaly,v15_window_2019_22,1.3467343683626227,-16.4886584250346,22.178982207178876,0.6001,season,4

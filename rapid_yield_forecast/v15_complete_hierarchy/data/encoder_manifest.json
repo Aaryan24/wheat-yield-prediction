@@ -1,0 +1,33 @@
+{
+  "rows": 3094,
+  "features": 230,
+  "variants": [
+    "scratch",
+    "modis_pretrained"
+  ],
+  "seeds": [
+    42,
+    73
+  ],
+  "folds": {
+    "2018": [
+      2019
+    ],
+    "2019": [
+      2020
+    ],
+    "2020": [
+      2021,
+      2022
+    ]
+  },
+  "district_crossfit_groups": 3,
+  "modis_pretrain_year_start": 2000,
+  "sentinel_year_start": 2017,
+  "modis_epochs": 24,
+  "sentinel_epochs": 45,
+  "device": "mps",
+  "yield_labels_used": false,
+  "later_satellite_used_as_input": false,
+  "post_2022_yield_labels_read": false
+}

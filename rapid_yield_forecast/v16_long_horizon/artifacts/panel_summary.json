@@ -1,0 +1,46 @@
+{
+ "panel_rows": 3658,
+ "districts": 119,
+ "years": [
+  1990,
+  2022
+ ],
+ "tier_long_rows": 2689,
+ "tier_weather_rows": 1547,
+ "tier_recent_rows": 714,
+ "usable_rows_with_label_and_baseline": 2668,
+ "usable_years": [
+  2000,
+  2001,
+  2002,
+  2003,
+  2004,
+  2005,
+  2006,
+  2007,
+  2008,
+  2009,
+  2010,
+  2011,
+  2012,
+  2013,
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022
+ ],
+ "independent_year_folds_long": 23,
+ "feature_counts": {
+  "history": 28,
+  "modis_level": 175,
+  "modis_anomaly": 70,
+  "history_modis": 273,
+  "trend_unsafe": 1
+ },
+ "post_2022_labels_read": false
+}

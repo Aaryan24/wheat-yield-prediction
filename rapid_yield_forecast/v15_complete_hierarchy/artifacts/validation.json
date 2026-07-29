@@ -1,0 +1,45 @@
+{
+  "status": "pass",
+  "checks": [
+    {
+      "check": "long_history",
+      "status": "pass",
+      "detail": "3658 rows, 1990-2022, 119 districts"
+    },
+    {
+      "check": "encoder_manifest",
+      "status": "pass",
+      "detail": "230 features; no yield or later-satellite leakage"
+    },
+    {
+      "check": "strict_encoder_timing",
+      "status": "pass",
+      "detail": "Every held-year representation has train_end < target year"
+    },
+    {
+      "check": "final_output",
+      "status": "pass",
+      "detail": "476 unique rows; formula exact; quantiles monotonic"
+    },
+    {
+      "check": "metric_reproduction",
+      "status": "pass",
+      "detail": "Four-year RMSE reproduces at 269.523911"
+    },
+    {
+      "check": "distribution_calibration",
+      "status": "pass",
+      "detail": "Late coverage: 80%=0.782, 90%=0.870"
+    },
+    {
+      "check": "deployment_bundles",
+      "status": "pass",
+      "detail": "Two encoder seeds and two XGB bundles load successfully"
+    },
+    {
+      "check": "seven_stage_completion",
+      "status": "pass",
+      "detail": "All seven stages implemented and honestly promotion-gated"
+    }
+  ]
+}

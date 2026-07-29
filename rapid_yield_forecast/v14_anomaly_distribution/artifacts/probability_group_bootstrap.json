@@ -1,0 +1,46 @@
+{
+  "rise_vs_v5": {
+    "auc_gain_mean": 0.010052755972389877,
+    "auc_gain_p025": -0.0062470532767563425,
+    "auc_gain_p975": 0.024245689655172376,
+    "auc_gain_probability_positive": 0.8256,
+    "brier_gain_mean": 0.003859358420882134,
+    "brier_gain_p025": -0.00395071390635772,
+    "brier_gain_p975": 0.011782823204844167,
+    "brier_gain_probability_positive": 0.7608,
+    "valid_draws": 5000
+  },
+  "rise_vs_v13": {
+    "auc_gain_mean": 0.03962986005829428,
+    "auc_gain_p025": -0.02682364364607359,
+    "auc_gain_p975": 0.09274839061275941,
+    "auc_gain_probability_positive": 0.8818,
+    "brier_gain_mean": 0.03853879524269735,
+    "brier_gain_p025": 0.01615716553228555,
+    "brier_gain_p975": 0.06314780013651908,
+    "brier_gain_probability_positive": 1.0,
+    "valid_draws": 5000
+  },
+  "severe_vs_v5": {
+    "auc_gain_mean": 0.02825284980352187,
+    "auc_gain_p025": -0.04179728317659348,
+    "auc_gain_p975": 0.07830484827345663,
+    "auc_gain_probability_positive": 0.8112,
+    "brier_gain_mean": 0.0037504199570194464,
+    "brier_gain_p025": -0.005203485845961794,
+    "brier_gain_p975": 0.019741336633609274,
+    "brier_gain_probability_positive": 0.6634,
+    "valid_draws": 5000
+  },
+  "severe_vs_v13": {
+    "auc_gain_mean": 0.20700931408640114,
+    "auc_gain_p025": 0.023684210526315752,
+    "auc_gain_p975": 0.33440081598618177,
+    "auc_gain_probability_positive": 0.9858,
+    "brier_gain_mean": 0.02938344213295279,
+    "brier_gain_p025": 0.019583322927550384,
+    "brier_gain_p975": 0.0464614523089274,
+    "brier_gain_probability_positive": 1.0,
+    "valid_draws": 5000
+  }
+}

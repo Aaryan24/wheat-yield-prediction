@@ -1,0 +1,3 @@
+candidate,baseline,period,mean_gain,p025,p975,probability_positive,resampling_unit,groups
+plus_v16_encoder,history_plus_modis_anomaly,all_19_folds,-2.190421892081347,-5.136740799114269,1.2211127031506819,0.0934,season,19
+plus_v16_encoder,history_plus_modis_anomaly,v15_window_2019_22,2.6757674953725337,1.9984377773400297,3.530347612796561,1.0,season,4
